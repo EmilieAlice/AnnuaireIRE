@@ -9,6 +9,7 @@ public class CreationAnnuaireTest {
 		try {
 			annuaire.init();
 			System.out.println("Init ok");
+			System.out.println("Salut IRE !");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Pas d'initialisation");
