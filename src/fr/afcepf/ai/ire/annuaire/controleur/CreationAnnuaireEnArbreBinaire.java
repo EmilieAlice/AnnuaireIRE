@@ -160,6 +160,7 @@ public class CreationAnnuaireEnArbreBinaire {
 	 */
 	public static int ajouterStagiaire(int numeroLigne, String ligneACopier,
 			RandomAccessFile fichierAStructurer, int positionLignePere) {
+		
 		String nomLigneACopier = ligneACopier.substring(0, NOM);
 
 		int fils = 0;
@@ -209,8 +210,11 @@ public class CreationAnnuaireEnArbreBinaire {
 	private static void rechercherPosition(int numeroLigne,
 			String ligneAcopier, int positionLignePere, int fils,
 			RandomAccessFile fichierAStructurer) {
+		
+		
 		System.out.println(positionLignePere);
 		System.out.println(numeroLigne);
+		
 		String filsLigneACopier = recupChamps(ligneAcopier, fils);
 		if (!filsLigneACopier.equals("-1")) {
 			positionLignePere = Integer.parseInt(filsLigneACopier);
@@ -255,8 +259,10 @@ public class CreationAnnuaireEnArbreBinaire {
 	 */
 	private static String modifierPere(String ligneAcopier,
 			int positionLignePere) {
+		
 		System.out.println(ligneAcopier);
 		System.out.println(positionLignePere);
+		
 		String personne = ligneAcopier.substring(0, POSITIONANNEE);
 		String pere = ligneAcopier.substring(POSITIONANNEE, POSITIONPERE);
 		String fils = ligneAcopier.substring(POSITIONPERE, POSITIONFILSCACHE);
