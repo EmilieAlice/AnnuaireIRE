@@ -3,10 +3,13 @@ package fr.afcepf.ai.ire.annuaire.controleur;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
+
+import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public class CreationAnnuaireEnArbreBinaire {
 
@@ -21,17 +24,16 @@ public class CreationAnnuaireEnArbreBinaire {
 	static final int FILSCACHE = 4;
 	static final int LONGUEURLIGNE = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT + FILSCACHE) * 2;
-	static final int POSITIONANNEE = (NOM + PRENOM + DEPARTEMENT + PROMO
-			+ ANNEE);
-	static final int POSITIONPERE = (NOM + PRENOM + DEPARTEMENT + PROMO
-			+ ANNEE + PERE);
+	static final int POSITIONANNEE = (NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE);
+	static final int POSITIONPERE = (NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE + PERE);
 	static final int POSITIONFILSGAUCHE = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE);
 	static final int POSITIONFILSDROITS = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT);
 	static final int POSITIONFILSCACHE = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT + FILSCACHE);
-	
+	static Stagiaire stagiairePere;
+	static Stagiaire stagiaire;
 
 	public void init() throws Exception {
 
@@ -44,15 +46,22 @@ public class CreationAnnuaireEnArbreBinaire {
 			BufferedReader br = new BufferedReader(fr);
 			RandomAccessFile fichierAStructurer = new RandomAccessFile(
 					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", "rw");
+
 			String ligneRecuperee = "";
+
 			int nbElementACopie = 5;
-			int numeroLigne = 0;
+			int numeroLigne = 1;
+
 			while ((ligneRecuperee = br.readLine()) != null) {
+
 				int positionLignePere = 0;
 
 				String rubrique = "";
 				String ligneACopier = "";
+
 				if (!ligneRecuperee.contains("*")) {
+					stagiaire = new Stagiaire();
+					stagiairePere = new Stagiaire();
 					for (int indice = 0; indice < nbElementACopie; indice++) {
 						rubrique = ligneRecuperee;
 						ligneACopier = traiterRetourLigne(indice, rubrique,
@@ -91,44 +100,36 @@ public class CreationAnnuaireEnArbreBinaire {
 			String ligneACopier) {
 		switch (indice) {
 		case 0:
-			ligneACopier = ecrireChamps(rubrique, ligneACopier, NOM);
+			stagiaire.setNom(ajouteEspace(rubrique, NOM));
+			ligneACopier = stagiaire.getNom();
 			break;
 		case 1:
-			ligneACopier = ecrireChamps(rubrique, ligneACopier, PRENOM);
+			stagiaire.setPrenom(ajouteEspace(rubrique, PRENOM));
+			ligneACopier = ligneACopier + stagiaire.getPrenom();
 			break;
 		case 2:
-			ligneACopier = ecrireChamps(rubrique, ligneACopier, DEPARTEMENT);
+			stagiaire.setDepartement(ajouteEspace(rubrique, DEPARTEMENT));
+			ligneACopier = ligneACopier + stagiaire.getDepartement();
 			break;
 		case 3:
-			ligneACopier = ecrireChamps(rubrique, ligneACopier, PROMO);
+			stagiaire.setPromo(ajouteEspace(rubrique, PROMO));
+			ligneACopier = ligneACopier + stagiaire.getPromo();
 			break;
 		case 4:
-			ligneACopier = ecrireChamps(rubrique, ligneACopier, ANNEE);
-			ligneACopier = ecrireChamps("-1", ligneACopier, PERE);
-			ligneACopier = ecrireChamps("-1", ligneACopier, FILSGAUCHE);
-			ligneACopier = ecrireChamps("-1", ligneACopier, FILSDROIT);
-			ligneACopier = ecrireChamps("-1", ligneACopier, FILSCACHE);
-			ligneACopier = ligneACopier + "\r\n";
+			stagiaire.setAnnee(ajouteEspace(rubrique, ANNEE));
+			ligneACopier = ligneACopier + stagiaire.getAnnee();
+			stagiaire.setChampPere(ajouteEspace("-1", PERE));
+			ligneACopier = ligneACopier + stagiaire.getChampPere();
+			stagiaire.setChampFilsGauche(ajouteEspace("-1", FILSGAUCHE));
+			ligneACopier = ligneACopier + stagiaire.getChampFilsGauche();
+			stagiaire.setChampFilsDroit(ajouteEspace("-1", FILSDROIT));
+			ligneACopier = ligneACopier + stagiaire.getChampFilsDroit();
+			stagiaire.setChampFilsCache(ajouteEspace("-1", FILSCACHE));
+			ligneACopier = ligneACopier + stagiaire.getChampFilsCache();
+			ligneACopier = stagiaire.donneLeStagiaire() + "\r\n";
 			break;
 		}
 		return ligneACopier;
-	}
-
-	/**
-	 * Procedure permettant d'ecrire dans la ligneACopier rentree en argument,
-	 * des champs � taille fixe dans lesquels sont renseignes differentes
-	 * informations. Utilise la methode ajouteEspace
-	 * 
-	 * @param rubrique
-	 * @param ligneACopier
-	 * @param constante
-	 */
-	public static String ecrireChamps(String rubrique, String ligneACopier,
-			int constante) {
-		rubrique = ajouteEspace(rubrique, constante);
-		ligneACopier = ligneACopier + rubrique;
-		return ligneACopier;
-
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class CreationAnnuaireEnArbreBinaire {
 	 * @return la rubrique modifiee
 	 */
 	public static String ajouteEspace(String rubrique, int constante) {
-		int longueur = constante - rubrique.replace("\uFEFF", "").length();
+		int longueur = constante - rubrique.length();
 		for (int i = 0; i < longueur; i++) {
 			rubrique = rubrique + " ";
 		}
@@ -160,22 +161,18 @@ public class CreationAnnuaireEnArbreBinaire {
 	 */
 	public static int ajouterStagiaire(int numeroLigne, String ligneACopier,
 			RandomAccessFile fichierAStructurer, int positionLignePere) {
-		String nomLigneACopier = ligneACopier.substring(0, NOM);
 
-		int fils = 0;
+		int fils;
 		try {
 			if (fichierAStructurer.length() > 0) {
 				fichierAStructurer.seek(LONGUEURLIGNE * positionLignePere);
-				String nomLigneAComparer = lireChaine(fichierAStructurer, NOM);
-				System.out.println("a copie : " + nomLigneACopier
-						+ "\tacomparer : " + nomLigneAComparer);
-				int compareLesChaines = nomLigneACopier
-						.compareTo(nomLigneAComparer);
-				if (compareLesChaines < 0) {
+				recupereDonneesDuPere(fichierAStructurer, stagiairePere);
+				if (stagiaire.compareTo(stagiairePere) < 0) {
+					fils = 0;
 					rechercherPosition(numeroLigne, ligneACopier,
 							positionLignePere, fils, fichierAStructurer);
 				} else {
-					if (compareLesChaines > 0) {
+					if (stagiaire.compareTo(stagiairePere) > 0) {
 						fils = 1;
 						rechercherPosition(numeroLigne, ligneACopier,
 								positionLignePere, fils, fichierAStructurer);
@@ -186,8 +183,7 @@ public class CreationAnnuaireEnArbreBinaire {
 					}
 				}
 			} else {
-				System.out.println("vide");
-				fichierAStructurer.writeChars(ligneACopier);
+				fichierAStructurer.writeBytes(ligneACopier);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,30 +192,89 @@ public class CreationAnnuaireEnArbreBinaire {
 	}
 
 	/**
+	 * Procedure permettant de recuperer les champs du pere
+	 * 
+	 * @param fichierAStructurer
+	 * @param stagiairePere2
+	 */
+	private static void recupereDonneesDuPere(
+			RandomAccessFile fichierAStructurer, Stagiaire stagiairePere) {
+		try {
+			stagiairePere.setNom(lireChaine(fichierAStructurer, NOM));
+			stagiairePere.setPrenom(lireChaine(fichierAStructurer, PRENOM));
+			stagiairePere.setDepartement(lireChaine(fichierAStructurer,
+					DEPARTEMENT));
+			stagiairePere.setPromo(lireChaine(fichierAStructurer, PROMO));
+			stagiairePere.setAnnee(lireChaine(fichierAStructurer, ANNEE));
+			stagiairePere.setChampPere(lireChaine(fichierAStructurer, PERE));
+			stagiairePere.setChampFilsGauche(lireChaine(fichierAStructurer,
+					FILSGAUCHE));
+			stagiairePere.setChampFilsDroit(lireChaine(fichierAStructurer,
+					FILSDROIT));
+			stagiairePere.setChampFilsCache(lireChaine(fichierAStructurer,
+					FILSCACHE));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Procedure permettant de determiner la position d'un element en
 	 * comparaison a un autre element pour l'insertion dans un arbre binaire.
 	 * Utilise les methodes recupChamps, ajouterStagiaire et modifierPere.
 	 * 
 	 * @param numeroLigne
-	 * @param ligneAcopier
+	 * @param ligneACopier
 	 * @param positionLignePere
 	 * @param fils
 	 * @param fichierAStructurer
 	 */
 	private static void rechercherPosition(int numeroLigne,
-			String ligneAcopier, int positionLignePere, int fils,
+			String ligneACopier, int positionLignePere, int fils,
 			RandomAccessFile fichierAStructurer) {
-		System.out.println(positionLignePere);
-		System.out.println(numeroLigne);
-		String filsLigneACopier = recupChamps(ligneAcopier, fils);
-		if (!filsLigneACopier.equals("-1")) {
-			positionLignePere = Integer.parseInt(filsLigneACopier);
-			ajouterStagiaire(numeroLigne, ligneAcopier, fichierAStructurer,
-					positionLignePere);
-		} else {
-			ligneAcopier = modifierPere(ligneAcopier, positionLignePere);
-			positionLignePere = numeroLigne;
+		try {
+			String filsLigneACopier = recupChamps(ligneACopier, fils);
+			if (filsLigneACopier.equals("-1  ")) {
+				ligneACopier = modifierChampPere(ligneACopier,
+						positionLignePere);
+				fichierAStructurer.seek(positionLignePere * LONGUEURLIGNE);
+				fichierAStructurer.writeChars(modifierChampFils(stagiairePere,
+						numeroLigne, fils));
+				positionLignePere = numeroLigne;
+			} else {
+				positionLignePere = Integer.parseInt(filsLigneACopier);
+				fichierAStructurer.seek(positionLignePere * LONGUEURLIGNE);
+				fichierAStructurer.writeChars(modifierChampFils(stagiairePere,
+						numeroLigne, fils));
+				ajouterStagiaire(numeroLigne, ligneACopier, fichierAStructurer,
+						positionLignePere);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Procedure permettant de modifier le champs fils du pere
+	 * 
+	 * @param stagiairePere
+	 * @param numeroLigne
+	 */
+	private static String modifierChampFils(Stagiaire stagiairePere,
+			int numeroLigne, int fils) {
+		switch (fils) {
+		case 0:
+			stagiairePere.setChampFilsGauche(String.valueOf(numeroLigne));
+			break;
+		case 1:
+			stagiairePere.setChampFilsDroit(String.valueOf(numeroLigne));
+			break;
+		case 2:
+			stagiairePere.setChampFilsCache(String.valueOf(numeroLigne));
+			break;
+		}
+		return stagiairePere.donneLeStagiaire();
 	}
 
 	/**
@@ -233,13 +288,12 @@ public class CreationAnnuaireEnArbreBinaire {
 	private static String recupChamps(String ligneAcopier, int fils) {
 		String filsLigneACopier;
 		if (fils == 0) {
-			filsLigneACopier = ligneAcopier.substring(POSITIONPERE + POSITIONFILSGAUCHE);
+			filsLigneACopier = stagiaire.getChampFilsGauche();
 		} else {
 			if (fils == 1) {
-				filsLigneACopier = ligneAcopier
-						.substring(POSITIONFILSGAUCHE, POSITIONFILSDROITS);
+				filsLigneACopier = stagiaire.getChampFilsDroit();
 			} else {
-				filsLigneACopier = ligneAcopier.substring(POSITIONFILSDROITS, POSITIONFILSCACHE);
+				filsLigneACopier = stagiaire.getChampFilsCache();
 			}
 		}
 		return filsLigneACopier;
@@ -253,15 +307,11 @@ public class CreationAnnuaireEnArbreBinaire {
 	 * @param positionLignePere
 	 * @return la ligne a copier modifiee
 	 */
-	private static String modifierPere(String ligneAcopier,
+	private static String modifierChampPere(String ligneAcopier,
 			int positionLignePere) {
-		System.out.println(ligneAcopier);
-		System.out.println(positionLignePere);
-		String personne = ligneAcopier.substring(0, POSITIONANNEE);
-		String pere = ligneAcopier.substring(POSITIONANNEE, POSITIONPERE);
-		String fils = ligneAcopier.substring(POSITIONPERE, POSITIONFILSCACHE);
-		pere = String.valueOf(positionLignePere);
-		ligneAcopier = personne + pere + fils;
+		stagiaire.setChampPere(ajouteEspace(String.valueOf(positionLignePere),
+				PERE));
+		ligneAcopier = stagiaire.donneLeStagiaire();
 		return ligneAcopier;
 	}
 
@@ -278,7 +328,7 @@ public class CreationAnnuaireEnArbreBinaire {
 			int constante) throws Exception {
 		String chaineARetourner = "";
 		for (int i = 0; i < constante; i++) {
-			chaineARetourner = chaineARetourner + fichierAStructurer.readChar();
+			chaineARetourner = chaineARetourner + fichierAStructurer.readByte();
 		}
 		return chaineARetourner;
 	}
