@@ -1,15 +1,9 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,12 +12,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class PanelGestion extends GridPane {
-
+public class PanelDeGestion extends GridPane {
 	private Button btnEregistrerAnnuaire = new Button("Sauvegarder l'annuaire");
 	RandomAccessFile fichierAStructurer;
 
-	public PanelGestion () {
+	public PanelDeGestion () {
 		
 		this.add(btnEregistrerAnnuaire, 0, 0);
 
@@ -82,6 +75,4 @@ public class PanelGestion extends GridPane {
 		this.btnEregistrerAnnuaire = btnEregistrerAnnuaire;
 	}
 
-
 }
-	
