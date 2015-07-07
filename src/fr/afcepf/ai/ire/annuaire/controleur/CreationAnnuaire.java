@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
-import fr.afcepf.ai.ire.modele.Stagiaire;
+import fr.afcepf.ai.ire.modele.StagiaireBis;
 
 public class CreationAnnuaire {
 
@@ -33,8 +33,8 @@ public class CreationAnnuaire {
 	static final int POSITIONFILSCACHE = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT + FILSCACHE);
 
-	static Stagiaire stagiairePere;
-	static Stagiaire stagiaire;
+	static StagiaireBis stagiairePere;
+	static StagiaireBis stagiaire;
 
 	protected String fichierARecuperer = "C:/Users/Stagiaire/Desktop/STAGIAIRES.DON";
 	protected String fichierAEnregistrer = "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin";
@@ -62,8 +62,8 @@ public class CreationAnnuaire {
 				String rubrique = "";
 
 				if (!ligneRecuperee.contains("*")) {
-					stagiaire = new Stagiaire();
-					stagiairePere = new Stagiaire();
+					stagiaire = new StagiaireBis();
+					stagiairePere = new StagiaireBis();
 					for (int indice = 0; indice < 5; indice++) {
 						rubrique = br.readLine();
 						stagiaire = traiterRetourLigne(rubrique, indice);
@@ -86,8 +86,8 @@ public class CreationAnnuaire {
 
 	}
 
-	private Stagiaire recupereStagiaire(BufferedReader br) {
-		stagiaire = new Stagiaire();
+	private StagiaireBis recupereStagiaire(BufferedReader br) {
+		stagiaire = new StagiaireBis();
 		String rubrique = "";
 		try {
 			for (int indice = 0; indice < 5; indice++) {
@@ -101,7 +101,7 @@ public class CreationAnnuaire {
 		return stagiaire;
 	}
 
-	public static Stagiaire traiterRetourLigne(String rubrique, int indice) {
+	public static StagiaireBis traiterRetourLigne(String rubrique, int indice) {
 		switch (indice) {
 		case 0:
 			stagiaire.setNom(ajouteEspace(rubrique, NOM));

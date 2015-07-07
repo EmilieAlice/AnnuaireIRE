@@ -1,6 +1,6 @@
 package fr.afcepf.ai.ire.modele;
 
-public class Stagiaire implements Comparable<Stagiaire> {
+public class StagiaireBis implements Comparable<StagiaireBis> {
 
 	private String nom;
 	private String prenom;
@@ -13,7 +13,7 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	private String champFilsCache;
 
 	@Override
-	public int compareTo(Stagiaire stagiaireAComparer) {
+	public int compareTo(StagiaireBis stagiaireAComparer) {
 		int compAuteur = this.getNom().compareTo(stagiaireAComparer.getNom());
 		if (compAuteur != 0) {
 			return compAuteur;
@@ -28,11 +28,11 @@ public class Stagiaire implements Comparable<Stagiaire> {
 				+ this.champFilsGauche + this.champFilsDroit + this.champFilsCache;
 	}
 
-	public Stagiaire() {
+	public StagiaireBis() {
 		super();
 	}
 
-	public Stagiaire(String nom, String prenom, String departement,
+	public StagiaireBis(String nom, String prenom, String departement,
 			String promo, String annee, String champPere,
 			String champFilsGauche, String champFilsDroit, String champFilsCache) {
 		super();

@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
-import fr.afcepf.ai.ire.modele.Stagiaire;
+import fr.afcepf.ai.ire.modele.StagiaireBis;
 
 public class CreationAnnuaireEnArbreBinaire {
 
@@ -32,8 +32,8 @@ public class CreationAnnuaireEnArbreBinaire {
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT);
 	static final int POSITIONFILSCACHE = (NOM + PRENOM + DEPARTEMENT + PROMO
 			+ ANNEE + PERE + FILSGAUCHE + FILSDROIT + FILSCACHE);
-	static Stagiaire stagiairePere;
-	static Stagiaire stagiaire;
+	static StagiaireBis stagiairePere;
+	static StagiaireBis stagiaire;
 
 	public void init() throws Exception {
 
@@ -60,8 +60,8 @@ public class CreationAnnuaireEnArbreBinaire {
 				String ligneACopier = "";
 
 				if (!ligneRecuperee.contains("*")) {
-					stagiaire = new Stagiaire();
-					stagiairePere = new Stagiaire();
+					stagiaire = new StagiaireBis();
+					stagiairePere = new StagiaireBis();
 					for (int indice = 0; indice < nbElementACopie; indice++) {
 						rubrique = ligneRecuperee;
 						ligneACopier = traiterRetourLigne(indice, rubrique,
@@ -200,7 +200,7 @@ public class CreationAnnuaireEnArbreBinaire {
 	 * @param stagiairePere2
 	 */
 	private static void recupereDonneesDuPere(
-			RandomAccessFile fichierAStructurer, Stagiaire stagiairePere) {
+			RandomAccessFile fichierAStructurer, StagiaireBis stagiairePere) {
 		try {
 			stagiairePere.setNom(lireChaine(fichierAStructurer, NOM));
 			stagiairePere.setPrenom(lireChaine(fichierAStructurer, PRENOM));
@@ -277,7 +277,7 @@ public class CreationAnnuaireEnArbreBinaire {
 	 * @param stagiairePere
 	 * @param numeroLigne
 	 */
-	private static String modifierChampFils(Stagiaire stagiairePere,
+	private static String modifierChampFils(StagiaireBis stagiairePere,
 			int numeroLigne, int fils) {
 		switch (fils) {
 		case 0:
