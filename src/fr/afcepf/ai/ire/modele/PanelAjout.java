@@ -1,5 +1,6 @@
 package fr.afcepf.ai.ire.modele;
 
+import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
 import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ public class PanelAjout extends GridPane {
 
 	private Button btnAjouter = new Button("Ajouter");
 
-	public PanelAjout() {
+	public PanelAjout(CreationAjoutArbreBinaire arbreBin) {
 		
 		this.add(labelNomStagiaire, 0, 0);
 		this.add(labelPrenomStagiaire, 0, 1);

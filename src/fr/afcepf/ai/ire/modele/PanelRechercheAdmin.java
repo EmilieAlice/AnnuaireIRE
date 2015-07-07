@@ -3,6 +3,7 @@ package fr.afcepf.ai.ire.modele;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
 import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
 import javafx.collections.FXCollections;
@@ -43,7 +44,8 @@ public class PanelRechercheAdmin extends BorderPane {
 	private ObservableList<Stagiaire> listPourTableau;
 
 	@SuppressWarnings("unchecked")
-	public PanelRechercheAdmin() {
+	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
+			String annuaireALire) {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
 		this.setBottom(panelBottom);
@@ -54,37 +56,50 @@ public class PanelRechercheAdmin extends BorderPane {
 		panelBottom.getChildren().addAll(btnSupprimer, btnMettreAJour);
 		panelBottom.setAlignment(Pos.CENTER);
 
-		TableColumn<Stagiaire, Integer> colNom = new TableColumn<>();
+		try {
+			listPourTableau = FXCollections.observableArrayList(arbreBin
+					.lireAnnuaire(0, annuaireALire));
+			System.out.println(arbreBin.lireAnnuaire(0, annuaireALire));
+		} catch (Exception e) {
+			System.out.println("erreur FXCollections");
+			e.printStackTrace();
+		}
+
+		TableColumn<Stagiaire, String> colNom = new TableColumn<>();
 		colNom.setText("Nom");
-		colNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>(
+		colNom.setMinWidth(200);
+		colNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"nom"));
 
 		TableColumn<Stagiaire, String> colPrenom = new TableColumn<>();
 		colPrenom.setText("Prenom");
+		colPrenom.setMinWidth(200);
 		colPrenom
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"prenom"));
 
 		TableColumn<Stagiaire, String> colDepartement = new TableColumn<>();
 		colDepartement.setText("Departement");
+		colDepartement.setMinWidth(100);
 		colDepartement
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"departement"));
 
 		TableColumn<Stagiaire, String> colPromo = new TableColumn<>();
 		colPromo.setText("Promo");
+		colPromo.setMinWidth(75);
 		colPromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"promo"));
 
 		TableColumn<Stagiaire, String> colAnnee = new TableColumn<>();
 		colAnnee.setText("Annee");
+		colAnnee.setMinWidth(75);
 		colAnnee.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"annee"));
 
-		tableVue.getColumns().addAll(colPrenom, colPrenom, colDepartement,
+		tableVue.getColumns().addAll(colNom, colPrenom, colDepartement,
 				colPromo, colAnnee);
-		listPourTableau = FXCollections
-				.observableArrayList(new ArrayList<Stagiaire>());
+
 		tableVue.setItems(listPourTableau);
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -93,15 +108,15 @@ public class PanelRechercheAdmin extends BorderPane {
 				if (!textNomStagiaire.getText().equals("")
 						&& textDepartementStagiaire.getText().equals("")
 						&& textPromoStagiaire.getText().equals("")) {
-					listeStagiaire = gestionStagiaire
-							.rechercherParNom(textNomStagiaire.getText());
+					listeStagiaire = gestionStagiaire.rechercherParNom(
+							textNomStagiaire.getText(), listPourTableau);
 				} else {
 					if (textNomStagiaire.getText().equals("")
 							&& !textDepartementStagiaire.getText().equals("")
 							&& textPromoStagiaire.getText().equals("")) {
 						listeStagiaire = gestionStagiaire
 								.rechercherParDepartement(textDepartementStagiaire
-										.getText());
+										.getText(), listPourTableau);
 					} else {
 						if (textNomStagiaire.getText().equals("")
 								&& textDepartementStagiaire.getText()
@@ -109,15 +124,16 @@ public class PanelRechercheAdmin extends BorderPane {
 								&& !textPromoStagiaire.getText().equals("")) {
 							listeStagiaire = gestionStagiaire
 									.rechercherParPromo(textPromoStagiaire
-											.getText());
+											.getText(), listPourTableau);
 						} else {
 							if (!textNomStagiaire.getText().equals("")
 									&& !textDepartementStagiaire.getText()
 											.equals("")
 									&& textPromoStagiaire.getText().equals("")) {
 								List<Stagiaire> listeN = gestionStagiaire
-										.rechercherParNom(textNomStagiaire
-												.getText());
+										.rechercherParNom(
+												textNomStagiaire.getText(),
+												listPourTableau);
 								for (Stagiaire stagiaire : listeN) {
 									if (stagiaire.getDepartement() == textDepartementStagiaire
 											.getText()) {
@@ -132,7 +148,7 @@ public class PanelRechercheAdmin extends BorderPane {
 												.equals("")) {
 									List<Stagiaire> listeN = gestionStagiaire
 											.rechercherParPromo(textPromoStagiaire
-													.getText());
+													.getText(), listPourTableau);
 									for (Stagiaire stagiaire : listeN) {
 										if (stagiaire.getDepartement() == textDepartementStagiaire
 												.getText()) {
@@ -146,8 +162,10 @@ public class PanelRechercheAdmin extends BorderPane {
 											&& !textPromoStagiaire.getText()
 													.equals("")) {
 										List<Stagiaire> listeN = gestionStagiaire
-												.rechercherParNom(textNomStagiaire
-														.getText());
+												.rechercherParNom(
+														textNomStagiaire
+																.getText(),
+														listPourTableau);
 										for (Stagiaire stagiaire : listeN) {
 											if (stagiaire.getPromo() == textPromoStagiaire
 													.getText()) {
@@ -162,8 +180,10 @@ public class PanelRechercheAdmin extends BorderPane {
 												&& !textPromoStagiaire
 														.getText().equals("")) {
 											List<Stagiaire> listeN = gestionStagiaire
-													.rechercherParNom(textNomStagiaire
-															.getText());
+													.rechercherParNom(
+															textNomStagiaire
+																	.getText(),
+															listPourTableau);
 											List<Stagiaire> listeM = new ArrayList<>();
 											for (Stagiaire stagiaire : listeN) {
 												if (stagiaire.getPromo() == textPromoStagiaire
@@ -198,11 +218,12 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(ActionEvent arg0) {
 				Stagiaire stagiaire = tableVue.getSelectionModel()
 						.getSelectedItem();
-				gestionStagiaire.supprimer(stagiaire.getNom(), tableVue.getSelectionModel().getSelectedIndex());
+				gestionStagiaire.supprimer(stagiaire.getNom(), tableVue
+						.getSelectionModel().getSelectedIndex());
 				listPourTableau.remove(stagiaire);
 			}
 		});
-		
+
 		btnMettreAJour.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {

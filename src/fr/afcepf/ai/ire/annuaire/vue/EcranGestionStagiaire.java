@@ -1,5 +1,6 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
+import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.modele.PanelAjout;
 import fr.afcepf.ai.ire.modele.PanelRechercheAdmin;
 import javafx.application.Application;
@@ -26,17 +27,27 @@ public class EcranGestionStagiaire extends Application{
 	private Button btnAfficheAjout = new Button("Ajouter");
 	private Button btnAfficheSuppr = new Button("Supprimer/Mettre à jour");
 	
-	private GridPane panelAjout = new PanelAjout();
-	private BorderPane panelSuppr = new PanelRechercheAdmin();
+	private GestionAnnuaire choixAnnuaire;
+	private GridPane panelAjout;
+	private BorderPane panelSuppr;
+	
+	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	
 	@Override
 	public void start(Stage stage) throws Exception {
 		
+		choixAnnuaire = new GestionAnnuaire(stage);
+		
+		arbreBin.setRecuperation(choixAnnuaire.getCheminDuFichierAChercher());
+		arbreBin.setSauvegarde(choixAnnuaire.getCheminDuFichierASauvegarder());
+		arbreBin.init();
+		panelPrincipal.setCenter(choixAnnuaire);
 		btnAfficheAjout.setPrefSize(150, 200);
 		btnAfficheAjout.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
+				panelAjout = new PanelAjout(arbreBin);
 				panelPrincipal.setCenter(panelAjout);
 				panelAjout.setAlignment(Pos.CENTER);
 			}
@@ -46,6 +57,7 @@ public class EcranGestionStagiaire extends Application{
 
 			@Override
 			public void handle(ActionEvent arg0) {
+				panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde().replace("\\", "/").replace("%20", ""));
 				panelPrincipal.setCenter(panelSuppr);
 			}
 		});

@@ -8,11 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
-
-public class CreationAjoutArbreBinaire extends Stagiaire {
+public class CreationAjoutArbreBinaire {
 
 	static final int NOM = 40;
 	static final int PRENOM = 25;
@@ -35,87 +36,99 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 
 	static int indexPere = 0;
 
+	private String recuperation;
+	private String sauvegarde;
+	private List<Stagiaire> listeStagiaire = new ArrayList<>();
+	
 	public void init() throws Exception {
-
 		try {
-
+			
 			InputStream isr = new FileInputStream(
-					"C:/Users/Stagiaire/Desktop/STAGIAIRES.DON");
+					recuperation);
+			
 			InputStreamReader fr = new InputStreamReader(isr,
 					StandardCharsets.UTF_8);
+			
 			BufferedReader br = new BufferedReader(fr);
 			RandomAccessFile fichierAStructurer = new RandomAccessFile(
-					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", "rw");
+					sauvegarde, "rw");
 
+			
 			String ligneRecuperee = "";
 			int nbElementACopie = 5;
 			int numeroDeLigne = 0;
 			int positionLignePere = 0;
 			while ((ligneRecuperee = br.readLine()) != null) {
-
 				String rubrique = "";
-				String ligneACopier = "";
 
 				Stagiaire unStagiaire = new Stagiaire();
-
 				if (!ligneRecuperee.contains("*")) {
-
 					for (int indice = 0; indice < nbElementACopie; indice++) {
 						rubrique = ligneRecuperee;
 						creerUnstagiaire(rubrique, unStagiaire, indice);
-
 						rubrique = "";
-
-						// PASSE A LA LIGNE SUIVANTE
 						ligneRecuperee = br.readLine();
 					}
-
-					// INITIALISE LES CHAMPS A -1
 					unStagiaire.setChampsPere(-1);
 					unStagiaire.setChampsFilsGauche(-1);
 					unStagiaire.setChampsFilsDroit(-1);
 					unStagiaire.setChampsFilsCache(-1);
 
-					ligneRecuperee = "";
-
 					formaterEnRubrique(unStagiaire, fichierAStructurer);
-
-					// creerArbre
-					creerArbre(unStagiaire, fichierAStructurer, numeroDeLigne);
-
-					System.out.println(lireUnStagiaire(fichierAStructurer,
-							numeroDeLigne).donneUnStagiaireEntier());
-
+					rechercherPereDuStagiaire(positionLignePere,
+							fichierAStructurer, numeroDeLigne);
 				}
-
-				// affiche(fichierAStructurer, numeroDeLigne);
-
 				numeroDeLigne += 1;
-
-				// TEST OK OK OK
-				System.out.println("numero de ligne : " + numeroDeLigne);
-
 			}
 
 			fr.close();
 			br.close();
-
 		} catch (FileNotFoundException e) {
 			System.out.println("ne trouve pas le fichier");
 		} catch (Exception e) {
 			System.out.println("Erreur Exception dans Init");
+			e.getMessage();
 		}
+	}
 
-		// TEST
+	public List<Stagiaire> lireAnnuaire(int indexRacine, String annuaireALire) throws Exception {
+		RandomAccessFile raf = new RandomAccessFile(
+				annuaireALire, "r");
+		listeStagiaire = parcourirAnnuaire(raf, indexRacine);
+		for (Stagiaire stagiaire : listeStagiaire) {
+			System.out.println(stagiaire.toString());
+		}
+		return listeStagiaire;
+	}
+
+	private List<Stagiaire> parcourirAnnuaire(RandomAccessFile raf, int indexRacine) {
+		Stagiaire sta = lireUnStagiaire(raf, indexRacine);
+		if (sta.getChampsFilsGauche() != -1) {
+			parcourirAnnuaire(raf, sta.getChampsFilsGauche());
+		}
+		if (sta.getChampsFilCache() != -1) {
+			parcourirAnnuaire(raf, sta.getChampsFilCache());
+		}
+		listeStagiaire.add(sta);
+		if (sta.getChampsFilsDroit() != -1) {
+			parcourirAnnuaire(raf, sta.getChampsFilsDroit());
+		}
+		return listeStagiaire;
 
 	}
 
+	/**
+	 * Methode permettant la creation d'un stagiaire grace a une rubrique donnée
+	 * selon un indice
+	 * 
+	 * @param rubrique
+	 * @param unStagiaire
+	 * @param indice
+	 */
 	public static void creerUnstagiaire(String rubrique, Stagiaire unStagiaire,
 			int indice) {
-
 		switch (indice) {
 		case 0:
-			// attention au BOM (vu dans bloc notes)
 			unStagiaire.setNom(rubrique.replace("\uFEFF", ""));
 			break;
 		case 1:
@@ -134,42 +147,38 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 
 	}
 
+	/**
+	 * Methode permettant d'ecrire correctement dans un fichier
+	 * 
+	 * @param unStagiaire
+	 * @param fichierAStructurer
+	 */
 	public static void formaterEnRubrique(Stagiaire unStagiaire,
 			RandomAccessFile fichierAStructurer) {
-
 		String rubriqueNom = ajouteEspace(unStagiaire.getNom(), NOM);
 		String rubriquePrenom = ajouteEspace(unStagiaire.getPrenom(), PRENOM);
 		String rubriqueDepartement = ajouteEspace(unStagiaire.getDepartement(),
 				DEPARTEMENT);
 		String rubriquePromo = ajouteEspace(unStagiaire.getPromo(), PROMO);
 		String rubriqueAnnee = ajouteEspace(unStagiaire.getAnnee(), ANNEE);
-
 		try {
-
 			long finDeFichier = fichierAStructurer.length();
 			fichierAStructurer.seek(finDeFichier);
 
 			fichierAStructurer.writeChars(rubriqueNom + rubriquePrenom
 					+ rubriqueDepartement + rubriquePromo + rubriqueAnnee);
-
 			fichierAStructurer.writeInt(unStagiaire.getChampsPere());
-
 			fichierAStructurer.writeInt(unStagiaire.getChampsFilsGauche());
-
 			fichierAStructurer.writeInt(unStagiaire.getChampsFilsDroit());
-
 			fichierAStructurer.writeInt(unStagiaire.getChampsFilCache());
-
 		} catch (Exception e) {
 			System.out.println("Pas d'ecriture sur le raf");
 		}
-
 	}
 
 	/**
 	 * Fonction permettant d'ajouter des espaces a une rubrique donnee en
 	 * argument.
-	 * 
 	 * 
 	 * @param rubrique
 	 * @param constante
@@ -183,13 +192,18 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 		return rubrique;
 	}
 
+	/**
+	 * Methode qui permet la lecture d'un stagiaire dans un fichier a une ligne
+	 * donnee
+	 * 
+	 * @param fichierAStructurer
+	 * @param numeroDeLigne
+	 * @return
+	 */
 	public static Stagiaire lireUnStagiaire(
 			RandomAccessFile fichierAStructurer, int numeroDeLigne) {
-
 		Stagiaire unStagiaire = new Stagiaire();
-
 		try {
-
 			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne);
 			String rubriqueNom = LireRaf(fichierAStructurer, NOM);
 			String rubriquePrenom = LireRaf(fichierAStructurer, PRENOM);
@@ -212,37 +226,37 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 			unStagiaire.setChampsFilsGauche(champsFG);
 			unStagiaire.setChampsFilsDroit(champsFD);
 			unStagiaire.setChampsFilsCache(champsFC);
-
 		} catch (Exception e) {
 			System.out.println("Erreur dans procedure LireUnStagiaire");
 			e.printStackTrace();
 		}
-
 		return unStagiaire;
-
 	}
 
-	public static String recupChampsDansUneLigne(
-			RandomAccessFile fichierAStructurer, int numeroDeLigne,
-			int champsDebut, int champsFin) {
+	// public static String recupChampsDansUneLigne(
+	// RandomAccessFile fichierAStructurer, int numeroDeLigne,
+	// int champsDebut, int champsFin) {
+	// String champsRecupere = "";
+	// try {
+	// fichierAStructurer
+	// .seek(LONGUEURLIGNE * numeroDeLigne + champsDebut);
+	// for (int i = 0; i < (champsFin - champsDebut); i++) {
+	// champsRecupere += fichierAStructurer.readChar();
+	// }
+	// } catch (IOException e) {
+	// System.out.println("Erreur recupChampsDansUneLigne");
+	// }
+	// return champsRecupere;
+	// }
 
-		String champsRecupere = "";
-
-		try {
-			fichierAStructurer
-					.seek(LONGUEURLIGNE * numeroDeLigne + champsDebut);
-			for (int i = 0; i < (champsFin - champsDebut); i++) {
-				champsRecupere += fichierAStructurer.readChar();
-			}
-		} catch (IOException e) {
-			System.out.println("Erreur recupChampsDansUneLigne");
-		}
-
-		// //ENLEVER LES ESPACES POUR LES DOUBLONS
-		// champsRecupere = champsRecupere.trim();
-		return champsRecupere;
-	}
-
+	/**
+	 * Methode permettant de modifier le champs pere d'un stagiaire grace a son
+	 * index
+	 * 
+	 * @param fichierAStructurer
+	 * @param numeroDeLigne
+	 * @param indexPere
+	 */
 	public static void modifierPereDuStagiaire(
 			RandomAccessFile fichierAStructurer, int numeroDeLigne,
 			int indexPere) {
@@ -252,26 +266,40 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 					+ POSITIONANNEE);
 			fichierAStructurer.writeInt(indexPere);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Pere introuvable");
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Methode permettant de modifier un champ fils du pere grace a son index
+	 * 
+	 * @param fichierAStructurer
+	 * @param numeroDeLigne
+	 * @param indexPere
+	 * @param champs
+	 */
 	public static void modifierFilsDuPere(RandomAccessFile fichierAStructurer,
 			int numeroDeLigne, int indexPere, int champs) {
-
 		try {
 			fichierAStructurer.seek(LONGUEURLIGNE * indexPere + champs);
 			fichierAStructurer.writeInt(numeroDeLigne);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Fils introuvable");
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Methode qui permet de lire un champ dans un fichier
+	 * 
+	 * @param fichierAStructurer
+	 * @param champs
+	 * @return
+	 * @throws Exception
+	 */
 	public static String LireRaf(RandomAccessFile fichierAStructurer, int champs)
 			throws Exception {
-
 		String lecture = "";
 		int i = 0;
 		while (i < champs) {
@@ -281,95 +309,79 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 		return lecture;
 	}
 
+	/**
+	 * Methode qui permet de rechercher la position d'un fils par rapport a son
+	 * pere dans un fichier grace a leur index
+	 * 
+	 * @param indexPere
+	 * @param fichierAStructurer
+	 * @param numeroDeLigne
+	 */
 	public static void rechercherPereDuStagiaire(int indexPere,
 			RandomAccessFile fichierAStructurer, int numeroDeLigne) {
-
 		Stagiaire unStagiaire = new Stagiaire();
 		Stagiaire stagiairePere = new Stagiaire();
-		int fils = 0;
-		int position = 0;
 
+		int valeurFils = 0;
+		int positionChamp = 0;
 		try {
+
 			unStagiaire = lireUnStagiaire(fichierAStructurer, numeroDeLigne);
+
 			stagiairePere = lireUnStagiaire(fichierAStructurer, indexPere);
+			if (numeroDeLigne > 0
+					&& fichierAStructurer.length() > LONGUEURLIGNE) {
+				if (unStagiaire.getNom().trim()
+						.compareTo(stagiairePere.getNom().trim()) < 0) {
+					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
+							+ POSITIONPERE);
+					valeurFils = fichierAStructurer.readInt();
+					positionChamp = POSITIONPERE;
+				} else if (unStagiaire.getNom().trim()
+						.compareTo(stagiairePere.getNom().trim()) > 0) {
+					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
+							+ POSITIONFILSGAUCHE);
+					valeurFils = fichierAStructurer.readInt();
+					positionChamp = POSITIONFILSGAUCHE;
+				} else {
+					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
+							+ POSITIONFILSDROIT);
+					valeurFils = fichierAStructurer.readInt();
+					positionChamp = POSITIONFILSDROIT;
+				}
 
-			if (unStagiaire.getNom().trim()
-					.compareTo(stagiairePere.getNom().trim()) < 0) {
-				fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-						+ POSITIONPERE);
-				fils = fichierAStructurer.readInt();
-				position = POSITIONPERE;
-			} else if (unStagiaire.getNom().trim()
-					.compareTo(stagiairePere.getNom().trim()) > 0) {
-				fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-						+ POSITIONFILSGAUCHE);
-				fils = fichierAStructurer.readInt();
-				position = POSITIONFILSGAUCHE;
-
-			} else {
-				fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-						+ POSITIONFILSDROIT);
-				fils = fichierAStructurer.readInt();
-				position = POSITIONFILSDROIT;
-			}
-
-			if (fils == -1) {
-				modifierFilsDuPere(fichierAStructurer, numeroDeLigne,
-						indexPere, position);
-				modifierPereDuStagiaire(fichierAStructurer, numeroDeLigne,
-						indexPere);
-			} else {
-				indexPere = fils;
-				rechercherPereDuStagiaire(indexPere, fichierAStructurer,
-						numeroDeLigne);
+				if (valeurFils == -1) {
+					modifierFilsDuPere(fichierAStructurer, numeroDeLigne,
+							indexPere, positionChamp);
+					modifierPereDuStagiaire(fichierAStructurer, numeroDeLigne,
+							indexPere);
+				} else {
+					indexPere = valeurFils;
+					rechercherPereDuStagiaire(indexPere, fichierAStructurer,
+							numeroDeLigne);
+				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.err.println("Recherche non effectué");
 		}
 
 	}
 
-	public static int creerArbre(Stagiaire unStagiaire,
-			RandomAccessFile fichierAStructurer, int numeroDeLigne)
-			throws Exception {
-//
-//		fichierAStructurer.seek(LONGUEURLIGNE * indexPere);
-//		String nomDuPere = recupChampsDansUneLigne(fichierAStructurer,
-//				indexPere, 0, NOM);
-//		nomDuPere = nomDuPere.trim();
-//		String nomStagiaireFils = unStagiaire.getNom();
-//		int champs = 0;
-//
-//		if (numeroDeLigne > 0 && fichierAStructurer.length() > LONGUEURLIGNE) {
-//
-//			int chiffreDeComparaison = nomStagiaireFils.compareTo(nomDuPere);
-//
-//			// TEST OK OK OK
-//			System.out.println("\t" + nomStagiaireFils + "/" + nomDuPere
-//					+ " --> chiffre de comparaison : " + chiffreDeComparaison);
-//
-//			//
-//			if (chiffreDeComparaison < 0) {
-//				champs = POSITIONPERE;
-//				rechercherPereDuStagiaire(indexPere, fichierAStructurer,
-//						numeroDeLigne, champs);
-//
-//			} else {
-//				if (chiffreDeComparaison > 0) {
-//					champs = POSITIONFILSGAUCHE;
-//					rechercherPereDuStagiaire(indexPere, fichierAStructurer,
-//							numeroDeLigne, champs);
-//
-//				} else {
-//					champs = POSITIONFILSDROIT;
-//					rechercherPereDuStagiaire(indexPere, fichierAStructurer,
-//							numeroDeLigne, champs);
-//
-//				}
-//			}
-//		}
-		return numeroDeLigne;
+	public String getRecuperation() {
+		return recuperation;
 	}
 
+	public void setRecuperation(String recuperation) {
+		this.recuperation = recuperation;
+	}
+
+	public String getSauvegarde() {
+		return sauvegarde;
+	}
+
+	public void setSauvegarde(String sauvegarde) {
+		this.sauvegarde = sauvegarde;
+	}
+	
 
 }

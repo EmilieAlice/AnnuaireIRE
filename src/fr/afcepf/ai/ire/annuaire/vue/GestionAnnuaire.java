@@ -2,16 +2,16 @@ package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.File;
 
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class GestionAnnuaire {
+public class GestionAnnuaire extends BorderPane {
 
 	private String cheminDuFichierAChercher;
 	private String cheminDuFichierASauvegarder;
 
-	public GestionAnnuaire(String cheminDuFichierAChercher,
-			String cheminDuFichierASauvegarder, Stage stage) {
+	public GestionAnnuaire(Stage stage) {
 		FileChooser fichierAChercher = new FileChooser();
 		fichierAChercher.setTitle("Selectionnez un fichier source");
 		fichierAChercher.setInitialDirectory(new File(System
@@ -21,7 +21,7 @@ public class GestionAnnuaire {
 				.showOpenDialog(stage);
 		if (fichierChercherSelectionne != null) {
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
-			cheminDuFichierAChercher = cheminDuFichierAChercher.replace("\\",
+			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace("\\",
 					"/");
 		}
 
@@ -34,15 +34,12 @@ public class GestionAnnuaire {
 				new FileChooser.ExtensionFilter("Text bin(*.bin)", "*.bin")); 
 
 		File fichierSaveSelectionne = fichierASauvegarder
-				.showSaveDialog(new Stage());
+				.showSaveDialog(stage);
 
 		if (!fichierSaveSelectionne.getName().contains(".")) {
-			cheminDuFichierASauvegarder = fichierSaveSelectionne
-					.getAbsolutePath().toString() + ".bin";
+			cheminDuFichierASauvegarder = fichierSaveSelectionne.getAbsolutePath() + ".bin";
+			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder.replace("\\", "/");
 		}
-
-		this.cheminDuFichierAChercher = cheminDuFichierAChercher;
-		this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder;
 	}
 
 	public GestionAnnuaire() {
@@ -53,8 +50,19 @@ public class GestionAnnuaire {
 		return cheminDuFichierAChercher;
 	}
 
-	public void setCheminDuFichierAChercher(String cheminDuFichierAChercher) {
-		this.cheminDuFichierAChercher = cheminDuFichierAChercher;
+	public void setCheminDuFichierAChercher(Stage stage) {
+		FileChooser fichierAChercher = new FileChooser();
+		fichierAChercher.setTitle("Selectionnez un fichier source");
+		fichierAChercher.setInitialDirectory(new File(System
+				.getProperty("user.home")));
+
+		File fichierChercherSelectionne = fichierAChercher
+				.showOpenDialog(stage);
+		if (fichierChercherSelectionne != null) {
+			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
+			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace("\\",
+					"/");
+		}
 	}
 
 	public String getCheminDuFichierASauvegarder() {
@@ -62,8 +70,23 @@ public class GestionAnnuaire {
 	}
 
 	public void setCheminDuFichierASauvegarder(
-			String cheminDuFichierASauvegarder) {
-		this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder;
+			Stage stage) {
+		FileChooser fichierASauvegarder = new FileChooser();
+		fichierASauvegarder
+				.setTitle("Selectionnez un emplacement pour sauvegarder le fichier");
+		fichierASauvegarder.setInitialDirectory(new File(System
+				.getProperty("user.home")));
+		fichierASauvegarder.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("Text bin(*.bin)", "*.bin")); 
+
+		File fichierSaveSelectionne = fichierASauvegarder
+				.showSaveDialog(new Stage());
+
+		if (!fichierSaveSelectionne.getName().contains(".")) {
+			cheminDuFichierASauvegarder = fichierSaveSelectionne.getAbsolutePath().toString() + ".bin";
+			System.out.println(cheminDuFichierASauvegarder);
+			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder.replace("\\", "/");
+		}
 	}
 
 }

@@ -33,13 +33,16 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		return nb;
 	}
 
-	public String donneUnStagiaireEntier() {
-		String ligneACopier = this.nom + ", " + this.prenom + ", "
-				+ this.departement + ", " + this.promo + ", " + this.annee
-				+ ", " + this.champsPere + ", " + this.champsFilsGauche + ", "
-				+ this.champsFilsDroit + ", " + this.champsFilsCache;
-		return ligneACopier;
 
+	
+	@Override
+	public String toString() {
+		return "Stagiaire [nom=" + nom + ", prenom=" + prenom
+				+ ", departement=" + departement + ", promo=" + promo
+				+ ", annee=" + annee + ", champsPere=" + champsPere
+				+ ", champsFilsGauche=" + champsFilsGauche
+				+ ", champsFilsDroit=" + champsFilsDroit + ", champsFilsCache="
+				+ champsFilsCache + "]";
 	}
 
 	public String getNom() {
@@ -113,13 +116,5 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	public void setChampsFilsCache(int champsFilsCache) {
 		this.champsFilsCache = champsFilsCache;
 	}
-
-	// public int getCrit�reDeTri() {
-	// return crit�reDeTri;
-	// }
-	//
-	// public void setCrit�reDeTri(int crit�reDeTri) {
-	// this.crit�reDeTri = crit�reDeTri;
-	// }
 
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
 import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
 
@@ -39,7 +40,7 @@ public class PanelRechercheUtil extends BorderPane {
 	private ObservableList<Stagiaire> listPourTableau;
 
 	@SuppressWarnings("unchecked")
-	public PanelRechercheUtil() {
+	public PanelRechercheUtil(CreationAjoutArbreBinaire arbreBin) {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
 
@@ -87,7 +88,7 @@ public class PanelRechercheUtil extends BorderPane {
 						&& textDepartementStagiaire.getText().equals("")
 						&& textPromoStagiaire.getText().equals("")) {
 					listeStagiaire = gestionStagiaire
-							.rechercherParNom(textNomStagiaire.getText());
+							.rechercherParNom(textNomStagiaire.getText(), arbreBin);
 				} else {
 					if (textNomStagiaire.getText().equals("")
 							&& !textDepartementStagiaire.getText().equals("")
@@ -110,7 +111,7 @@ public class PanelRechercheUtil extends BorderPane {
 									&& textPromoStagiaire.getText().equals("")) {
 								List<Stagiaire> listeN = gestionStagiaire
 										.rechercherParNom(textNomStagiaire
-												.getText());
+												.getText(), arbreBin);
 								for (Stagiaire stagiaire : listeN) {
 									if (stagiaire.getDepartement() == textDepartementStagiaire
 											.getText()) {
@@ -140,7 +141,7 @@ public class PanelRechercheUtil extends BorderPane {
 													.equals("")) {
 										List<Stagiaire> listeN = gestionStagiaire
 												.rechercherParNom(textNomStagiaire
-														.getText());
+														.getText(), arbreBin);
 										for (Stagiaire stagiaire : listeN) {
 											if (stagiaire.getPromo() == textPromoStagiaire
 													.getText()) {
@@ -156,7 +157,7 @@ public class PanelRechercheUtil extends BorderPane {
 														.getText().equals("")) {
 											List<Stagiaire> listeN = gestionStagiaire
 													.rechercherParNom(textNomStagiaire
-															.getText());
+															.getText(), arbreBin);
 											List<Stagiaire> listeM = new ArrayList<>();
 											for (Stagiaire stagiaire : listeN) {
 												if (stagiaire.getPromo() == textPromoStagiaire
