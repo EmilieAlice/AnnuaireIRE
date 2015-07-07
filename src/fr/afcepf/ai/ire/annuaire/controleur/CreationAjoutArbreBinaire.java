@@ -44,12 +44,12 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 		try {
 
 			InputStream isr = new FileInputStream(
-					"C:/Users/Rose/Workspace/ProjetUnRessources/STAGIAIRES-SHORTLIST.txt");
+					"C:/Users/Stagiaire/Desktop/STAGIAIRESTEST.DON");
 			InputStreamReader fr = new InputStreamReader(isr,
 					StandardCharsets.UTF_8);
 			BufferedReader br = new BufferedReader(fr);
 			RandomAccessFile fichierAStructurer = new RandomAccessFile(
-					"C:/Users/Rose/Desktop/fichierStagiaires.bin", "rw");
+					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", "rw");
 
 			String ligneRecuperee = "";
 			int nbElementACopie = 5;
