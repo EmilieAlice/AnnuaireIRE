@@ -44,11 +44,8 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 		try {
 
 			InputStream isr = new FileInputStream(
-<<<<<<< HEAD
-					"C:/Users/Stagiaire/Desktop/STAGIAIRESTEST.DON");
-=======
 					"C:/Users/Stagiaire/Desktop/STAGIAIRES.DON");
->>>>>>> origin/master
+
 			InputStreamReader fr = new InputStreamReader(isr,
 					StandardCharsets.UTF_8);
 			BufferedReader br = new BufferedReader(fr);
