@@ -1,5 +1,6 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
+import fr.afcepf.ai.ire.modele.PanelRechercheUtil;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

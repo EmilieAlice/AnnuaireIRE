@@ -1,7 +1,7 @@
 package fr.afcepf.ai.ire.modele;
 
-public class Stagiaire implements Comparable<Stagiaire>{
-	
+public class Stagiaire implements Comparable<Stagiaire> {
+
 	private String nom;
 	private String prenom;
 	private String departement;
@@ -11,11 +11,10 @@ public class Stagiaire implements Comparable<Stagiaire>{
 	private int champsFilsGauche;
 	private int champsFilsDroit;
 	private int champsFilsCache;
-	
-//	int crit�reDeTri = 0;
-	
-	
-	public Stagiaire(){
+
+	// int crit�reDeTri = 0;
+
+	public Stagiaire() {
 	}
 
 	public Stagiaire(String nom, String prenom, String departement,
@@ -27,32 +26,21 @@ public class Stagiaire implements Comparable<Stagiaire>{
 		this.promo = promo;
 		this.annee = annee;
 	}
-	
+
 	@Override
 	public int compareTo(Stagiaire unStagiaire) {
 		int nb = this.getNom().compareTo(unStagiaire.getNom());
 		return nb;
 	}
-	
-	public String donneUnStagiaireEntier (){
-		String ligneACopier = this.nom + ", " + this.prenom + ", "  + this.departement + ", "  + this.promo + ", "  + this.annee + ", "  + this.champsPere + ", "  + this.champsFilsGauche + ", "  + this.champsFilsDroit + ", "  + this.champsFilsCache;
-		return ligneACopier;
-		
-	}
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String donneUnStagiaireEntier() {
+		String ligneACopier = this.nom + ", " + this.prenom + ", "
+				+ this.departement + ", " + this.promo + ", " + this.annee
+				+ ", " + this.champsPere + ", " + this.champsFilsGauche + ", "
+				+ this.champsFilsDroit + ", " + this.champsFilsCache;
+		return ligneACopier;
+
+	}
 
 	public String getNom() {
 		return nom;
@@ -126,20 +114,12 @@ public class Stagiaire implements Comparable<Stagiaire>{
 		this.champsFilsCache = champsFilsCache;
 	}
 
-//	public int getCrit�reDeTri() {
-//		return crit�reDeTri;
-//	}
-//
-//	public void setCrit�reDeTri(int crit�reDeTri) {
-//		this.crit�reDeTri = crit�reDeTri;
-//	}
-	
-	
-
-	
-
-
-	
-	
+	// public int getCrit�reDeTri() {
+	// return crit�reDeTri;
+	// }
+	//
+	// public void setCrit�reDeTri(int crit�reDeTri) {
+	// this.crit�reDeTri = crit�reDeTri;
+	// }
 
 }
