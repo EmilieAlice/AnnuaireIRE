@@ -9,9 +9,10 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
-import fr.afcepf.ai.ire.annuaire.modele.Stagiaire;
+import fr.afcepf.ai.ire.modele.Stagiaire;
 
-public class CreationAjoutArbreBinaire extends Stagiaire {
+
+public class CreationAjoutArbreBinaire extends Stagiaire  {
 
 	static final int NOM = 40;
 	static final int PRENOM = 25;
@@ -59,7 +60,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 				String rubrique = "";
 				String ligneACopier = "";
 
-				StagiaireBis unStagiaire = new StagiaireBis();
+				Stagiaire unStagiaire = new Stagiaire();
 
 				if (!ligneRecuperee.contains("*")) {
 
@@ -119,7 +120,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 	}
 
 
-	public static void creerUnstagiaire (String rubrique, StagiaireBis unStagiaire, int indice){
+	public static void creerUnstagiaire (String rubrique, Stagiaire unStagiaire, int indice){
 
 		switch (indice) {
 		case 0:
@@ -147,7 +148,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 	}
 
 
-	public static void formaterEnRubrique(StagiaireBis unStagiaire, RandomAccessFile fichierAStructurer) {
+	public static void formaterEnRubrique(Stagiaire unStagiaire, RandomAccessFile fichierAStructurer) {
 
 		String rubriqueNom = ajouteEspace(unStagiaire.getNom(), NOM);
 		String rubriquePrenom = ajouteEspace(unStagiaire.getPrenom(), PRENOM);
@@ -217,7 +218,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 
 
 
-	public static int creerArbre (StagiaireBis unStagiaire, RandomAccessFile fichierAStructurer, int numeroDeLigne) throws Exception{
+	public static int creerArbre (Stagiaire unStagiaire, RandomAccessFile fichierAStructurer, int numeroDeLigne) throws Exception{
 
 		fichierAStructurer.seek(LONGUEURLIGNE*indexPere);
 		String nomDuPere = recupChampsDansUneLigne(fichierAStructurer, indexPere, 0, NOM);
@@ -255,7 +256,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire {
 		return numeroDeLigne;
 	}
 
-	public static int rechercherPere (StagiaireBis unStagiaire, RandomAccessFile fichierAStructurer, int fils, int champs, int numeroDeLigne) throws Exception{
+	public static int rechercherPere (Stagiaire unStagiaire, RandomAccessFile fichierAStructurer, int fils, int champs, int numeroDeLigne) throws Exception{
 
 		//positionnement sur le champs fils gauche ou droite voire fils cache
 		fichierAStructurer.seek(LONGUEURLIGNE*indexPere+champs);

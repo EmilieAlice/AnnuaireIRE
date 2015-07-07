@@ -18,7 +18,7 @@ public class EcranDePresentation extends Application{
 	
 	private BorderPane panelPrincipal = new BorderPane();
 	HBox boxH = new HBox();
-	GridPane panelG = new PanelGestion();
+	GridPane panelG = new PanelDeGestion();
 	Button btnGestion = new Button("Gestion"); 
 	Button btnConsulter = new Button("Consulter l'annuaire"); 
 	
