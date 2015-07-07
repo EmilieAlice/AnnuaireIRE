@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
+import fr.afcepf.ai.ire.annuaire.vue.GestionAnnuaire;
 import fr.afcepf.ai.ire.modele.StagiaireBis;
 
 public class CreationAnnuaire {
@@ -35,7 +36,7 @@ public class CreationAnnuaire {
 
 	static StagiaireBis stagiairePere;
 	static StagiaireBis stagiaire;
-
+	
 	protected String fichierARecuperer = "C:/Users/Stagiaire/Desktop/STAGIAIRES.DON";
 	protected String fichierAEnregistrer = "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin";
 

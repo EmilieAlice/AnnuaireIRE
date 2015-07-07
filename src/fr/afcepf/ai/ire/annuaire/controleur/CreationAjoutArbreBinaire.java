@@ -44,12 +44,12 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 		try {
 
 			InputStream isr = new FileInputStream(
-					"C:/Users/Rose/Workspace/ProjetUnRessources/STAGIAIRES-SHORTLIST.txt");
+					"C:/Users/Stagiaire/Desktop/STAGIAIRES.DON");
 			InputStreamReader fr = new InputStreamReader(isr,
 					StandardCharsets.UTF_8);
 			BufferedReader br = new BufferedReader(fr);
 			RandomAccessFile fichierAStructurer = new RandomAccessFile(
-					"C:/Users/Rose/Desktop/fichierStagiaires.bin", "rw");
+					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", "rw");
 
 			String ligneRecuperee = "";
 			int nbElementACopie = 5;
@@ -84,7 +84,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 					formaterEnRubrique(unStagiaire, fichierAStructurer);
 
 					//TEST OK OK OK
-					System.out.println("Numero Stagiaire : " + numeroLigne);
+					//System.out.println("Numero Stagiaire : " + numeroLigne);
 
 					//TEST OK
 					//System.out.println(LONGUEURLIGNE);
@@ -98,7 +98,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 				numeroLigne+=1;
 
 				//TEST OK OK OK
-				//System.out.println(unStagiaire.donneUnStagiaireEntier());
+			
 				//System.out.println(numeroLigne);
 
 			}
@@ -231,7 +231,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 			int fils = 0;
 
 			//TEST OK OK OK
-			System.out.println("\t" + nomStagiaireFils + "/" + nomDuPere + " --> chiffre de comparaison : " + chiffreDeComparaison);
+			//System.out.println("\t" + nomStagiaireFils + "/" + nomDuPere + " --> chiffre de comparaison : " + chiffreDeComparaison);
 
 			//
 			if(chiffreDeComparaison<0){
@@ -285,9 +285,9 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 		}
 
 		//TEST OK OK OK
-		System.out.println("\t" + "LectureChampsFils : " + champsFilsDuPere);
-		System.out.println("\t" + "pere du stagiaire : "+ unStagiaire.getChampsPere());
-		System.out.println();
+//		System.out.println("\t" + "LectureChampsFils : " + champsFilsDuPere);
+//		System.out.println("\t" + "pere du stagiaire : "+ unStagiaire.getChampsPere());
+//		System.out.println();
 		fichierAStructurer.seek(LONGUEURLIGNE*numeroDeLigne);
 		//FIN TEST
 
@@ -306,7 +306,7 @@ public class CreationAjoutArbreBinaire extends Stagiaire  {
 			lecture += fichierAStructurer.readChar();
 			i++;
 		}
-		System.out.println(lecture);
+		//System.out.println(lecture);
 	}
 
 }

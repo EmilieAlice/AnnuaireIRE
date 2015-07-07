@@ -1,8 +1,10 @@
-package fr.afcepf.ai.ire.annuaire.vue;
+package fr.afcepf.ai.ire.modele;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,9 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import fr.afcepf.ai.ire.modele.Stagiaire;
 
-public class PanelRechercheUtil extends BorderPane {
+public class PanelRechercheAdmin extends BorderPane {
 
 	private Label labelNomStagiaire = new Label("Nom : ");
 	private Label labelDepartementStagiaire = new Label("Departement : ");
@@ -31,6 +32,10 @@ public class PanelRechercheUtil extends BorderPane {
 	private Button btnRechercher = new Button("Rechercher");
 
 	private HBox panelTop = new HBox();
+	private HBox panelBottom = new HBox();
+
+	private Button btnSupprimer = new Button("Supprimer");
+	private Button btnMettreAJour = new Button("Mettre à jour");
 
 	private TableView<Stagiaire> tableVue = new TableView<>();
 
@@ -38,13 +43,16 @@ public class PanelRechercheUtil extends BorderPane {
 	private ObservableList<Stagiaire> listPourTableau;
 
 	@SuppressWarnings("unchecked")
-	public PanelRechercheUtil() {
+	public PanelRechercheAdmin() {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
+		this.setBottom(panelBottom);
 
 		panelTop.getChildren().addAll(labelNomStagiaire, textNomStagiaire,
 				labelDepartementStagiaire, textDepartementStagiaire,
 				labelPromoStagiaire, textPromoStagiaire, btnRechercher);
+		panelBottom.getChildren().addAll(btnSupprimer, btnMettreAJour);
+		panelBottom.setAlignment(Pos.CENTER);
 
 		TableColumn<Stagiaire, Integer> colNom = new TableColumn<>();
 		colNom.setText("Nom");
@@ -185,5 +193,25 @@ public class PanelRechercheUtil extends BorderPane {
 			}
 		});
 
+		btnSupprimer.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				Stagiaire stagiaire = tableVue.getSelectionModel()
+						.getSelectedItem();
+				gestionStagiaire.supprimer(stagiaire.getNom(), tableVue.getSelectionModel().getSelectedIndex());
+				listPourTableau.remove(stagiaire);
+			}
+		});
+		
+		btnMettreAJour.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				Stagiaire stagiaire = tableVue.getSelectionModel()
+						.getSelectedItem();
+				gestionStagiaire.miseAJour(stagiaire);
+				listPourTableau.remove(stagiaire);
+			}
+		});
 	}
+
 }

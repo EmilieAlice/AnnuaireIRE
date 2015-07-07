@@ -1,4 +1,4 @@
-package fr.afcepf.ai.ire.annuaire.vue;
+package fr.afcepf.ai.ire.modele;
 
 import java.io.File;
 import java.io.FileNotFoundException;

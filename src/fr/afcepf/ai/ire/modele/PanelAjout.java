@@ -1,6 +1,7 @@
-package fr.afcepf.ai.ire.annuaire.vue;
+package fr.afcepf.ai.ire.modele;
 
-import fr.afcepf.ai.ire.modele.Stagiaire;
+import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

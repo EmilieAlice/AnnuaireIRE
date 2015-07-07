@@ -1,5 +1,7 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
+import fr.afcepf.ai.ire.modele.PanelAjout;
+import fr.afcepf.ai.ire.modele.PanelRechercheAdmin;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,6 +49,7 @@ public class EcranGestionStagiaire extends Application{
 				panelPrincipal.setCenter(panelSuppr);
 			}
 		});
+	
 		menus.getChildren().addAll(btnAfficheAjout, btnAfficheSuppr);
 		
 		titre.setPrefHeight(60);
