@@ -6,7 +6,7 @@ import java.util.List;
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public interface IGestionStagiaire {
-	void ajouter(Stagiaire stagiaire, String chemainDuRaf, CreationAjoutArbreBinaire caab, int nbLigneFichier);
+	void ajouter(Stagiaire stagiaire, String chemainDuRaf, CreationAjoutArbreBinaire caab);
 	void supprimer(String nom, int numeroLigne);
 	void miseAJour(Stagiaire stagiaire);
 	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne) throws Exception;

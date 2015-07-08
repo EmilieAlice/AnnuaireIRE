@@ -59,8 +59,7 @@ public class PanelAjout extends GridPane {
 				sta.setChampsFilsGauche(-1);
 				sta.setChampsFilsDroit(-1);
 				sta.setChampsFilsCache(-1);
-				System.out.println(arbreBin.getNbLigne());
-				gestionStagiaire.ajouter(sta, chemainDuRaf, arbreBin, arbreBin.getNbLigne());
+				gestionStagiaire.ajouter(sta, chemainDuRaf, arbreBin);
 			}
 		});
 	}

@@ -1,7 +1,5 @@
 package fr.afcepf.ai.ire.annuaire.test;
 
-import java.io.RandomAccessFile;
-
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
 import fr.afcepf.ai.ire.modele.Stagiaire;
@@ -29,17 +27,23 @@ public class CreationAnnuaireTest {
 //					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
 //				System.out.println(stagiaire);
 //			}
-			Stagiaire unStagiaire0 = new Stagiaire("Papi", "pipi", "97",
+			Stagiaire unStagiaire0 = new Stagiaire("Aaa", "alice", "97",
 					"AI95", "2015");
 			unStagiaire0.setChampsPere(-1);
 			unStagiaire0.setChampsFilsGauche(-1);
 			unStagiaire0.setChampsFilsDroit(-1);
 			unStagiaire0.setChampsFilsCache(-1);
-			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", caab, caab.getNbLigne());
+			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", caab);
+			
 			for (Stagiaire stagiaire : caab.lireAnnuaire(0,
 					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
 				System.out.println(stagiaire);
 			}
+//			RandomAccessFile raf = new RandomAccessFile("C:/Users/Stagiaire/Desktop/Rosane/fichierStagiaires.bin", "r");
+//			for (int i = 0; i < caab.getNbLigne(); i++) {
+//				System.out.println(caab.lireUnStagiaire(raf, i).toString());
+//			}
+			
 			// System.out.println("Init ok");
 
 			// RandomAccessFile raf = new RandomAccessFile(
@@ -219,5 +223,4 @@ public class CreationAnnuaireTest {
 		}
 
 	}
-
 }

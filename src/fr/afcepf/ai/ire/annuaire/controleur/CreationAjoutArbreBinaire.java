@@ -27,7 +27,7 @@ public class CreationAjoutArbreBinaire {
 
 	static final int NBCHAMPSTOT = 4;
 
-	static final int LONGUEURLIGNE = (NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2 + 4 * 4;
+	final static int LONGUEURLIGNE = (NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2 + 4 * 4;
 	static final int POSITIONANNEE = (NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2;
 	static final int POSITIONPERE = ((NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2 + 4);
 	static final int POSITIONFILSGAUCHE = ((NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2 + 4 * 2);
@@ -41,7 +41,6 @@ public class CreationAjoutArbreBinaire {
 	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 	private RandomAccessFile fichierAStructurer;
 
-	private int nbLigne = 0;
 
 	public void init(String recuperation, String sauvegarde) throws Exception {
 		try {
@@ -92,8 +91,8 @@ public class CreationAjoutArbreBinaire {
 		}
 	}
 
-	public List<Stagiaire> lireAnnuaire(int indexRacine, String chemainAnnuaireALire)
-			throws Exception {
+	public List<Stagiaire> lireAnnuaire(int indexRacine,
+			String chemainAnnuaireALire) throws Exception {
 		RandomAccessFile raf = new RandomAccessFile(chemainAnnuaireALire, "r");
 		return parcourirAnnuaire(raf, indexRacine);
 	}
@@ -108,8 +107,6 @@ public class CreationAjoutArbreBinaire {
 			parcourirAnnuaire(raf, sta.getChampsFilCache());
 		}
 		listeStagiaire.add(sta);
-		setNbLigne(nbLigne+1);
-		System.out.println(getNbLigne());
 		if (sta.getChampsFilsDroit() != -1) {
 			parcourirAnnuaire(raf, sta.getChampsFilsDroit());
 		}
@@ -174,7 +171,7 @@ public class CreationAjoutArbreBinaire {
 		} catch (Exception e) {
 			System.out.println("Pas d'ecriture sur le raf");
 		}
-//		setNbLigne(nbLigne + 1);
+		// setNbLigne(nbLigne + 1);
 	}
 
 	/**
@@ -201,8 +198,8 @@ public class CreationAjoutArbreBinaire {
 	 * @param numeroDeLigne
 	 * @return
 	 */
-	public static Stagiaire lireUnStagiaire(
-			RandomAccessFile fichierAStructurer, int numeroDeLigne) {
+	public Stagiaire lireUnStagiaire(RandomAccessFile fichierAStructurer,
+			int numeroDeLigne) {
 		Stagiaire unStagiaire = new Stagiaire();
 		try {
 			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne);
@@ -261,7 +258,6 @@ public class CreationAjoutArbreBinaire {
 	public static void modifierPereDuStagiaire(
 			RandomAccessFile fichierAStructurer, int numeroDeLigne,
 			int indexPere) {
-
 		try {
 			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne
 					+ POSITIONANNEE);
@@ -390,14 +386,6 @@ public class CreationAjoutArbreBinaire {
 
 	public void setFichierAStructurer(String sauvegarde) throws Exception {
 		this.sauvegarde = sauvegarde;
-	}
-
-	public int getNbLigne() {
-		return nbLigne;
-	}
-
-	public void setNbLigne(int nbLigne) {
-		this.nbLigne = nbLigne;
 	}
 
 }

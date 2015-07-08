@@ -12,13 +12,13 @@ public class GestionStagiaire implements IGestionStagiaire {
 	private List<Stagiaire> listeAAfficher = new ArrayList<>();
 	@Override
 	public void ajouter(Stagiaire stagiaire, String chemainDuRaf,
-			CreationAjoutArbreBinaire caab, int nbLigneFichier) {
-
+			CreationAjoutArbreBinaire caab) {
 		try {
 			RandomAccessFile raf = new RandomAccessFile(chemainDuRaf, "rwd");
+			int nbLigne = (int) ((raf.length()/CreationAjoutArbreBinaire.LONGUEURLIGNE));
+			System.out.println(nbLigne);
 			caab.formaterEnRubrique(stagiaire, raf);
-			caab.rechercherPereDuStagiaire(0, raf,
-					nbLigneFichier);
+			caab.rechercherPereDuStagiaire(0, raf,nbLigne);
 			raf.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -38,33 +38,33 @@ public class GestionStagiaire implements IGestionStagiaire {
 	@Override
 	public List<Stagiaire> rechercherParNom(String nomStagiaireRecherche,
 			String chemainRaf, int numLigne) throws Exception {
-		RandomAccessFile raf = new RandomAccessFile(chemainRaf, "r");
-		Stagiaire stagiairePere = CreationAjoutArbreBinaire.lireUnStagiaire(
-				raf, numLigne);
-		if (nomStagiaireRecherche.trim().compareToIgnoreCase(stagiairePere.getNom().trim()) < 0) {
-			if (stagiairePere.getChampsFilsGauche() != -1) {
-				numLigne = stagiairePere.getChampsFilsGauche();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Le nom recherché n'existe pas");
-			}
-		} else if (nomStagiaireRecherche.trim().compareToIgnoreCase(stagiairePere.getNom().trim()) > 0) {
-			if (stagiairePere.getChampsFilsDroit() != -1) {
-				numLigne = stagiairePere.getChampsFilsDroit();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Le nom recherché n'existe pas");
-			}
-		} else {
-			if (stagiairePere.getChampsFilCache() != -1) {
-				numLigne = stagiairePere.getChampsFilCache();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
-			}
-			listeAAfficher.add(stagiairePere);
-		}
-		raf.close();
+//		RandomAccessFile raf = new RandomAccessFile(chemainRaf, "r");
+//		Stagiaire stagiairePere = CreationAjoutArbreBinaire.lireUnStagiaire(
+//				raf, numLigne);
+//		if (nomStagiaireRecherche.trim().compareToIgnoreCase(stagiairePere.getNom().trim()) < 0) {
+//			if (stagiairePere.getChampsFilsGauche() != -1) {
+//				numLigne = stagiairePere.getChampsFilsGauche();
+//				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+//			}
+//			else{
+//				JOptionPane.showMessageDialog(null, "Le nom recherché n'existe pas");
+//			}
+//		} else if (nomStagiaireRecherche.trim().compareToIgnoreCase(stagiairePere.getNom().trim()) > 0) {
+//			if (stagiairePere.getChampsFilsDroit() != -1) {
+//				numLigne = stagiairePere.getChampsFilsDroit();
+//				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+//			}
+//			else{
+//				JOptionPane.showMessageDialog(null, "Le nom recherché n'existe pas");
+//			}
+//		} else {
+//			if (stagiairePere.getChampsFilCache() != -1) {
+//				numLigne = stagiairePere.getChampsFilCache();
+//				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+//			}
+//			listeAAfficher.add(stagiairePere);
+//		}
+//		raf.close();
 		return listeAAfficher;
 	}
 
