@@ -20,7 +20,7 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	public Stagiaire(String nom, String prenom, String departement,
 			String promo, String annee) {
 		super();
-		this.nom = nom;
+		this.nom = nom.toUpperCase();
 		this.prenom = prenom;
 		this.departement = departement;
 		this.promo = promo;

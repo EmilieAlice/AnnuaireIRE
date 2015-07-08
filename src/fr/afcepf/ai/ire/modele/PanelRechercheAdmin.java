@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
-import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.controleur.IGestionStagiaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCellBuilder;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -45,7 +46,7 @@ public class PanelRechercheAdmin extends BorderPane {
 
 	@SuppressWarnings("unchecked")
 	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
-			String annuaireALire) {
+			String cheminAnnuaireALire) {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
 		this.setBottom(panelBottom);
@@ -55,15 +56,6 @@ public class PanelRechercheAdmin extends BorderPane {
 				labelPromoStagiaire, textPromoStagiaire, btnRechercher);
 		panelBottom.getChildren().addAll(btnSupprimer, btnMettreAJour);
 		panelBottom.setAlignment(Pos.CENTER);
-
-		try {
-			listPourTableau = FXCollections.observableArrayList(arbreBin
-					.lireAnnuaire(0, annuaireALire));
-			System.out.println(arbreBin.lireAnnuaire(0, annuaireALire));
-		} catch (Exception e) {
-			System.out.println("erreur FXCollections");
-			e.printStackTrace();
-		}
 
 		TableColumn<Stagiaire, String> colNom = new TableColumn<>();
 		colNom.setText("Nom");
@@ -96,108 +88,105 @@ public class PanelRechercheAdmin extends BorderPane {
 		colAnnee.setMinWidth(75);
 		colAnnee.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"annee"));
-
+		
 		tableVue.getColumns().addAll(colNom, colPrenom, colDepartement,
 				colPromo, colAnnee);
-
+		
+		try {
+			listPourTableau = FXCollections.observableArrayList(arbreBin
+					.lireAnnuaire(0, cheminAnnuaireALire));
+		} catch (Exception e) {
+			System.out.println("erreur de Lecture de la liste");
+			e.getMessage();
+		}
+		tableVue.getItems().clear();
 		tableVue.setItems(listPourTableau);
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				listPourTableau.clear();
 				List<Stagiaire> listeStagiaire = new ArrayList<>();
-				if (!textNomStagiaire.getText().equals("")
-						&& textDepartementStagiaire.getText().equals("")
-						&& textPromoStagiaire.getText().equals("")) {
-					listeStagiaire = gestionStagiaire.rechercherParNom(
-							textNomStagiaire.getText(), listPourTableau);
-				} else {
-					if (textNomStagiaire.getText().equals("")
-							&& !textDepartementStagiaire.getText().equals("")
-							&& textPromoStagiaire.getText().equals("")) {
+				String champNom = textNomStagiaire.getText();
+				String champDep = textDepartementStagiaire.getText();
+				String champPromo = textPromoStagiaire.getText();
+				try {
+					if (!champNom.equals("") && champDep.equals("")
+							&& champPromo.equals("")) {
 						listeStagiaire = gestionStagiaire
-								.rechercherParDepartement(textDepartementStagiaire
-										.getText(), listPourTableau);
+								.rechercherParNom(champNom,
+										arbreBin.getSauvegarde(), 0);
 					} else {
-						if (textNomStagiaire.getText().equals("")
-								&& textDepartementStagiaire.getText()
-										.equals("")
-								&& !textPromoStagiaire.getText().equals("")) {
+						if (champNom.equals("") && !champDep.equals("")
+								&& champPromo.equals("")) {
 							listeStagiaire = gestionStagiaire
-									.rechercherParPromo(textPromoStagiaire
-											.getText(), listPourTableau);
+									.rechercherParDepartement(champDep,
+											listPourTableau);
 						} else {
-							if (!textNomStagiaire.getText().equals("")
-									&& !textDepartementStagiaire.getText()
-											.equals("")
-									&& textPromoStagiaire.getText().equals("")) {
-								List<Stagiaire> listeN = gestionStagiaire
-										.rechercherParNom(
-												textNomStagiaire.getText(),
+							if (champNom.equals("") && champDep.equals("")
+									&& !champPromo.equals("")) {
+								listeStagiaire = gestionStagiaire
+										.rechercherParPromo(champPromo,
 												listPourTableau);
-								for (Stagiaire stagiaire : listeN) {
-									if (stagiaire.getDepartement() == textDepartementStagiaire
-											.getText()) {
-										listeStagiaire.add(stagiaire);
-									}
-								}
 							} else {
-								if (textNomStagiaire.getText().equals("")
-										&& !textDepartementStagiaire.getText()
-												.equals("")
-										&& !textPromoStagiaire.getText()
-												.equals("")) {
+								if (!champNom.equals("")
+										&& !champDep.equals("")
+										&& champPromo.equals("")) {
 									List<Stagiaire> listeN = gestionStagiaire
-											.rechercherParPromo(textPromoStagiaire
-													.getText(), listPourTableau);
+											.rechercherParNom(champNom,
+													arbreBin.getSauvegarde(), 0);
 									for (Stagiaire stagiaire : listeN) {
-										if (stagiaire.getDepartement() == textDepartementStagiaire
-												.getText()) {
+										if (stagiaire.getDepartement() == champDep) {
 											listeStagiaire.add(stagiaire);
 										}
 									}
 								} else {
-									if (!textNomStagiaire.getText().equals("")
-											&& textDepartementStagiaire
-													.getText().equals("")
-											&& !textPromoStagiaire.getText()
-													.equals("")) {
+									if (champNom.equals("")
+											&& !champDep.equals("")
+											&& !champPromo.equals("")) {
 										List<Stagiaire> listeN = gestionStagiaire
-												.rechercherParNom(
-														textNomStagiaire
-																.getText(),
+												.rechercherParPromo(champPromo,
 														listPourTableau);
 										for (Stagiaire stagiaire : listeN) {
-											if (stagiaire.getPromo() == textPromoStagiaire
-													.getText()) {
+											if (stagiaire.getDepartement() == champDep) {
 												listeStagiaire.add(stagiaire);
 											}
 										}
 									} else {
-										if (!textNomStagiaire.getText().equals(
-												"")
-												&& !textDepartementStagiaire
-														.getText().equals("")
-												&& !textPromoStagiaire
-														.getText().equals("")) {
+										if (!champNom.equals("")
+												&& champDep.equals("")
+												&& !champPromo.equals("")) {
 											List<Stagiaire> listeN = gestionStagiaire
 													.rechercherParNom(
-															textNomStagiaire
-																	.getText(),
-															listPourTableau);
-											List<Stagiaire> listeM = new ArrayList<>();
+															champNom,
+															arbreBin.getSauvegarde(),
+															0);
 											for (Stagiaire stagiaire : listeN) {
-												if (stagiaire.getPromo() == textPromoStagiaire
-														.getText()) {
-													listeM.add(stagiaire);
+												if (stagiaire.getPromo() == champPromo) {
+													listeStagiaire
+															.add(stagiaire);
 												}
-												for (Stagiaire leStagiaire : listeM) {
-													if (stagiaire
-															.getDepartement() == textDepartementStagiaire
-															.getText()) {
-														listeStagiaire
-																.add(leStagiaire);
+											}
+										} else {
+											if (!champNom.equals("")
+													&& !champDep.equals("")
+													&& !champPromo.equals("")) {
+												List<Stagiaire> listeN = gestionStagiaire
+														.rechercherParNom(
+																champNom,
+																arbreBin.getSauvegarde(),
+																0);
+												List<Stagiaire> listeM = new ArrayList<>();
+												for (Stagiaire stagiaire : listeN) {
+													if (stagiaire.getPromo() == champPromo) {
+														listeM.add(stagiaire);
 													}
-
+													for (Stagiaire leStagiaire : listeM) {
+														if (stagiaire
+																.getDepartement() == champDep) {
+															listeStagiaire
+																	.add(leStagiaire);
+														}
+													}
 												}
 											}
 										}
@@ -205,11 +194,11 @@ public class PanelRechercheAdmin extends BorderPane {
 								}
 							}
 						}
-
 					}
+					listPourTableau.addAll(listeStagiaire);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				listPourTableau.clear();
-				listPourTableau.addAll(listeStagiaire);
 			}
 		});
 

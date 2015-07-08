@@ -39,21 +39,22 @@ public class CreationAjoutArbreBinaire {
 	private String recuperation;
 	private String sauvegarde;
 	private List<Stagiaire> listeStagiaire = new ArrayList<>();
-	
-	public void init() throws Exception {
+	private RandomAccessFile fichierAStructurer;
+
+	private int nbLigne = 0;
+
+	public void init(String recuperation, String sauvegarde) throws Exception {
 		try {
-			
-			InputStream isr = new FileInputStream(
-					recuperation);
-			
+			this.recuperation = recuperation;
+			this.sauvegarde = sauvegarde;
+			InputStream isr = new FileInputStream(recuperation);
+
 			InputStreamReader fr = new InputStreamReader(isr,
 					StandardCharsets.UTF_8);
-			
-			BufferedReader br = new BufferedReader(fr);
-			RandomAccessFile fichierAStructurer = new RandomAccessFile(
-					sauvegarde, "rw");
 
-			
+			BufferedReader br = new BufferedReader(fr);
+			fichierAStructurer = new RandomAccessFile(sauvegarde, "rw");
+
 			String ligneRecuperee = "";
 			int nbElementACopie = 5;
 			int numeroDeLigne = 0;
@@ -91,17 +92,14 @@ public class CreationAjoutArbreBinaire {
 		}
 	}
 
-	public List<Stagiaire> lireAnnuaire(int indexRacine, String annuaireALire) throws Exception {
-		RandomAccessFile raf = new RandomAccessFile(
-				annuaireALire, "r");
-		listeStagiaire = parcourirAnnuaire(raf, indexRacine);
-		for (Stagiaire stagiaire : listeStagiaire) {
-			System.out.println(stagiaire.toString());
-		}
-		return listeStagiaire;
+	public List<Stagiaire> lireAnnuaire(int indexRacine, String chemainAnnuaireALire)
+			throws Exception {
+		RandomAccessFile raf = new RandomAccessFile(chemainAnnuaireALire, "r");
+		return parcourirAnnuaire(raf, indexRacine);
 	}
 
-	private List<Stagiaire> parcourirAnnuaire(RandomAccessFile raf, int indexRacine) {
+	private List<Stagiaire> parcourirAnnuaire(RandomAccessFile raf,
+			int indexRacine) {
 		Stagiaire sta = lireUnStagiaire(raf, indexRacine);
 		if (sta.getChampsFilsGauche() != -1) {
 			parcourirAnnuaire(raf, sta.getChampsFilsGauche());
@@ -110,6 +108,8 @@ public class CreationAjoutArbreBinaire {
 			parcourirAnnuaire(raf, sta.getChampsFilCache());
 		}
 		listeStagiaire.add(sta);
+		setNbLigne(nbLigne+1);
+		System.out.println(getNbLigne());
 		if (sta.getChampsFilsDroit() != -1) {
 			parcourirAnnuaire(raf, sta.getChampsFilsDroit());
 		}
@@ -153,7 +153,7 @@ public class CreationAjoutArbreBinaire {
 	 * @param unStagiaire
 	 * @param fichierAStructurer
 	 */
-	public static void formaterEnRubrique(Stagiaire unStagiaire,
+	public void formaterEnRubrique(Stagiaire unStagiaire,
 			RandomAccessFile fichierAStructurer) {
 		String rubriqueNom = ajouteEspace(unStagiaire.getNom(), NOM);
 		String rubriquePrenom = ajouteEspace(unStagiaire.getPrenom(), PRENOM);
@@ -174,6 +174,7 @@ public class CreationAjoutArbreBinaire {
 		} catch (Exception e) {
 			System.out.println("Pas d'ecriture sur le raf");
 		}
+//		setNbLigne(nbLigne + 1);
 	}
 
 	/**
@@ -217,7 +218,7 @@ public class CreationAjoutArbreBinaire {
 			int champsFD = fichierAStructurer.readInt();
 			int champsFC = fichierAStructurer.readInt();
 
-			unStagiaire.setNom(rubriqueNom.trim());
+			unStagiaire.setNom(rubriqueNom.toUpperCase().trim());
 			unStagiaire.setPrenom(rubriquePrenom.trim());
 			unStagiaire.setDepartement(rubriqueDepartement.trim());
 			unStagiaire.setPromo(rubriquePromo.trim());
@@ -317,7 +318,7 @@ public class CreationAjoutArbreBinaire {
 	 * @param fichierAStructurer
 	 * @param numeroDeLigne
 	 */
-	public static void rechercherPereDuStagiaire(int indexPere,
+	public void rechercherPereDuStagiaire(int indexPere,
 			RandomAccessFile fichierAStructurer, int numeroDeLigne) {
 		Stagiaire unStagiaire = new Stagiaire();
 		Stagiaire stagiairePere = new Stagiaire();
@@ -332,13 +333,13 @@ public class CreationAjoutArbreBinaire {
 			if (numeroDeLigne > 0
 					&& fichierAStructurer.length() > LONGUEURLIGNE) {
 				if (unStagiaire.getNom().trim()
-						.compareTo(stagiairePere.getNom().trim()) < 0) {
+						.compareToIgnoreCase(stagiairePere.getNom().trim()) < 0) {
 					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
 							+ POSITIONPERE);
 					valeurFils = fichierAStructurer.readInt();
 					positionChamp = POSITIONPERE;
 				} else if (unStagiaire.getNom().trim()
-						.compareTo(stagiairePere.getNom().trim()) > 0) {
+						.compareToIgnoreCase(stagiairePere.getNom().trim()) > 0) {
 					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
 							+ POSITIONFILSGAUCHE);
 					valeurFils = fichierAStructurer.readInt();
@@ -382,6 +383,21 @@ public class CreationAjoutArbreBinaire {
 	public void setSauvegarde(String sauvegarde) {
 		this.sauvegarde = sauvegarde;
 	}
-	
+
+	public RandomAccessFile getFichierAStructurer() {
+		return fichierAStructurer;
+	}
+
+	public void setFichierAStructurer(String sauvegarde) throws Exception {
+		this.sauvegarde = sauvegarde;
+	}
+
+	public int getNbLigne() {
+		return nbLigne;
+	}
+
+	public void setNbLigne(int nbLigne) {
+		this.nbLigne = nbLigne;
+	}
 
 }

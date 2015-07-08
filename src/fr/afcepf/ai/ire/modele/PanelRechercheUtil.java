@@ -17,8 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.annuaire.vue.GestionStagiaire;
-import fr.afcepf.ai.ire.annuaire.vue.IGestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
+import fr.afcepf.ai.ire.annuaire.controleur.IGestionStagiaire;
 
 public class PanelRechercheUtil extends BorderPane {
 

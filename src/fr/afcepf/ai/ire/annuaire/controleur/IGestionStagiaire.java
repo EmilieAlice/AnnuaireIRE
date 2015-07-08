@@ -1,15 +1,15 @@
-package fr.afcepf.ai.ire.annuaire.vue;
+package fr.afcepf.ai.ire.annuaire.controleur;
 
+import java.io.RandomAccessFile;
 import java.util.List;
 
-import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public interface IGestionStagiaire {
-	void ajouter(Stagiaire stagiaire);
+	void ajouter(Stagiaire stagiaire, String chemainDuRaf, CreationAjoutArbreBinaire caab, int nbLigneFichier);
 	void supprimer(String nom, int numeroLigne);
 	void miseAJour(Stagiaire stagiaire);
-	List<Stagiaire> rechercherParNom(String nom, List<Stagiaire> listeARecuperer);
+	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne) throws Exception;
 	List<Stagiaire> rechercherParPromo(String promo, List<Stagiaire> listeARecuperer);
 	List<Stagiaire> rechercherParDepartement(String departement, List<Stagiaire> listeARecuperer);
 }

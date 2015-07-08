@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 public class EcranGestionStagiaire extends Application{
 	
+	
 	private BorderPane panelPrincipal = new BorderPane();
 	private HBox panelTitre = new HBox();
 	private Label titre = new Label("Stagiaire");
@@ -27,27 +28,26 @@ public class EcranGestionStagiaire extends Application{
 	private Button btnAfficheAjout = new Button("Ajouter");
 	private Button btnAfficheSuppr = new Button("Supprimer/Mettre à jour");
 	
+	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	private GestionAnnuaire choixAnnuaire;
 	private GridPane panelAjout;
 	private BorderPane panelSuppr;
 	
-	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	
 	@Override
 	public void start(Stage stage) throws Exception {
 		
 		choixAnnuaire = new GestionAnnuaire(stage);
 		
-		arbreBin.setRecuperation(choixAnnuaire.getCheminDuFichierAChercher());
-		arbreBin.setSauvegarde(choixAnnuaire.getCheminDuFichierASauvegarder());
-		arbreBin.init();
+		arbreBin.init(choixAnnuaire.getCheminDuFichierAChercher(), choixAnnuaire.getCheminDuFichierASauvegarder());
+		
+		
 		panelPrincipal.setCenter(choixAnnuaire);
 		btnAfficheAjout.setPrefSize(150, 200);
 		btnAfficheAjout.setOnAction(new EventHandler<ActionEvent>() {
-			
 			@Override
 			public void handle(ActionEvent arg0) {
-				panelAjout = new PanelAjout(arbreBin);
+				panelAjout = new PanelAjout(arbreBin, arbreBin.getSauvegarde());
 				panelPrincipal.setCenter(panelAjout);
 				panelAjout.setAlignment(Pos.CENTER);
 			}
@@ -57,7 +57,8 @@ public class EcranGestionStagiaire extends Application{
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde().replace("\\", "/").replace("%20", ""));
+				
+				panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde());
 				panelPrincipal.setCenter(panelSuppr);
 			}
 		});
