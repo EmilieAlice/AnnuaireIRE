@@ -27,6 +27,21 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		this.annee = annee;
 	}
 
+	public Stagiaire(String nom, String prenom, String departement,
+			String promo, String annee, int champsPere, int champsFilsGauche,
+			int champsFilsDroit, int champsFilsCache) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.departement = departement;
+		this.promo = promo;
+		this.annee = annee;
+		this.champsPere = champsPere;
+		this.champsFilsGauche = champsFilsGauche;
+		this.champsFilsDroit = champsFilsDroit;
+		this.champsFilsCache = champsFilsCache;
+	}
+
 	@Override
 	public int compareTo(Stagiaire unStagiaire) {
 		int nb = this.getNom().compareTo(unStagiaire.getNom());

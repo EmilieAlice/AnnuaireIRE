@@ -1,5 +1,7 @@
 package fr.afcepf.ai.ire.annuaire.test;
 
+import java.io.RandomAccessFile;
+
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
 import fr.afcepf.ai.ire.modele.Stagiaire;
@@ -21,29 +23,46 @@ public class CreationAnnuaireTest {
 		CreationAjoutArbreBinaire caab = new CreationAjoutArbreBinaire();
 		GestionStagiaire gestStag = new GestionStagiaire();
 		try {
-//			caab.init("C:/Users/Stagiaire/Desktop/STAGIAIRES.DON",
-//					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin");
-//			for (Stagiaire stagiaire : caab.lireAnnuaire(0,
-//					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
-//				System.out.println(stagiaire);
-//			}
-//			Stagiaire unStagiaire0 = new Stagiaire("BlablaCar", "alice", "97",
-//					"AI95", "2015");
-//			unStagiaire0.setChampsPere(-1);
-//			unStagiaire0.setChampsFilsGauche(-1);
-//			unStagiaire0.setChampsFilsDroit(-1);
-//			unStagiaire0.setChampsFilsCache(-1);
-//			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", caab);
-//			
-//			gestStag.rechercherParNom("Waille", "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", 0);
-			for (Stagiaire stagiaire : gestStag.rechercherParNom("m", "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", 0)) {
+			//			caab.init("C:/Users/Stagiaire/Desktop/STAGIAIRES.DON",
+			//					"C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin");
+			//			for (Stagiaire stagiaire : caab.lireAnnuaire(0,
+			//					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
+			//				System.out.println(stagiaire);
+			//			}
+			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", "rw");
+			Stagiaire unStagiaire0 = new Stagiaire("BlablaCar", "alice", "97",
+					"AI95", "2015",13,-1,-1,-1);
+			//			unStagiaire0.setChampsPere(-1);
+			//			unStagiaire0.setChampsFilsGauche(-1);
+			//			unStagiaire0.setChampsFilsDroit(-1);
+			//			unStagiaire0.setChampsFilsCache(-1);
+			//			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", caab);
+			//			
+			//			gestStag.rechercherParNom("Waille", "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", 0);
+			for (Stagiaire stagiaire : caab.lireAnnuaire(0, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin")) {
+
 				System.out.println(stagiaire);
 			}
-//			RandomAccessFile raf = new RandomAccessFile("C:/Users/Stagiaire/Desktop/Rosane/fichierStagiaires.bin", "r");
-//			for (int i = 0; i < caab.getNbLigne(); i++) {
-//				System.out.println(caab.lireUnStagiaire(raf, i).toString());
-//			}
-			
+
+			gestStag.supprimerDansArbre(unStagiaire0, 0, fichierAStructurer);
+			gestStag.supprimerDansFichier(fichierAStructurer, 17);
+			System.err.println("________________________________");
+			for (Stagiaire stagiaire : caab.lireAnnuaire(0, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin")) {
+
+				System.out.println(stagiaire);
+			}
+			//for (Stagiaire stagiaire : gestStag.rechercherParNom("m", "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", 0)) {
+			//				for (Stagiaire stagiaire : gestStag.rechercherParNom("m", "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", 0)) {
+
+			//			System.out.println(stagiaire);
+			//		}
+			//				System.out.println(stagiaire);
+			//			}
+			//			RandomAccessFile raf = new RandomAccessFile("C:/Users/Stagiaire/Desktop/Rosane/fichierStagiaires.bin", "r");
+			//			for (int i = 0; i < caab.getNbLigne(); i++) {
+			//				System.out.println(caab.lireUnStagiaire(raf, i).toString());
+			//			}
+
 			// System.out.println("Init ok");
 
 			// RandomAccessFile raf = new RandomAccessFile(
