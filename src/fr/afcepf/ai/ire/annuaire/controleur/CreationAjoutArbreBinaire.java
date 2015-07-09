@@ -198,7 +198,7 @@ public class CreationAjoutArbreBinaire {
 	 * @param numeroDeLigne
 	 * @return
 	 */
-	public Stagiaire lireUnStagiaire(RandomAccessFile fichierAStructurer,
+	public static Stagiaire lireUnStagiaire(RandomAccessFile fichierAStructurer,
 			int numeroDeLigne) {
 		Stagiaire unStagiaire = new Stagiaire();
 		try {

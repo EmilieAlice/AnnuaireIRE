@@ -104,7 +104,7 @@ public class PanelRechercheAdmin extends BorderPane {
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				listPourTableau.clear();
+				
 				List<Stagiaire> listeStagiaire = new ArrayList<>();
 				String champNom = textNomStagiaire.getText();
 				String champDep = textDepartementStagiaire.getText();
@@ -195,6 +195,7 @@ public class PanelRechercheAdmin extends BorderPane {
 							}
 						}
 					}
+					listPourTableau.clear();
 					listPourTableau.addAll(listeStagiaire);
 				} catch (Exception e) {
 					e.printStackTrace();

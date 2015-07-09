@@ -25,8 +25,9 @@ public class EcranGestionStagiaire extends Application{
 	private Label titre = new Label("Stagiaire");
 	
 	private VBox menus = new VBox();
-	private Button btnAfficheAjout = new Button("Ajouter");
-	private Button btnAfficheSuppr = new Button("Supprimer/Mettre à jour");
+	private Button btnGererAnnuaire = new Button("Choisir annuaire");
+	private Button btnAjout = new Button("Ajouter un stagiaire");
+	private Button btnAfficheSuppr = new Button("Annuaire");
 	
 	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	private GestionAnnuaire choixAnnuaire;
@@ -35,16 +36,25 @@ public class EcranGestionStagiaire extends Application{
 	
 	
 	@Override
-	public void start(Stage stage) throws Exception {
-		
-		choixAnnuaire = new GestionAnnuaire(stage);
-		
-		arbreBin.init(choixAnnuaire.getCheminDuFichierAChercher(), choixAnnuaire.getCheminDuFichierASauvegarder());
+	public void start(final Stage stage) throws Exception {
 		
 		
-		panelPrincipal.setCenter(choixAnnuaire);
-		btnAfficheAjout.setPrefSize(150, 200);
-		btnAfficheAjout.setOnAction(new EventHandler<ActionEvent>() {
+		btnGererAnnuaire.setPrefSize(150, 200);
+		btnGererAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				choixAnnuaire = new GestionAnnuaire(stage);
+				panelPrincipal.setCenter(choixAnnuaire);
+				try {
+					arbreBin.init(choixAnnuaire.getCheminDuFichierAChercher(), choixAnnuaire.getCheminDuFichierASauvegarder());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		btnAjout.setPrefSize(150, 200);
+		btnAjout.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				panelAjout = new PanelAjout(arbreBin, arbreBin.getSauvegarde());
@@ -63,7 +73,7 @@ public class EcranGestionStagiaire extends Application{
 			}
 		});
 	
-		menus.getChildren().addAll(btnAfficheAjout, btnAfficheSuppr);
+		menus.getChildren().addAll(btnGererAnnuaire, btnAjout, btnAfficheSuppr);
 		
 		titre.setPrefHeight(60);
 		titre.setFont(Font.font("Verdana", 50));

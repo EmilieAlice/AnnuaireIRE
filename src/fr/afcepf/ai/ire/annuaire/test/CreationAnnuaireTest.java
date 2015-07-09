@@ -27,16 +27,16 @@ public class CreationAnnuaireTest {
 //					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
 //				System.out.println(stagiaire);
 //			}
-			Stagiaire unStagiaire0 = new Stagiaire("Aaa", "alice", "97",
-					"AI95", "2015");
-			unStagiaire0.setChampsPere(-1);
-			unStagiaire0.setChampsFilsGauche(-1);
-			unStagiaire0.setChampsFilsDroit(-1);
-			unStagiaire0.setChampsFilsCache(-1);
-			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", caab);
-			
-			for (Stagiaire stagiaire : caab.lireAnnuaire(0,
-					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
+//			Stagiaire unStagiaire0 = new Stagiaire("BlablaCar", "alice", "97",
+//					"AI95", "2015");
+//			unStagiaire0.setChampsPere(-1);
+//			unStagiaire0.setChampsFilsGauche(-1);
+//			unStagiaire0.setChampsFilsDroit(-1);
+//			unStagiaire0.setChampsFilsCache(-1);
+//			gestStag.ajouter(unStagiaire0, "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", caab);
+//			
+//			gestStag.rechercherParNom("Waille", "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", 0);
+			for (Stagiaire stagiaire : gestStag.rechercherParNom("m", "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin", 0)) {
 				System.out.println(stagiaire);
 			}
 //			RandomAccessFile raf = new RandomAccessFile("C:/Users/Stagiaire/Desktop/Rosane/fichierStagiaires.bin", "r");

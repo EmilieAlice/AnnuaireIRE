@@ -1,5 +1,11 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
+import java.awt.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import fr.afcepf.ai.ire.modele.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -16,56 +22,71 @@ import javafx.stage.Stage;
 
 public class FenetrePassword extends Stage{
 
-	final String password = "1234";
-	
-	
-	
+	private final String fichierLogin = "../ressource/log.bin";
+	private Utilisateur admin = new Utilisateur();
+	private Utilisateur util = new Utilisateur();
+	private Label labelId = new Label("Identifiant : ");
+	private Label labelPass = new Label("Password : ");
+	private TextField textId = new TextField();
+	private PasswordField password = new PasswordField();
+	private GridPane gridpane = new GridPane();
+	private Button btnValiderConnexion = new Button("Entrer");
 	
 	public FenetrePassword(Stage owner){
 		super();
+		String absolutePathFichierLogin = this.getClass().getResource(fichierLogin).getPath();
+		
+		try {
+			FileReader fr = new FileReader(absolutePathFichierLogin);
+			BufferedReader br = new BufferedReader(fr);
+			String line = br.readLine();
+			String[] tabUtil = line.split(";");
+			admin.setIdentifiant(tabUtil[0]);
+			admin.setMotDePasse(tabUtil[1]);
+			line = br.readLine();
+			tabUtil = line.split(";");
+			util.setIdentifiant(tabUtil[0]);
+			util.setMotDePasse(tabUtil[1]);
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(admin);
+		System.out.println(util);
+		
 		initOwner(owner);
-		setTitle("Login");
+		setTitle("Connexion");
 		Group root = new Group();
 		Scene scene = new Scene(root, 250, 150, Color.WHITE);
         setScene(scene);
         
-		final GridPane gridpane = new GridPane();
 		gridpane.setPadding(new Insets(5));
 		gridpane.setHgap(5);
 		gridpane.setVgap(5);
 		
+		gridpane.add(labelId, 0, 1);
+		gridpane.add(labelPass, 0, 2);
+		gridpane.add(textId, 1, 1);
+		gridpane.add(password, 1, 2);
 		
-		
-		//List<Password> recherchepassExistant(String password);
-		
-	
-		Label nomUtilisateurLbl = new Label("Utilisateur : ");
-		gridpane.add(nomUtilisateurLbl, 0, 1);
-
-		Label passwordLbl = new Label("Password : ");
-		gridpane.add(passwordLbl, 0, 2);
-		final TextField userNameFld = new TextField("Admin");
-		gridpane.add(userNameFld, 1, 1);
-
-		final PasswordField passwordFld = new PasswordField();
-		passwordFld.setPromptText("Votre mot de passe");
-		gridpane.add(passwordFld, 1, 2);
-
-		Button login = new Button("Login");
-		login.setOnAction(new EventHandler<ActionEvent>() {
+		btnValiderConnexion.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(passwordFld.equals(password))
-					close();
-				else{
-				}
-				
+				if (textId.equals(admin.getIdentifiant()) || textId.equals(util.getIdentifiant())) {
+					if(textId.equals(admin.getIdentifiant())){
+						if (password.equals(admin.getMotDePasse())) {
+							EcranGestionStagiaire ecranGestion = new EcranGestionStagiaire();
+						}
+					}
+				}				
 			}
 		});
 		
-		gridpane.add(login, 1, 3);
-		GridPane.setHalignment(login,HPos.RIGHT);
+		gridpane.add(btnValiderConnexion, 1, 3);
+		GridPane.setHalignment(btnValiderConnexion,HPos.RIGHT);
 		root.getChildren().add(gridpane);
 		
 	}

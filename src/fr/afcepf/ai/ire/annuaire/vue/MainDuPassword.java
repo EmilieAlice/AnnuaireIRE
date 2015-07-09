@@ -7,19 +7,25 @@ import javafx.stage.Stage;
 
 public class MainDuPassword extends Application {
 
+	private Group root = new Group();
+	private Scene scene = new Scene (root, 800, 600);
+	private Stage pass;
+	
 	@Override
 	public void start(final Stage stage) {
-		stage.setTitle("Annuaire");
-		Group root = new Group();
-		Scene scene = new Scene (root, 800, 600);
+		stage.setTitle("IRE Gestion Annuaire");
+		pass = new FenetrePassword(stage);
+		
+		
+		
+		
+		
+		
 		
 		stage.setScene(scene);
 		stage.show();
-		
-		Stage pass = new FenetrePassword(stage);
 		pass.sizeToScene();
 		pass.show();
-
 	}
 	
 		public static void main(String[] args) {
