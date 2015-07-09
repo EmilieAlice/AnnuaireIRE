@@ -7,7 +7,7 @@ import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public interface IGestionStagiaire {
 	void ajouter(Stagiaire stagiaire, String chemainDuRaf, CreationAjoutArbreBinaire caab);
-	void supprimerDansArbre(Stagiaire unStagiaire, int indexPere, RandomAccessFile fichierAStructurer);
+	void supprimerDansArbre(Stagiaire unStagiaire, int indexPere, RandomAccessFile fichierAStructurer,int numeroDeLigneStagiaire,int positionChamps,int fils);
 	void miseAJour(Stagiaire stagiaire);
 	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne) throws Exception;
 	List<Stagiaire> rechercherParPromo(String promo, List<Stagiaire> listeARecuperer);
