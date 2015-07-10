@@ -24,14 +24,14 @@ public class CreationAnnuaireTest {
 		GestionStagiaire gestStag = new GestionStagiaire();
 		try {
 //						caab.init("C:/Users/Stagiaire/Desktop/STAGIAIRES.DON",
-//								"C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin");
+//								"C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin");
 			//			for (Stagiaire stagiaire : caab.lireAnnuaire(0,
 			//					"C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
 			//				System.out.println(stagiaire);
 			//			}
-			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Stagiaire/Desktop/fichierStagiairesTest1.bin", "rw");
-			Stagiaire unStagiaire0 = new Stagiaire("MOUHLI", "Idriss", "95",
-					"AI 95", "2015",1,-1,8,-1);
+			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Stagiaire/Desktop/fichierStagiairesTest9.bin", "rwd");
+			Stagiaire unStagiaire0 = new Stagiaire("YATALIT", "Mourad", "95",
+					"AL 95", "2012");
 //						unStagiaire0.setChampsPere(-1);
 //						unStagiaire0.setChampsFilsGauche(-1);
 //						unStagiaire0.setChampsFilsDroit(-1);
@@ -44,18 +44,18 @@ public class CreationAnnuaireTest {
 //
 //				System.out.println(stagiaire);
 //			}
+			fichierAStructurer.seek(0);
+			int ligneRacine = fichierAStructurer.readInt();
+			
+			gestStag.supprimerDansArbre(unStagiaire0, ligneRacine, fichierAStructurer,0,0,0);
+		 
+			System.err.println("________________________________");
+			for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest9.bin")) {
 
-			gestStag.supprimerDansArbre(unStagiaire0, 0, fichierAStructurer,0,0,0);
-
+				System.out.println(stagiaire);
+			}
 			
-			
-//			System.err.println("________________________________");
-//			for (Stagiaire stagiaire : caab.lireAnnuaire(0, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin")) {
-//
-//				System.out.println(stagiaire);
-//			}
-			
-			
+			fichierAStructurer.close();
 			
 			
 			//for (Stagiaire stagiaire : gestStag.rechercherParNom("m", "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", 0)) {

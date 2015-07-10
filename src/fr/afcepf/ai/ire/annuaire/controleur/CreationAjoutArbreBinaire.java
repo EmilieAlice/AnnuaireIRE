@@ -34,8 +34,8 @@ public class CreationAjoutArbreBinaire {
 	static final int POSITIONFILSDROIT = ((NOM + PRENOM + DEPARTEMENT + PROMO + ANNEE) * 2 + 4 * 3);
 	static final int POSITIONFILSCACHE = LONGUEURLIGNE;
 
-	static int indexPere = 0;
-
+	static final int RACINE = 4;
+	
 	private String recuperation;
 	private String sauvegarde;
 	private List<Stagiaire> listeStagiaire = new ArrayList<>();
@@ -44,6 +44,8 @@ public class CreationAjoutArbreBinaire {
 
 	public void init(String recuperation, String sauvegarde) throws Exception {
 		try {
+			
+			
 			this.recuperation = recuperation;
 			this.sauvegarde = sauvegarde;
 			InputStream isr = new FileInputStream(recuperation);
@@ -58,6 +60,8 @@ public class CreationAjoutArbreBinaire {
 			int nbElementACopie = 5;
 			int numeroDeLigne = 0;
 			int positionLignePere = 0;
+			
+			fichierAStructurer.writeInt(0);
 			while ((ligneRecuperee = br.readLine()) != null) {
 				String rubrique = "";
 
@@ -202,7 +206,7 @@ public class CreationAjoutArbreBinaire {
 			int numeroDeLigne) {
 		Stagiaire unStagiaire = new Stagiaire();
 		try {
-			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne);
+			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne+RACINE);
 			String rubriqueNom = LireRaf(fichierAStructurer, NOM);
 			String rubriquePrenom = LireRaf(fichierAStructurer, PRENOM);
 			String rubriqueDepartement = LireRaf(fichierAStructurer,
@@ -260,8 +264,9 @@ public class CreationAjoutArbreBinaire {
 			int indexPere) {
 		try {
 			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne
-					+ POSITIONANNEE);
+					+ POSITIONANNEE+RACINE);
 			fichierAStructurer.writeInt(indexPere);
+			System.err.println("se met sur la ligne "+numeroDeLigne + " ajoute au champs pere : "+indexPere);
 		} catch (IOException e) {
 			System.err.println("Pere introuvable");
 			e.printStackTrace();
@@ -279,8 +284,11 @@ public class CreationAjoutArbreBinaire {
 	public static void modifierFilsDuPere(RandomAccessFile fichierAStructurer,
 			int numeroDeLigne, int indexPere, int champs) {
 		try {
-			fichierAStructurer.seek(LONGUEURLIGNE * indexPere + champs);
+			fichierAStructurer.seek(LONGUEURLIGNE * indexPere + champs + RACINE);
 			fichierAStructurer.writeInt(numeroDeLigne);
+			
+			System.err.println("se met sur ligne " + indexPere + " et ecrit dans champs fils " + champs + " : " + numeroDeLigne);
+			
 		} catch (IOException e) {
 			System.err.println("Fils introuvable");
 			e.printStackTrace();
@@ -326,23 +334,27 @@ public class CreationAjoutArbreBinaire {
 			unStagiaire = lireUnStagiaire(fichierAStructurer, numeroDeLigne);
 
 			stagiairePere = lireUnStagiaire(fichierAStructurer, indexPere);
-			if (numeroDeLigne > 0
+			
+			fichierAStructurer.seek(0);
+			int ligneRacine = fichierAStructurer.readInt();
+			
+			if (numeroDeLigne != ligneRacine
 					&& fichierAStructurer.length() > LONGUEURLIGNE) {
 				if (unStagiaire.getNom().trim()
 						.compareToIgnoreCase(stagiairePere.getNom().trim()) < 0) {
 					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-							+ POSITIONPERE);
+							+ POSITIONPERE+ RACINE);
 					valeurFils = fichierAStructurer.readInt();
 					positionChamp = POSITIONPERE;
 				} else if (unStagiaire.getNom().trim()
 						.compareToIgnoreCase(stagiairePere.getNom().trim()) > 0) {
 					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-							+ POSITIONFILSGAUCHE);
+							+ POSITIONFILSGAUCHE+ RACINE);
 					valeurFils = fichierAStructurer.readInt();
 					positionChamp = POSITIONFILSGAUCHE;
 				} else {
 					fichierAStructurer.seek(LONGUEURLIGNE * indexPere
-							+ POSITIONFILSDROIT);
+							+ POSITIONFILSDROIT+ RACINE);
 					valeurFils = fichierAStructurer.readInt();
 					positionChamp = POSITIONFILSDROIT;
 				}
@@ -387,5 +399,6 @@ public class CreationAjoutArbreBinaire {
 	public void setFichierAStructurer(String sauvegarde) throws Exception {
 		this.sauvegarde = sauvegarde;
 	}
+
 
 }
