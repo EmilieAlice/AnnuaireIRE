@@ -24,16 +24,16 @@ public class CreationAnnuaireTest {
 		GestionStagiaire gestStag = new GestionStagiaire();
 		try {
 			
-//			caab.init("C:/Users/Idriss/Desktop/STAGIAIRESTEST.DON", "C:/Users/Idriss/Desktop/fichierStagiairesTest5.bin");
+//			caab.init("C:/Users/Rose/Desktop/STAGIAIRES.DON", "C:/Users/Rose/Desktop/fichierStagiairesTest0.bin");
 			
 			// for (Stagiaire stagiaire : caab.lireAnnuaire(0,
 			// "C:/Users/Stagiaire/Desktop/fichierStagiaires.bin")) {
 			// System.out.println(stagiaire);
 			// }
 
-			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Idriss/Desktop/fichierStagiairesTest6.bin", "rwd");
+			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Rose/Desktop/fichierStagiairesTest5.bin", "rwd");
 
-			Stagiaire unStagiaire0 = new Stagiaire("MARTEAU", "Rémy", "95", "AI 83", "2013");
+			Stagiaire unStagiaire0 = new Stagiaire("FREVA", "Benjamin", "95", "ATOD 7", "2009");
 			// unStagiaire0.setChampsPere(-1);
 			// unStagiaire0.setChampsFilsGauche(-1);
 			// unStagiaire0.setChampsFilsDroit(-1);
@@ -57,17 +57,14 @@ public class CreationAnnuaireTest {
 //			 System.out.println(stagiaire);
 //			 }
 
-//			
+			
 			
 			System.out.println("Debut suppression-----------------------------------------");
 
+
 			gestStag.supprimerDansArbre(unStagiaire0, ligneRacine, fichierAStructurer, 0, 0, 0);
-			
-			
-			fichierAStructurer.seek(0);
-			ligneRacine = fichierAStructurer.readInt();
-			
-			for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine, "C:/Users/Idriss/Desktop/fichierStagiairesTest6.bin")) {
+
+			for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine, "C:/Users/Rose/Desktop/fichierStagiairesTest5.bin")) {
 				System.out.println(stagiaire);
 			}
 
