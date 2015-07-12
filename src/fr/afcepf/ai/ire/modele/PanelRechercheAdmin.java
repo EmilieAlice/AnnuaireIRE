@@ -45,7 +45,7 @@ public class PanelRechercheAdmin extends BorderPane {
 	private Button btnSupprimer = new Button("Supprimer");
 	private Button btnMettreAJour = new Button("Mettre à jour");
 
-	private TableView<Stagiaire> tableVue = new TableView<>();
+	private TableView<Stagiaire> tableVue;
 
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
@@ -53,6 +53,9 @@ public class PanelRechercheAdmin extends BorderPane {
 	@SuppressWarnings("unchecked")
 	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
 			String cheminAnnuaireALire) throws IOException {
+		
+		tableVue = new TableView<>();
+		
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
 		this.setBottom(panelBottom);
@@ -109,9 +112,12 @@ public class PanelRechercheAdmin extends BorderPane {
 			System.out.println("erreur de Lecture de la liste");
 			e.getMessage();
 		}
+		
 		raf.seek(0);
 		final int indexPere = raf.readInt();
+		
 		tableVue.setItems(listPourTableau);
+		
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {

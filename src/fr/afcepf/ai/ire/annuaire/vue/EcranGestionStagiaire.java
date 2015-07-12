@@ -39,14 +39,17 @@ public class EcranGestionStagiaire extends Application{
 	
 	@Override
 	public void start(final Stage stage) throws Exception {
+		//Permet d'ecrire un message dans le panels l'ouverture de l'appli
+		panelPrincipal.setCenter(new Label("Veuillez selectionner un annuaire à afficher."));
 		
-		
+		//BOUTON DU CHOIX ANNUAIRE
 		btnGererAnnuaire.setPrefSize(150, 200);
 		btnGererAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				try {
 					choixAnnuaire = new GestionAnnuaire(stage);
+					//ON INITIALISE L'ANNUAIRE GRACE A LA CLASSE GestionAnnuaire
 					arbreBin.init(choixAnnuaire.getCheminDuFichierAChercher(), choixAnnuaire.getCheminDuFichierASauvegarder());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,6 +58,7 @@ public class EcranGestionStagiaire extends Application{
 			}
 		});
 		
+		//BOUTON D'AJOUT D'UN STAGIAIRE
 		btnAjout.setPrefSize(150, 200);
 		btnAjout.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -64,26 +68,28 @@ public class EcranGestionStagiaire extends Application{
 				panelAjout.setAlignment(Pos.CENTER);
 			}
 		});
+		btnAjout.setVisible(false);
+		
+		//BOUTON DE SUPPRESSION ET DE MISE A JOUR DES STAGIAIRES
 		btnAfficheSuppr.setPrefSize(150, 200);
 		btnAfficheSuppr.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
 				
 				try {
 					panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				panelPrincipal.setCenter(panelSuppr);
 			}
 		});
 	
+		
 		menus.getChildren().addAll(btnGererAnnuaire, btnAjout, btnAfficheSuppr);
 		
-		titre.setPrefHeight(60);
-		titre.setFont(Font.font("Verdana", 50));
+		titre.setPrefHeight(80);
+		titre.setFont(Font.font("Verdana", 60));
 		panelTitre.getChildren().add(titre);
 		panelTitre.setAlignment(Pos.CENTER);
 		
@@ -91,7 +97,7 @@ public class EcranGestionStagiaire extends Application{
 		panelPrincipal.setTop(panelTitre);
 		panelPrincipal.setLeft(menus);
 		
-		Scene scene = new Scene(panelPrincipal, 1000, 600);
+		Scene scene = new Scene(panelPrincipal, 1200, 650);
 		stage.setTitle("Gestion des Stagiaire");
 		stage.setScene(scene);
 		stage.show();
