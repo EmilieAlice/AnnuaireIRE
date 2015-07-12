@@ -38,12 +38,13 @@ public class PanelRechercheUtil extends BorderPane {
 
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
+	
 
 	@SuppressWarnings("unchecked")
 	public PanelRechercheUtil(CreationAjoutArbreBinaire arbreBin) {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
-
+		tableVue.setEditable(true);
 		panelTop.getChildren().addAll(labelNomStagiaire, textNomStagiaire,
 				labelDepartementStagiaire, textDepartementStagiaire,
 				labelPromoStagiaire, textPromoStagiaire, btnRechercher);

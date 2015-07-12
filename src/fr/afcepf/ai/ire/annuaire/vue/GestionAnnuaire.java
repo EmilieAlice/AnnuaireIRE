@@ -1,6 +1,9 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.RandomAccessFile;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +18,7 @@ public class GestionAnnuaire extends BorderPane {
 	private String cheminDuFichierAChercher;
 	private String cheminDuFichierASauvegarder;
 
-	public GestionAnnuaire(final Stage stage) {
+	public GestionAnnuaire(final Stage stage) throws FileNotFoundException {
 
 		FileChooser fichierAChercher = new FileChooser();
 		fichierAChercher.setTitle("Selectionnez un fichier source");
@@ -28,6 +31,7 @@ public class GestionAnnuaire extends BorderPane {
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
 			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace(
 					"\\", "/");
+			System.out.println("je cherche : " + cheminDuFichierAChercher);
 		}
 
 		FileChooser fichierASauvegarder = new FileChooser();
@@ -39,13 +43,13 @@ public class GestionAnnuaire extends BorderPane {
 				new FileChooser.ExtensionFilter("Text bin(*.bin)", "*.bin"));
 
 		File fichierSaveSelectionne = fichierASauvegarder.showSaveDialog(stage);
-
+		cheminDuFichierASauvegarder = fichierSaveSelectionne.getAbsolutePath();
 		if (!fichierSaveSelectionne.getName().contains(".")) {
-			cheminDuFichierASauvegarder = fichierSaveSelectionne
-					.getAbsolutePath() + ".bin";
-			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder
-					.replace("\\", "/");
+			cheminDuFichierASauvegarder = cheminDuFichierASauvegarder + ".bin";
 		}
+		this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder.replace(
+				"\\", "/");
+		System.out.println("je save : " + cheminDuFichierASauvegarder);
 
 	}
 
@@ -69,6 +73,7 @@ public class GestionAnnuaire extends BorderPane {
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
 			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace(
 					"\\", "/");
+			System.out.println(cheminDuFichierAChercher);
 		}
 	}
 

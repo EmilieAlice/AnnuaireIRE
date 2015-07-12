@@ -1,5 +1,7 @@
 package fr.afcepf.ai.ire.modele;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +26,16 @@ import javafx.scene.layout.HBox;
 public class PanelRechercheAdmin extends BorderPane {
 
 	private Label labelNomStagiaire = new Label("Nom : ");
+	private Label labelPrenomStagiaire = new Label("Prenom : ");
 	private Label labelDepartementStagiaire = new Label("Departement : ");
 	private Label labelPromoStagiaire = new Label("Promo : ");
+	private Label labelAnneeStagiaire = new Label("Annee : ");
 
 	private TextField textNomStagiaire = new TextField();
+	private TextField textPrenomStagiaire = new TextField();
 	private TextField textDepartementStagiaire = new TextField();
 	private TextField textPromoStagiaire = new TextField();
+	private TextField textAnneeStagiaire = new TextField();
 
 	private Button btnRechercher = new Button("Rechercher");
 
@@ -46,14 +52,18 @@ public class PanelRechercheAdmin extends BorderPane {
 
 	@SuppressWarnings("unchecked")
 	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
-			String cheminAnnuaireALire) {
+			String cheminAnnuaireALire) throws IOException {
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
 		this.setBottom(panelBottom);
+		
+		final RandomAccessFile raf = new RandomAccessFile(cheminAnnuaireALire, "rwd");
 
 		panelTop.getChildren().addAll(labelNomStagiaire, textNomStagiaire,
+				labelPrenomStagiaire, textPrenomStagiaire,
 				labelDepartementStagiaire, textDepartementStagiaire,
-				labelPromoStagiaire, textPromoStagiaire, btnRechercher);
+				labelPromoStagiaire, textPromoStagiaire, labelAnneeStagiaire,
+				textAnneeStagiaire, btnRechercher);
 		panelBottom.getChildren().addAll(btnSupprimer, btnMettreAJour);
 		panelBottom.setAlignment(Pos.CENTER);
 
@@ -88,10 +98,10 @@ public class PanelRechercheAdmin extends BorderPane {
 		colAnnee.setMinWidth(75);
 		colAnnee.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"annee"));
-		
+
 		tableVue.getColumns().addAll(colNom, colPrenom, colDepartement,
 				colPromo, colAnnee);
-		
+
 		try {
 			listPourTableau = FXCollections.observableArrayList(arbreBin
 					.lireAnnuaire(0, cheminAnnuaireALire));
@@ -99,12 +109,13 @@ public class PanelRechercheAdmin extends BorderPane {
 			System.out.println("erreur de Lecture de la liste");
 			e.getMessage();
 		}
-		tableVue.getItems().clear();
+		raf.seek(0);
+		final int indexPere = raf.readInt();
 		tableVue.setItems(listPourTableau);
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				
+
 				List<Stagiaire> listeStagiaire = new ArrayList<>();
 				String champNom = textNomStagiaire.getText();
 				String champDep = textDepartementStagiaire.getText();
@@ -112,9 +123,8 @@ public class PanelRechercheAdmin extends BorderPane {
 				try {
 					if (!champNom.equals("") && champDep.equals("")
 							&& champPromo.equals("")) {
-						listeStagiaire = gestionStagiaire
-								.rechercherParNom(champNom,
-										arbreBin.getSauvegarde(), 0);
+						listeStagiaire = gestionStagiaire.rechercherParNom(
+								champNom, arbreBin.getSauvegarde(), 0);
 					} else {
 						if (champNom.equals("") && !champDep.equals("")
 								&& champPromo.equals("")) {
@@ -208,8 +218,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(ActionEvent arg0) {
 				Stagiaire stagiaire = tableVue.getSelectionModel()
 						.getSelectedItem();
-				gestionStagiaire.supprimer(stagiaire.getNom(), tableVue
-						.getSelectionModel().getSelectedIndex());
+				gestionStagiaire.supprimerDansArbre(stagiaire, indexPere, raf, 0, 0, 0);
 				listPourTableau.remove(stagiaire);
 			}
 		});

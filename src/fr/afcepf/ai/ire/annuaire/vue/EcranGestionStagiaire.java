@@ -1,5 +1,7 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
+import java.io.IOException;
+
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.modele.PanelAjout;
 import fr.afcepf.ai.ire.modele.PanelRechercheAdmin;
@@ -43,13 +45,13 @@ public class EcranGestionStagiaire extends Application{
 		btnGererAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				choixAnnuaire = new GestionAnnuaire(stage);
-				panelPrincipal.setCenter(choixAnnuaire);
 				try {
+					choixAnnuaire = new GestionAnnuaire(stage);
 					arbreBin.init(choixAnnuaire.getCheminDuFichierAChercher(), choixAnnuaire.getCheminDuFichierASauvegarder());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				panelPrincipal.setCenter(choixAnnuaire);
 			}
 		});
 		
@@ -68,7 +70,12 @@ public class EcranGestionStagiaire extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				
-				panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde());
+				try {
+					panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin.getSauvegarde());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				panelPrincipal.setCenter(panelSuppr);
 			}
 		});
