@@ -31,15 +31,15 @@ public class CreationAnnuaireTest {
 			// System.out.println(stagiaire);
 			// }
 
-			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Rose/Desktop/fichierStagiairesTest5.bin", "rwd");
+			RandomAccessFile fichierAStructurer = new RandomAccessFile("C:/Users/Alice/Desktop/fichierStagiairesTest5.bin", "rwd");
 
-			Stagiaire unStagiaire0 = new Stagiaire("FREVA", "Benjamin", "95", "ATOD 7", "2009");
-			// unStagiaire0.setChampsPere(-1);
-			// unStagiaire0.setChampsFilsGauche(-1);
-			// unStagiaire0.setChampsFilsDroit(-1);
-			// unStagiaire0.setChampsFilsCache(-1);
+			Stagiaire unStagiaire0 = new Stagiaire("BEN AISSA", "Mohamed Fadhel", "95", "AI 84", "2012");
+//			 unStagiaire0.setChampsPere(-1);
+//			 unStagiaire0.setChampsFilsGauche(-1);
+//			 unStagiaire0.setChampsFilsDroit(-1);
+//			 unStagiaire0.setChampsFilsCache(-1);
 //			 gestStag.ajouter(unStagiaire0,
-//			 "C:/Users/Rose/Desktop/fichierStagiairesTest0.bin", caab);
+//			 "C:/Users/Alice/Desktop/fichierStagiairesTest5.bin", caab);
 
 			// gestStag.rechercherParNom("Waille",
 			// "C:/Users/Stagiaire/Desktop/fichierStagiairesTest.bin", 0);
@@ -64,7 +64,7 @@ public class CreationAnnuaireTest {
 
 			gestStag.supprimerDansArbre(unStagiaire0, ligneRacine, fichierAStructurer, 0, 0, 0);
 
-			for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine, "C:/Users/Rose/Desktop/fichierStagiairesTest5.bin")) {
+			for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine, "C:/Users/Alice/Desktop/fichierStagiairesTest5.bin")) {
 				System.out.println(stagiaire);
 			}
 
