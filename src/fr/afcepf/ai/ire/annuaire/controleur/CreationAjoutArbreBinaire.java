@@ -38,7 +38,7 @@ public class CreationAjoutArbreBinaire {
 
 	private String recuperation;
 	private String sauvegarde;
-	private List<Stagiaire> listeStagiaire = new ArrayList<>();
+//	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 	private RandomAccessFile fichierAStructurer;
 
 	public void init(String recuperation, String sauvegarde) throws Exception {
@@ -95,22 +95,23 @@ public class CreationAjoutArbreBinaire {
 
 	public List<Stagiaire> lireAnnuaire(int indexRacine,
 			String chemainAnnuaireALire) throws Exception {
+		List<Stagiaire> listeStagiaire = new ArrayList<>();
 		RandomAccessFile raf = new RandomAccessFile(chemainAnnuaireALire, "r");
-		return parcourirAnnuaire(raf, indexRacine);
+		return parcourirAnnuaire(raf, indexRacine, listeStagiaire);
 	}
 
 	private List<Stagiaire> parcourirAnnuaire(RandomAccessFile raf,
-			int indexRacine) {
+			int indexRacine, List<Stagiaire> listeStagiaire) {
 		Stagiaire sta = lireUnStagiaire(raf, indexRacine);
 		if (sta.getChampsFilsGauche() != -1) {
-			parcourirAnnuaire(raf, sta.getChampsFilsGauche());
+			parcourirAnnuaire(raf, sta.getChampsFilsGauche(), listeStagiaire);
 		}
 		if (sta.getChampsFilCache() != -1) {
-			parcourirAnnuaire(raf, sta.getChampsFilCache());
+			parcourirAnnuaire(raf, sta.getChampsFilCache(), listeStagiaire);
 		}
 		listeStagiaire.add(sta);
 		if (sta.getChampsFilsDroit() != -1) {
-			parcourirAnnuaire(raf, sta.getChampsFilsDroit());
+			parcourirAnnuaire(raf, sta.getChampsFilsDroit(), listeStagiaire);
 		}
 		return listeStagiaire;
 
