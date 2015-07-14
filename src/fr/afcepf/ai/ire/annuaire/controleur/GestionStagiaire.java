@@ -1,11 +1,8 @@
 package fr.afcepf.ai.ire.annuaire.controleur;
 
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
@@ -423,45 +420,47 @@ public class GestionStagiaire implements IGestionStagiaire {
 	}
 
 	@Override
-	public List<Stagiaire> rechercherParNom(
-			String nomStagiaireRecherche, String chemainRaf, int numLigne)
-			throws Exception {
+	public List<Stagiaire> rechercherParNom(String nomStagiaireRecherche,
+			String chemainRaf, int numLigne) throws Exception {
 		RandomAccessFile raf = new RandomAccessFile(chemainRaf, "r");
 		Stagiaire stagiairePere = CreationAjoutArbreBinaire.lireUnStagiaire(
 				raf, numLigne);
 		String nomStagierePere = stagiairePere.getNom().toLowerCase().trim();
 		String nomStagiaireARechercher = nomStagiaireRecherche.toLowerCase()
 				.trim();
-		if(nomStagierePere.startsWith(nomStagiaireARechercher)){
+		if (nomStagierePere.startsWith(nomStagiaireARechercher)) {
 			listeAAfficher.add(stagiairePere);
-			if (stagiairePere.getChampsFilCache() != -1){
+			if (stagiairePere.getChampsFilCache() != -1) {
 				numLigne = stagiairePere.getChampsFilCache();
 				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
 			}
 			if (stagiairePere.getChampsFilsGauche() != -1) {
 				numLigne = stagiairePere.getChampsFilsGauche();
 				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
-			} 
+			}
 			if (stagiairePere.getChampsFilsDroit() != -1) {
 				numLigne = stagiairePere.getChampsFilsDroit();
 				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
 			}
-		}
-		else{
+		} else {
 			if (nomStagiaireARechercher.compareToIgnoreCase(nomStagierePere) < 0) {
 				if (stagiairePere.getChampsFilsGauche() != -1) {
 					numLigne = stagiairePere.getChampsFilsGauche();
-					rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+					rechercherParNom(nomStagiaireRecherche, chemainRaf,
+							numLigne);
 				}
-			} else if (nomStagiaireARechercher.compareToIgnoreCase(nomStagierePere) > 0) {
+			} else if (nomStagiaireARechercher
+					.compareToIgnoreCase(nomStagierePere) > 0) {
 				if (stagiairePere.getChampsFilsDroit() != -1) {
 					numLigne = stagiairePere.getChampsFilsDroit();
-					rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+					rechercherParNom(nomStagiaireRecherche, chemainRaf,
+							numLigne);
 				}
 			} else {
 				if (stagiairePere.getChampsFilCache() != -1) {
 					numLigne = stagiairePere.getChampsFilCache();
-					rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne);
+					rechercherParNom(nomStagiaireRecherche, chemainRaf,
+							numLigne);
 				}
 			}
 		}
@@ -470,29 +469,33 @@ public class GestionStagiaire implements IGestionStagiaire {
 	}
 
 	@Override
-	public List<Stagiaire> rechercherParPromo(String promoStagiaireRecherche,
+	public List<Stagiaire> rechercherParPrenom(String prenomStagiaireRecherche,
 			List<Stagiaire> listeARecuperer) {
-		listeAAfficher.clear();
+		List<Stagiaire> listePrenom = new ArrayList<>();
 		try {
 			for (Stagiaire stagiaire : listeARecuperer) {
-				if (stagiaire.getPromo().toLowerCase().trim()
-						.contains(promoStagiaireRecherche.toLowerCase().trim())) {
-					listeAAfficher.add(new Stagiaire(stagiaire.getNom(),
-							stagiaire.getPrenom(), stagiaire.getDepartement(),
-							stagiaire.getPromo(), stagiaire.getAnnee()));
+				if (stagiaire
+						.getPrenom()
+						.toLowerCase()
+						.trim()
+						.contains(prenomStagiaireRecherche.toLowerCase().trim())) {
+					if (listePrenom.size() != 0) {
+						listePrenom.removeAll(listePrenom);
+					}
+					listePrenom.add(stagiaire);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return listeAAfficher;
+		return listePrenom;
 	}
 
 	@Override
 	public List<Stagiaire> rechercherParDepartement(
 			String departementStagiaireRecherche,
 			List<Stagiaire> listeARecuperer) {
-		listeAAfficher.clear();
+		List<Stagiaire> listeDepartement = new ArrayList<>();
 		try {
 			for (Stagiaire stagiaire : listeARecuperer) {
 				if (stagiaire
@@ -502,56 +505,104 @@ public class GestionStagiaire implements IGestionStagiaire {
 						.contains(
 								departementStagiaireRecherche.toLowerCase()
 										.trim())) {
-					listeAAfficher.add(new Stagiaire(stagiaire.getNom(),
-							stagiaire.getPrenom(), stagiaire.getDepartement(),
-							stagiaire.getPromo(), stagiaire.getAnnee()));
+					listeDepartement.add(stagiaire);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return listeAAfficher;
+		return listeDepartement;
 	}
 
 	@Override
-	public List<Stagiaire> rechercherParPrenom(String prenomStagiaireRecherche,
+	public List<Stagiaire> rechercherParPromo(String promoStagiaireRecherche,
 			List<Stagiaire> listeARecuperer) {
+		List<Stagiaire> listePromo = new ArrayList<>();
 		try {
-			listeAAfficher.clear();
 			for (Stagiaire stagiaire : listeARecuperer) {
-				if (stagiaire
-						.getPrenom()
-						.toLowerCase()
-						.trim()
-						.contains(prenomStagiaireRecherche.toLowerCase().trim())) {
-					listeAAfficher.add(new Stagiaire(stagiaire.getNom(),
-							stagiaire.getPrenom(), stagiaire.getDepartement(),
-							stagiaire.getPromo(), stagiaire.getAnnee()));
+				if (stagiaire.getPromo().toLowerCase().trim()
+						.contains(promoStagiaireRecherche.toLowerCase().trim())) {
+					listePromo.add(stagiaire);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return listeAAfficher;
+		return listePromo;
 	}
 
 	@Override
 	public List<Stagiaire> rechercherParAnnee(String anneeStagiaireRecherche,
 			List<Stagiaire> listeARecuperer) {
-		listeAAfficher.clear();
+		List<Stagiaire> listeAnnee = new ArrayList<>();
 		try {
 			for (Stagiaire stagiaire : listeARecuperer) {
 				if (stagiaire.getAnnee().toLowerCase().trim()
 						.contains(anneeStagiaireRecherche.toLowerCase().trim())) {
-					listeAAfficher.add(new Stagiaire(stagiaire.getNom(),
-							stagiaire.getPrenom(), stagiaire.getDepartement(),
-							stagiaire.getPromo(), stagiaire.getAnnee()));
+					listeAnnee.add(stagiaire);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return listeAAfficher;
+		return listeAnnee;
 	}
 
+	public List<Stagiaire> rechercherEnMulticritere(String nom, String prenom,
+			String departement, String promo, String annee,
+			List<Stagiaire> listeARecuperer, String chemainRaf)
+			throws Exception {
+		
+		if (!nom.equals("")) {
+			System.out.println("dans nom non null");
+			List<Stagiaire> laListe = rechercherParNom(nom, chemainRaf, 0);
+			if (!prenom.equals("")) {
+				System.out.println("prenom non null");
+				List<Stagiaire> listePrenom = rechercherParPrenom(prenom, laListe);
+				laListe.removeAll(laListe);
+				laListe = listePrenom;
+			}
+			if (!departement.equals("")) {
+				System.out.println("departement non null");
+				List<Stagiaire> listeDepartement = rechercherParDepartement(departement, laListe);
+				laListe.clear();
+				laListe = listeDepartement;
+			}
+			if (!promo.equals("")) {
+				System.out.println("promo non null");
+				List<Stagiaire> listePromo = rechercherParPromo(promo, laListe);
+				laListe.clear();
+				laListe = listePromo;
+			}
+			if (!annee.equals("")) {
+				System.out.println("annee non null");
+				List<Stagiaire> listeAnnee = rechercherParAnnee(annee, laListe);
+				laListe.clear();
+				laListe = listeAnnee;
+			}
+			listeAAfficher = laListe;
+		}
+		else {
+			System.out.println("dans nom null");
+			if (!prenom.equals("")) {
+				System.out.println("prenom non null");
+				listeARecuperer = rechercherParPrenom(prenom, listeARecuperer);
+			}
+			if (!departement.equals("")) {
+				System.out.println("departement non null");
+				listeARecuperer = rechercherParDepartement(departement, listeARecuperer);
+			}
+			if (!promo.equals("")) {
+				System.out.println("promo non null");
+				listeARecuperer = rechercherParPromo(promo, listeARecuperer);
+			}
+			if (!annee.equals("")) {
+				System.out.println("annee non null");
+				listeARecuperer = rechercherParAnnee(annee, listeARecuperer);
+			}
+			listeAAfficher = listeARecuperer;
+		}
+		return listeAAfficher;
+
+	}
 }

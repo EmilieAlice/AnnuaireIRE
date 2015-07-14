@@ -220,7 +220,7 @@ public class CreationAjoutArbreBinaire {
 			int champsFC = fichierAStructurer.readInt();
 
 			unStagiaire.setNom(rubriqueNom.toUpperCase().trim());
-			unStagiaire.setPrenom(rubriquePrenom.trim());
+			unStagiaire.setPrenom(rubriquePrenom.substring(0, 1).toUpperCase() + rubriquePrenom.substring(1).trim());
 			unStagiaire.setDepartement(rubriqueDepartement.trim());
 			unStagiaire.setPromo(rubriquePromo.trim());
 			unStagiaire.setAnnee(rubriqueAnnee.trim());
