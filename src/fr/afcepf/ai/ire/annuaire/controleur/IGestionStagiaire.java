@@ -13,7 +13,10 @@ public interface IGestionStagiaire {
 			RandomAccessFile fichierAStructurer, int numeroDeLigneStagiaire,
 			int positionChamps, int fils);
 
-	void miseAJour(Stagiaire stagiaire);
+	void miseAJour(RandomAccessFile fichierAStructurer,
+			Stagiaire unStagiaire, Stagiaire unStagiairePourModifier,
+			int indexPere, int numeroDeLigneStagiaire, int positionChamps,
+			int fils);
 
 	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne)
 			throws Exception;

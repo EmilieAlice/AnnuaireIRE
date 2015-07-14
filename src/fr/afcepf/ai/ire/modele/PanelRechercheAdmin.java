@@ -17,9 +17,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCellBuilder;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -49,12 +51,22 @@ public class PanelRechercheAdmin extends BorderPane {
 
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
+	
+	private String nouveauNom;
+	private String nouveauPrenom;
+	private String nouveauDepartement;
+	private String nouvellePromo;
+	private String nouvelleAnne;
+	private Stagiaire leStagiaire = new Stagiaire();
 
 	@SuppressWarnings("unchecked")
 	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
 			final String cheminAnnuaireALire) throws IOException {
 
 		tableVue = new TableView<>();
+		
+		//REND LE TABLEAU EDITABLE
+		tableVue.setEditable(true);
 
 		this.setTop(panelTop);
 		this.setCenter(tableVue);
@@ -76,6 +88,16 @@ public class PanelRechercheAdmin extends BorderPane {
 		colNom.setMinWidth(200);
 		colNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"nom"));
+		colNom.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colNom.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
+
+			@Override
+			public void handle(CellEditEvent cee) {
+				nouveauNom = cee.getNewValue().toString();
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setNom(nouveauNom);
+				
+			}
+		});
 
 		TableColumn<Stagiaire, String> colPrenom = new TableColumn<>();
 		colPrenom.setText("Prenom");
@@ -83,6 +105,16 @@ public class PanelRechercheAdmin extends BorderPane {
 		colPrenom
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"prenom"));
+		colPrenom.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colPrenom.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
+
+			@Override
+			public void handle(CellEditEvent cee) {
+				nouveauPrenom = cee.getNewValue().toString();
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPrenom(nouveauPrenom);
+				
+			}
+		});
 
 		TableColumn<Stagiaire, String> colDepartement = new TableColumn<>();
 		colDepartement.setText("Departement");
@@ -90,18 +122,48 @@ public class PanelRechercheAdmin extends BorderPane {
 		colDepartement
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"departement"));
+		colDepartement.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colDepartement.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
+
+			@Override
+			public void handle(CellEditEvent cee) {
+				nouveauDepartement = cee.getNewValue().toString();
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setDepartement(nouveauDepartement);
+				
+			}
+		});
 
 		TableColumn<Stagiaire, String> colPromo = new TableColumn<>();
 		colPromo.setText("Promo");
 		colPromo.setMinWidth(75);
 		colPromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"promo"));
+		colPromo.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colPromo.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
+
+			@Override
+			public void handle(CellEditEvent cee) {
+				nouvellePromo = cee.getNewValue().toString();
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPromo(nouvellePromo);
+				
+			}
+		});
 
 		TableColumn<Stagiaire, String> colAnnee = new TableColumn<>();
 		colAnnee.setText("Annee");
 		colAnnee.setMinWidth(75);
 		colAnnee.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"annee"));
+		colAnnee.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colAnnee.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
+
+			@Override
+			public void handle(CellEditEvent cee) {
+				nouvelleAnne = cee.getNewValue().toString();
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setAnnee(nouvelleAnne);
+				
+			}
+		});
 
 		tableVue.getColumns().addAll(colNom, colPrenom, colDepartement,
 				colPromo, colAnnee);
@@ -152,14 +214,32 @@ public class PanelRechercheAdmin extends BorderPane {
 				listPourTableau.remove(stagiaire);
 			}
 		});
+		
+		leStagiaire = tableVue.getSelectionModel().getSelectedItem();
 
 		btnMettreAJour.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Stagiaire stagiaire = tableVue.getSelectionModel()
-						.getSelectedItem();
-				gestionStagiaire.miseAJour(stagiaire);
-				listPourTableau.remove(stagiaire);
+				
+				Stagiaire nouveauStagiaire = new Stagiaire(nouveauNom, nouveauPrenom, nouveauDepartement, nouvellePromo, nouvelleAnne);
+				System.out.println(nouveauStagiaire);
+				
+				if (nouveauNom.equals("")) {
+					gestionStagiaire.miseAJour(raf, leStagiaire, nouveauStagiaire, 0,0,0,0);
+				}
+				else {
+					nouveauStagiaire = GestionStagiaire.remplaceChampsStagiaire(leStagiaire, nouveauStagiaire);
+					nouveauStagiaire.setChampsPere(-1);
+					nouveauStagiaire.setChampsFilsGauche(-1);
+					nouveauStagiaire.setChampsFilsDroit(-1);
+					nouveauStagiaire.setChampsFilsCache(-1);
+					gestionStagiaire.supprimerDansArbre(leStagiaire, 0, raf, 0, 0, 0);
+					gestionStagiaire.ajouter(nouveauStagiaire, cheminAnnuaireALire, arbreBin);
+				}
+				
+				
+				listPourTableau.remove(leStagiaire);
+				listPourTableau.add(nouveauStagiaire);
 			}
 		});
 	}

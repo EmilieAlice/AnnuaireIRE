@@ -1,5 +1,6 @@
 package fr.afcepf.ai.ire.annuaire.controleur;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +65,8 @@ public class GestionStagiaire implements IGestionStagiaire {
 
 				if (fils == ligneRacine) {
 					System.err
-							.println("je suis une RACINE les gars ! ma ligne est "
-									+ fils);
+					.println("je suis une RACINE les gars ! ma ligne est "
+							+ fils);
 
 					stagiaireAComparer = rechercherBonStagiaireCache(
 							fichierAStructurer, unStagiaire,
@@ -79,9 +80,9 @@ public class GestionStagiaire implements IGestionStagiaire {
 					if (stagiaireAComparer.getChampsFilCache() != -1) {
 
 						System.err
-								.println("niveau racine avec presence fils cache ligne "
-										+ stagiaireAComparer
-												.getChampsFilCache());
+						.println("niveau racine avec presence fils cache ligne "
+								+ stagiaireAComparer
+								.getChampsFilCache());
 
 						Stagiaire stagiaireARemonter = CreationAjoutArbreBinaire
 								.lireUnStagiaire(fichierAStructurer,
@@ -102,9 +103,9 @@ public class GestionStagiaire implements IGestionStagiaire {
 					else {
 
 						System.err
-								.println("niveau racine SANS fils cache car ligne FC = "
-										+ stagiaireAComparer
-												.getChampsFilCache());
+						.println("niveau racine SANS fils cache car ligne FC = "
+								+ stagiaireAComparer
+								.getChampsFilCache());
 
 						if (stagiaireAComparer.getChampsFilCache() != -1) {
 
@@ -124,13 +125,13 @@ public class GestionStagiaire implements IGestionStagiaire {
 
 						} else {
 							System.out
-									.println("c'est une feuille qui est effacée");
+							.println("c'est une feuille qui est effacée");
 							CreationAjoutArbreBinaire
-									.modifierFilsDuPere(
-											fichierAStructurer,
-											numeroLigneStagiaireARemonter,
-											numeroDeLigneStagiaire,
-											CreationAjoutArbreBinaire.POSITIONFILSDROIT);
+							.modifierFilsDuPere(
+									fichierAStructurer,
+									numeroLigneStagiaireARemonter,
+									numeroDeLigneStagiaire,
+									CreationAjoutArbreBinaire.POSITIONFILSDROIT);
 						}
 
 					}
@@ -177,13 +178,13 @@ public class GestionStagiaire implements IGestionStagiaire {
 									positionChamps);
 						} else {
 							System.out
-									.println("c'est une feuille qui est remontée");
+							.println("c'est une feuille qui est remontée");
 							CreationAjoutArbreBinaire
-									.modifierFilsDuPere(
-											fichierAStructurer,
-											numeroLigneStagiaireARemonter,
-											numeroDeLigneStagiaire,
-											CreationAjoutArbreBinaire.POSITIONFILSDROIT);
+							.modifierFilsDuPere(
+									fichierAStructurer,
+									numeroLigneStagiaireARemonter,
+									numeroDeLigneStagiaire,
+									CreationAjoutArbreBinaire.POSITIONFILSDROIT);
 						}
 
 					}
@@ -225,8 +226,8 @@ public class GestionStagiaire implements IGestionStagiaire {
 									stagiaireAComparer.getChampsPere());
 
 							System.err
-									.println("position champs a modif dans pere"
-											+ positionChamps);
+							.println("position champs a modif dans pere"
+									+ positionChamps);
 
 							CreationAjoutArbreBinaire.modifierFilsDuPere(
 									fichierAStructurer,
@@ -238,7 +239,7 @@ public class GestionStagiaire implements IGestionStagiaire {
 						// si deux fils pour stagiaire a suppr dans SAD
 						else {
 							System.err
-									.println("test pour le cas presence FG et FD");
+							.println("test pour le cas presence FG et FD");
 							int numeroLigneStagiaireARemonter = stagiaireAComparer
 									.getChampsFilsGauche();
 							System.out.println("a remonter : "
@@ -281,7 +282,7 @@ public class GestionStagiaire implements IGestionStagiaire {
 				fichierAStructurer.writeInt(numeroLigneStagiaireARemonter);
 			} else {
 				System.out
-						.println("étape 1 bis changement Fils du pere du staAComp");
+				.println("étape 1 bis changement Fils du pere du staAComp");
 				CreationAjoutArbreBinaire.modifierFilsDuPere(
 						fichierAStructurer, numeroLigneStagiaireARemonter,
 						stagiaireAComparer.getChampsPere(), positionChamps);
@@ -344,7 +345,7 @@ public class GestionStagiaire implements IGestionStagiaire {
 			RandomAccessFile fichierAStructurer, Stagiaire stagiaireARemonter,
 			int numeroLigneStagiaireARemonter, Stagiaire stagiaireAComparer,
 			int numeroLigneStagiaireAcomparer, int positionChamps)
-			throws Exception {
+					throws Exception {
 
 		System.err.println("entre dans procedure remonterFilsCache");
 
@@ -415,8 +416,103 @@ public class GestionStagiaire implements IGestionStagiaire {
 	}
 
 	@Override
-	public void miseAJour(Stagiaire stagiaire) {
+	public void miseAJour(RandomAccessFile fichierAStructurer,
+			Stagiaire unStagiaire, Stagiaire unStagiairePourModifier,
+			int indexPere, int numeroDeLigneStagiaire, int positionChamps,
+			int fils) {
 
+		Stagiaire stagiaireAComparer = new Stagiaire();
+
+		try {
+
+			stagiaireAComparer = CreationAjoutArbreBinaire.lireUnStagiaire(
+					fichierAStructurer, indexPere);
+			if (unStagiaire.getNom().trim()
+					.compareToIgnoreCase(stagiaireAComparer.getNom().trim()) < 0) {
+				System.err.println("je suis fils gauche "
+						+ stagiaireAComparer.getChampsFilsGauche() + " de "
+						+ stagiaireAComparer.getNom());
+				fils = stagiaireAComparer.getChampsFilsGauche();
+				positionChamps = CreationAjoutArbreBinaire.POSITIONPERE;
+				miseAJour(fichierAStructurer, unStagiaire,
+						unStagiairePourModifier, fils, numeroDeLigneStagiaire,
+						positionChamps, fils);
+
+			} else if (unStagiaire.getNom().trim()
+					.compareToIgnoreCase(stagiaireAComparer.getNom().trim()) > 0) {
+				System.err.println("je suis fils droit "
+						+ stagiaireAComparer.getChampsFilsDroit() + " de "
+						+ stagiaireAComparer.getNom());
+				fils = stagiaireAComparer.getChampsFilsDroit();
+				positionChamps = CreationAjoutArbreBinaire.POSITIONFILSGAUCHE;
+				miseAJour(fichierAStructurer, unStagiaire,
+						unStagiairePourModifier, fils, numeroDeLigneStagiaire,
+						positionChamps, fils);
+
+				// QUAND TROUVE
+			} else {
+
+				stagiaireAComparer = rechercherBonStagiaireCache(
+						fichierAStructurer, unStagiaire, stagiaireAComparer,
+						stagiaireAComparer.getChampsFilCache());
+
+				System.out.println("j'y suis " + unStagiaire + " ma ligne --> "
+						+ fils);
+
+				setStagiaire(fichierAStructurer,stagiaireAComparer,unStagiairePourModifier, fils);
+
+
+			}
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+
+
+	public static void setStagiaire (RandomAccessFile fichierAStructurer, Stagiaire stagiaireAComparer, Stagiaire unStagiairePourModifier, int fils){
+
+		remplaceChampsStagiaire(stagiaireAComparer, unStagiairePourModifier);
+
+		String rubriqueNom = CreationAjoutArbreBinaire.ajouteEspace(unStagiairePourModifier.getNom(), CreationAjoutArbreBinaire.NOM);
+		String rubriquePrenom = CreationAjoutArbreBinaire.ajouteEspace(unStagiairePourModifier.getPrenom(), CreationAjoutArbreBinaire.PRENOM);
+		String rubriqueDepartement = CreationAjoutArbreBinaire.ajouteEspace(unStagiairePourModifier.getDepartement(),
+				CreationAjoutArbreBinaire.DEPARTEMENT);
+		String rubriquePromo = CreationAjoutArbreBinaire.ajouteEspace(unStagiairePourModifier.getPromo(), CreationAjoutArbreBinaire.PROMO);
+		String rubriqueAnnee = CreationAjoutArbreBinaire.ajouteEspace(unStagiairePourModifier.getAnnee(), CreationAjoutArbreBinaire.ANNEE);
+		try {
+			fichierAStructurer.seek(CreationAjoutArbreBinaire.LONGUEURLIGNE*fils+CreationAjoutArbreBinaire.RACINE);
+			fichierAStructurer.writeChars(rubriqueNom + rubriquePrenom
+					+ rubriqueDepartement + rubriquePromo + rubriqueAnnee);
+
+		} catch (Exception e) {
+			System.out.println("Pas d'ecriture sur le raf");
+		}
+
+	}
+
+	public static Stagiaire remplaceChampsStagiaire(Stagiaire stagiaireAComparer, Stagiaire unStagiairePourModifier){
+
+		if(unStagiairePourModifier.getNom().equals("")){
+			unStagiairePourModifier.setNom(stagiaireAComparer.getNom());
+		}
+		if(unStagiairePourModifier.getPrenom().equals("")){
+			unStagiairePourModifier.setPrenom(stagiaireAComparer.getPrenom());
+
+		}
+		if(unStagiairePourModifier.getDepartement().equals("")){
+			unStagiairePourModifier.setDepartement(stagiaireAComparer.getDepartement());
+
+		}
+		if(unStagiairePourModifier.getPromo().equals("")){
+			unStagiairePourModifier.setPromo(stagiaireAComparer.getPromo());
+
+		}
+		if(unStagiairePourModifier.getAnnee().equals("")){
+			unStagiairePourModifier.setAnnee(stagiaireAComparer.getAnnee());
+		}
+		return unStagiairePourModifier;
 	}
 
 	@Override
@@ -504,7 +600,7 @@ public class GestionStagiaire implements IGestionStagiaire {
 						.trim()
 						.contains(
 								departementStagiaireRecherche.toLowerCase()
-										.trim())) {
+								.trim())) {
 					listeDepartement.add(stagiaire);
 				}
 			}
@@ -551,8 +647,8 @@ public class GestionStagiaire implements IGestionStagiaire {
 	public List<Stagiaire> rechercherEnMulticritere(String nom, String prenom,
 			String departement, String promo, String annee,
 			List<Stagiaire> listeARecuperer, String chemainRaf)
-			throws Exception {
-		
+					throws Exception {
+
 		if (!nom.equals("")) {
 			List<Stagiaire> laListe = rechercherParNom(nom, chemainRaf, 0);
 			if (!prenom.equals("")) {
