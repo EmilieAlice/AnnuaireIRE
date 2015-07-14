@@ -554,28 +554,23 @@ public class GestionStagiaire implements IGestionStagiaire {
 			throws Exception {
 		
 		if (!nom.equals("")) {
-			System.out.println("dans nom non null");
 			List<Stagiaire> laListe = rechercherParNom(nom, chemainRaf, 0);
 			if (!prenom.equals("")) {
-				System.out.println("prenom non null");
 				List<Stagiaire> listePrenom = rechercherParPrenom(prenom, laListe);
 				laListe.removeAll(laListe);
 				laListe = listePrenom;
 			}
 			if (!departement.equals("")) {
-				System.out.println("departement non null");
 				List<Stagiaire> listeDepartement = rechercherParDepartement(departement, laListe);
 				laListe.clear();
 				laListe = listeDepartement;
 			}
 			if (!promo.equals("")) {
-				System.out.println("promo non null");
 				List<Stagiaire> listePromo = rechercherParPromo(promo, laListe);
 				laListe.clear();
 				laListe = listePromo;
 			}
 			if (!annee.equals("")) {
-				System.out.println("annee non null");
 				List<Stagiaire> listeAnnee = rechercherParAnnee(annee, laListe);
 				laListe.clear();
 				laListe = listeAnnee;
@@ -583,21 +578,16 @@ public class GestionStagiaire implements IGestionStagiaire {
 			listeAAfficher = laListe;
 		}
 		else {
-			System.out.println("dans nom null");
 			if (!prenom.equals("")) {
-				System.out.println("prenom non null");
 				listeARecuperer = rechercherParPrenom(prenom, listeARecuperer);
 			}
 			if (!departement.equals("")) {
-				System.out.println("departement non null");
 				listeARecuperer = rechercherParDepartement(departement, listeARecuperer);
 			}
 			if (!promo.equals("")) {
-				System.out.println("promo non null");
 				listeARecuperer = rechercherParPromo(promo, listeARecuperer);
 			}
 			if (!annee.equals("")) {
-				System.out.println("annee non null");
 				listeARecuperer = rechercherParAnnee(annee, listeARecuperer);
 			}
 			listeAAfficher = listeARecuperer;
