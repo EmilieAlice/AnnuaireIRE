@@ -52,11 +52,12 @@ public class PanelRechercheAdmin extends BorderPane {
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
 	
-	private String nouveauNom;
-	private String nouveauPrenom;
-	private String nouveauDepartement;
-	private String nouvellePromo;
-	private String nouvelleAnne;
+	private String nouveauNom="";
+	private String nouveauPrenom="";
+	private String nouveauDepartement="";
+	private String nouvellePromo="";
+	private String nouvelleAnne="";
+
 	private Stagiaire leStagiaire = new Stagiaire();
 
 	@SuppressWarnings("unchecked")
@@ -93,8 +94,8 @@ public class PanelRechercheAdmin extends BorderPane {
 
 			@Override
 			public void handle(CellEditEvent cee) {
-				nouveauNom = cee.getNewValue().toString();
-				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setNom(nouveauNom);
+				setNouveauNom(cee.getNewValue().toString());
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setNom(getNouveauNom());
 				
 			}
 		});
@@ -110,9 +111,8 @@ public class PanelRechercheAdmin extends BorderPane {
 
 			@Override
 			public void handle(CellEditEvent cee) {
-				nouveauPrenom = cee.getNewValue().toString();
-				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPrenom(nouveauPrenom);
-				
+				setNouveauPrenom(cee.getNewValue().toString());
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPrenom(getNouveauPrenom());
 			}
 		});
 
@@ -127,8 +127,8 @@ public class PanelRechercheAdmin extends BorderPane {
 
 			@Override
 			public void handle(CellEditEvent cee) {
-				nouveauDepartement = cee.getNewValue().toString();
-				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setDepartement(nouveauDepartement);
+				setNouveauDepartement(nouveauDepartement = cee.getNewValue().toString());
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setDepartement(getNouveauDepartement());
 				
 			}
 		});
@@ -143,8 +143,8 @@ public class PanelRechercheAdmin extends BorderPane {
 
 			@Override
 			public void handle(CellEditEvent cee) {
-				nouvellePromo = cee.getNewValue().toString();
-				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPromo(nouvellePromo);
+				setNouvellePromo(cee.getNewValue().toString());
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPromo(getNouvellePromo());
 				
 			}
 		});
@@ -159,8 +159,8 @@ public class PanelRechercheAdmin extends BorderPane {
 
 			@Override
 			public void handle(CellEditEvent cee) {
-				nouvelleAnne = cee.getNewValue().toString();
-				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setAnnee(nouvelleAnne);
+				setNouvelleAnne(cee.getNewValue().toString());
+				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setAnnee(getNouvelleAnne());
 				
 			}
 		});
@@ -180,6 +180,8 @@ public class PanelRechercheAdmin extends BorderPane {
 		final int indexPere = raf.readInt();
 
 		tableVue.setItems(listPourTableau);
+		
+		leStagiaire = tableVue.getSelectionModel().getSelectedItem();
 
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -215,32 +217,86 @@ public class PanelRechercheAdmin extends BorderPane {
 			}
 		});
 		
-		leStagiaire = tableVue.getSelectionModel().getSelectedItem();
 
+//		if(tableVue.getSelectionModel().getSelectedItem()!=null){
+//			leStagiaire = tableVue.getSelectionModel().getSelectedItem();
+//		}
+		
 		btnMettreAJour.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				
-				Stagiaire nouveauStagiaire = new Stagiaire(nouveauNom, nouveauPrenom, nouveauDepartement, nouvellePromo, nouvelleAnne);
+				System.out.println(leStagiaire);
+				
+				Stagiaire nouveauStagiaire = new Stagiaire(getNouveauNom(), getNouveauPrenom(), getNouveauDepartement(), getNouvellePromo(), getNouvelleAnne());
+				nouveauStagiaire.setChampsPere(-1);
+				nouveauStagiaire.setChampsFilsGauche(-1);
+				nouveauStagiaire.setChampsFilsDroit(-1);
+				nouveauStagiaire.setChampsFilsCache(-1);
+				System.out.println(getNouveauNom()+ getNouveauPrenom()+ getNouveauDepartement()+ getNouvellePromo()+ getNouvelleAnne());
+				System.out.println(leStagiaire);
 				System.out.println(nouveauStagiaire);
 				
-				if (nouveauNom.equals("")) {
-					gestionStagiaire.miseAJour(raf, leStagiaire, nouveauStagiaire, 0,0,0,0);
-				}
-				else {
-					nouveauStagiaire = GestionStagiaire.remplaceChampsStagiaire(leStagiaire, nouveauStagiaire);
-					nouveauStagiaire.setChampsPere(-1);
-					nouveauStagiaire.setChampsFilsGauche(-1);
-					nouveauStagiaire.setChampsFilsDroit(-1);
-					nouveauStagiaire.setChampsFilsCache(-1);
-					gestionStagiaire.supprimerDansArbre(leStagiaire, 0, raf, 0, 0, 0);
-					gestionStagiaire.ajouter(nouveauStagiaire, cheminAnnuaireALire, arbreBin);
-				}
+//				if (getNouveauNom().equals("")) {
+//					gestionStagiaire.miseAJour(raf, leStagiaire, nouveauStagiaire, 0,0,0,0);
+//				}
+//				else {
+//					nouveauStagiaire = GestionStagiaire.remplaceChampsStagiaire(leStagiaire, nouveauStagiaire);
+//					nouveauStagiaire.setChampsPere(-1);
+//					nouveauStagiaire.setChampsFilsGauche(-1);
+//					nouveauStagiaire.setChampsFilsDroit(-1);
+//					nouveauStagiaire.setChampsFilsCache(-1);
+//					gestionStagiaire.supprimerDansArbre(leStagiaire, 0, raf, 0, 0, 0);
+//					gestionStagiaire.ajouter(nouveauStagiaire, cheminAnnuaireALire, arbreBin);
+//				}
 				
 				
 				listPourTableau.remove(leStagiaire);
 				listPourTableau.add(nouveauStagiaire);
 			}
 		});
+	}
+	
+	
+	
+	
+	public final String getNouveauNom() {
+		return nouveauNom;
+	}
+
+	public final void setNouveauNom(String nouveauNom) {
+		this.nouveauNom = nouveauNom;
+	}
+
+	public final String getNouveauPrenom() {
+		return nouveauPrenom;
+	}
+
+	public final void setNouveauPrenom(String nouveauPrenom) {
+		this.nouveauPrenom = nouveauPrenom;
+	}
+
+	public final String getNouveauDepartement() {
+		return nouveauDepartement;
+	}
+
+	public final void setNouveauDepartement(String nouveauDepartement) {
+		this.nouveauDepartement = nouveauDepartement;
+	}
+
+	public final String getNouvellePromo() {
+		return nouvellePromo;
+	}
+
+	public final void setNouvellePromo(String nouvellePromo) {
+		this.nouvellePromo = nouvellePromo;
+	}
+
+	public final String getNouvelleAnne() {
+		return nouvelleAnne;
+	}
+
+	public final void setNouvelleAnne(String nouvelleAnne) {
+		this.nouvelleAnne = nouvelleAnne;
 	}
 }
