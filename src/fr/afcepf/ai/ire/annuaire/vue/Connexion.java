@@ -23,20 +23,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-/**
- * 
- * @web http://zoranpavlovic.blogspot.com/
- */
 public class Connexion extends BorderPane {
 	private final String fichierLogin = "../ressource/log.bin";
 	private Utilisateur admin = new Utilisateur();
 	private Utilisateur util = new Utilisateur();
 	private String checkUser, checkPw;
 
-	private Label lblUserName = new Label("Identifiant");
-	private Label lblPassword = new Label("Mot de passe");
-	private Button btnLogin = new Button("Entrer");
+	private Label lblUserName = new Label("Identifiant : ");
+	private Label lblPassword = new Label("Mot de passe : ");
+	private Button btnLogin = new Button("Connexion");
 
 	private final TextField txtUserName = new TextField();
 	private final PasswordField pf = new PasswordField();
@@ -46,11 +41,11 @@ public class Connexion extends BorderPane {
 	private BorderPane borderCenter = new BorderPane();
 	private GridPane gridPane = new GridPane();
 	private Text titre = new Text("IRE Gestion Annuaire");
-	private DropShadow dropShadow = new DropShadow();
 	private BorderPane panelPrincipal = this;
+		        
 
 	public Connexion(final Stage stage) throws Exception {
-		
+        
 		panelTitre.getChildren().add(titre);
 		panelTitre.setAlignment(Pos.CENTER);
 		panelTitre.setMinHeight(50);
@@ -62,11 +57,8 @@ public class Connexion extends BorderPane {
 		panelPrincipal.setTop(panelTitre);
 		panelPrincipal.setCenter(borderCenter);
 		
-		dropShadow.setOffsetX(5);
-		dropShadow.setOffsetY(5);
 
-		titre.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
-		titre.setEffect(dropShadow);
+		titre.setFont(Font.font("Verdana", 40));
 		
 		String absolutePathFichierLogin = panelPrincipal.getClass()
 				.getResource(fichierLogin).getPath();
@@ -87,19 +79,24 @@ public class Connexion extends BorderPane {
 
 		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
 
-		gridPane.setPadding(new Insets(5));
-		gridPane.setHgap(5);
-		gridPane.setVgap(5);
+		gridPane.setPadding(new Insets(7));
+		gridPane.setHgap(7);
+		gridPane.setVgap(7);
 
+		lblUserName.setFont(Font.font("Arial", 15));
+		lblPassword.setFont(Font.font("Arial", 15));
+		
 		gridPane.add(lblUserName, 0, 0);
 		gridPane.add(txtUserName, 1, 0);
 		gridPane.add(lblPassword, 0, 1);
 		gridPane.add(pf, 1, 1);
-		gridPane.add(btnLogin, 1, 2);
-		gridPane.add(lblMessage, 1, 3);
+		gridPane.add(btnLogin, 1, 3);
+		gridPane.add(lblMessage, 1, 5);
+		btnLogin.setFont(Font.font(null, 15));
+		gridPane.setMinWidth(100);
 
 		
-
+btnLogin.setPrefSize(100, 15);
 		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				checkUser = txtUserName.getText().toString();
@@ -112,22 +109,38 @@ public class Connexion extends BorderPane {
 						&& checkPw.equals(util.getMotDePasse())) {
 					new EcranAffichageStagiaire(
 							stage);
-					lblMessage.setText("Bienvenue " + util.getIdentifiant());
-					lblMessage.setTextFill(Color.GREEN);
 				} else {
 					lblMessage.setText("Identifiant ou mot de passe erroné");
+					lblMessage.setFont(Font.font("Arial", 12));
 					lblMessage.setTextFill(Color.RED);
 				}
 				txtUserName.setText("");
 				pf.setText("");
 			}
 		});
-		
-		Scene scene = new Scene(panelPrincipal, 1200, 650);
+		panelPrincipal.setStyle("-fx-background-color: #DCDCDC");
+		Scene scene = new Scene(panelPrincipal, 800, 550);
 		stage.setTitle("Annuaire des stagiaires");
 		stage.setScene(scene);
 		stage.show();
 
+		
+	}
+
+	public Utilisateur getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Utilisateur admin) {
+		this.admin = admin;
+	}
+
+	public Utilisateur getUtil() {
+		return util;
+	}
+
+	public void setUtil(Utilisateur util) {
+		this.util = util;
 	}
 
 }

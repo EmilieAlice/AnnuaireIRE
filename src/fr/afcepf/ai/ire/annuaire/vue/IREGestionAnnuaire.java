@@ -17,10 +17,10 @@ public class IREGestionAnnuaire extends Application{
 		Connexion connexion = new Connexion(stage);
 		
 		
+		
 		panelPrincipal.setCenter(connexion);
 		
-		
-		Scene scene = new Scene(panelPrincipal, 1200, 650);
+		Scene scene = new Scene(panelPrincipal, 800, 550);
 		stage.setTitle("IRE Gestion Annuaire");
 		stage.setScene(scene);
 		stage.show();

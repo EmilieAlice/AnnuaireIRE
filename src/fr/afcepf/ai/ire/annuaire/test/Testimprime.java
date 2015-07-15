@@ -6,6 +6,8 @@ import java.awt.print.PrinterJob;
 import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.swing.JList;
+
 import fr.afcepf.ai.ire.modele.Stagiaire;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -68,6 +70,8 @@ public class Testimprime extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		
+		JList<Stagiaire> listeSwing = (JList<Stagiaire>) list;
 	    StackPane root = new StackPane();
 	    Scene scene = new Scene(root, 300, 250);
 	    this.createTable();
