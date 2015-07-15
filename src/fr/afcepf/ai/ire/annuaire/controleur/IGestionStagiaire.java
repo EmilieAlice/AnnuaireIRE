@@ -18,7 +18,7 @@ public interface IGestionStagiaire {
 			int indexPere, int numeroDeLigneStagiaire, int positionChamps,
 			int fils);
 
-	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne)
+	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne, List<Stagiaire> listeAAfficher)
 			throws Exception;
 
 	List<Stagiaire> rechercherParPrenom(String prenom,
@@ -35,6 +35,6 @@ public interface IGestionStagiaire {
 
 	List<Stagiaire> rechercherEnMulticritere(String nom, String prenom,
 			String departement, String promo, String annee,
-			List<Stagiaire> listeARecuperer, String chemainRaf)
+			List<Stagiaire> listeARecuperer, String chemainRaf, List<Stagiaire> listeAAfficher)
 			throws Exception;
 }

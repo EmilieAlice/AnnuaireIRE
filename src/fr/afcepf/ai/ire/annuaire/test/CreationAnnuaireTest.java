@@ -14,8 +14,8 @@ public class CreationAnnuaireTest {
 		GestionStagiaire gestStag = new GestionStagiaire();
 		try {
 
-			 caab.init("C:/Users/Stagiaire/Desktop/STAGIAIRES.DON",
-			 "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin");
+//			 caab.init("C:/Users/Stagiaire/Desktop/STAGIAIRES.DON",
+//			 "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin");
 
 			// for (Stagiaire stagiaire : caab.lireAnnuaire(0,
 			// "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin")) {
@@ -43,8 +43,8 @@ public class CreationAnnuaireTest {
 
 //			for (Stagiaire stagiaire : gestStag
 //					.rechercherEnMulticritere(
-//							"m",
 //							"",
+//							"mo",
 //							"",
 //							"",
 //							"",
@@ -54,31 +54,31 @@ public class CreationAnnuaireTest {
 //				System.out.println(stagiaire);
 //			}
 			
-			if (unStagiaire1.getNom().equals("")) {
-				gestStag.miseAJour(fichierAStructurer, unStagiaire0, unStagiaire1, 0,0,0,0);
-			}
-			else {
-				unStagiaire1 = GestionStagiaire.remplaceChampsStagiaire(unStagiaire0, unStagiaire1);
-				System.out.println(unStagiaire1);
-				 unStagiaire1.setChampsPere(-1);
-				 unStagiaire1.setChampsFilsGauche(-1);
-				 unStagiaire1.setChampsFilsDroit(-1);
-				 unStagiaire1.setChampsFilsCache(-1);
-				gestStag.supprimerDansArbre(unStagiaire0, 0, fichierAStructurer, 0, 0, 0);
-				gestStag.ajouter(unStagiaire1, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin", caab);
-			}
-			
+//			if (unStagiaire1.getNom().equals("")) {
+//				gestStag.miseAJour(fichierAStructurer, unStagiaire0, unStagiaire1, 0,0,0,0);
+//			}
+//			else {
+//				unStagiaire1 = GestionStagiaire.remplaceChampsStagiaire(unStagiaire0, unStagiaire1);
+//				System.out.println(unStagiaire1);
+//				 unStagiaire1.setChampsPere(-1);
+//				 unStagiaire1.setChampsFilsGauche(-1);
+//				 unStagiaire1.setChampsFilsDroit(-1);
+//				 unStagiaire1.setChampsFilsCache(-1);
+//				gestStag.supprimerDansArbre(unStagiaire0, 0, fichierAStructurer, 0, 0, 0);
+//				gestStag.ajouter(unStagiaire1, "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin", caab);
+//			}
+//			
 			
 			// gestStag.supprimerDansArbre(unStagiaire0, ligneRacine,
 			// fichierAStructurer, 0, 0, 0);
 			//
 				
 			
-			
-			 for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine,
-			 "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin")) {
-			 System.out.println(stagiaire);
-			 }
+//			
+//			 for (Stagiaire stagiaire : caab.lireAnnuaire(ligneRacine,
+//			 "C:/Users/Stagiaire/Desktop/fichierStagiairesTest0.bin")) {
+//			 System.out.println(stagiaire);
+//			 }
 			
 			
 			 System.out.println("ligne racine = "+ ligneRacine);

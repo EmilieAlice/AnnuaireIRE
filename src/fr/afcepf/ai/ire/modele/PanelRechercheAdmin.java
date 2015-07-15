@@ -59,6 +59,7 @@ public class PanelRechercheAdmin extends BorderPane {
 	private String nouvelleAnne="";
 
 	private Stagiaire leStagiaire = new Stagiaire();
+	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
 	public PanelRechercheAdmin(final CreationAjoutArbreBinaire arbreBin,
@@ -187,19 +188,26 @@ public class PanelRechercheAdmin extends BorderPane {
 			@Override
 			public void handle(ActionEvent arg0) {
 
-				List<Stagiaire> listeStagiaire = new ArrayList<>();
+				
 				String champNom = textNomStagiaire.getText();
 				String champPrenom = textPrenomStagiaire.getText();
 				String champDep = textDepartementStagiaire.getText();
 				String champPromo = textPromoStagiaire.getText();
 				String champAnnee = textAnneeStagiaire.getText();
-
-				listPourTableau.clear();
+				
+				List<Stagiaire> listeStagiaireParNom = new ArrayList<Stagiaire>();
+				
 				try {
-					listPourTableau.addAll(gestionStagiaire
+					listeStagiaire = gestionStagiaire
 							.rechercherEnMulticritere(champNom, champPrenom,
 									champDep, champPromo, champAnnee,
-									listeStagiaire, cheminAnnuaireALire));
+									arbreBin
+									.lireAnnuaire(0, cheminAnnuaireALire), cheminAnnuaireALire, listeStagiaireParNom);
+					listPourTableau.clear();
+					listPourTableau.addAll(listeStagiaire);
+					for(Stagiaire stagiaire : listeStagiaire){
+						System.out.println(stagiaire);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
