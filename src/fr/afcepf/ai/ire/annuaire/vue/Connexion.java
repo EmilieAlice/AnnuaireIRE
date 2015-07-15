@@ -24,7 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 public class Connexion extends BorderPane {
-	private final String fichierLogin = "../ressource/log.bin";
+	private final String fichierLogin = "C:/Users/Stagiaire/Desktop/Projet1/IRE/log.bin";
 	private Utilisateur admin = new Utilisateur();
 	private Utilisateur util = new Utilisateur();
 	private String checkUser, checkPw;
@@ -60,10 +60,7 @@ public class Connexion extends BorderPane {
 
 		titre.setFont(Font.font("Verdana", 40));
 		
-		String absolutePathFichierLogin = panelPrincipal.getClass()
-				.getResource(fichierLogin).getPath();
-
-		FileReader fr = new FileReader(absolutePathFichierLogin);
+		FileReader fr = new FileReader(fichierLogin);
 		BufferedReader br = new BufferedReader(fr);
 
 		String ligneAdmin = br.readLine();
