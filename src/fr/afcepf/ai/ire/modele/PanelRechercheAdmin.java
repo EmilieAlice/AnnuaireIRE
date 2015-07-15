@@ -8,6 +8,8 @@ import java.util.List;
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
 import fr.afcepf.ai.ire.annuaire.controleur.IGestionStagiaire;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +17,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCellBuilder;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -51,7 +52,7 @@ public class PanelRechercheAdmin extends BorderPane {
 
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
-	
+
 	private String nouveauNom="";
 	private String nouveauPrenom="";
 	private String nouveauDepartement="";
@@ -59,6 +60,7 @@ public class PanelRechercheAdmin extends BorderPane {
 	private String nouvelleAnne="";
 
 	private Stagiaire leStagiaire = new Stagiaire();
+
 	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
@@ -66,7 +68,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			final String cheminAnnuaireALire) throws IOException {
 
 		tableVue = new TableView<>();
-		
+
 		//REND LE TABLEAU EDITABLE
 		tableVue.setEditable(true);
 
@@ -97,7 +99,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(CellEditEvent cee) {
 				setNouveauNom(cee.getNewValue().toString());
 				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setNom(getNouveauNom());
-				
+
 			}
 		});
 
@@ -105,8 +107,8 @@ public class PanelRechercheAdmin extends BorderPane {
 		colPrenom.setText("Prenom");
 		colPrenom.setMinWidth(200);
 		colPrenom
-				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
-						"prenom"));
+		.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
+				"prenom"));
 		colPrenom.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
 		colPrenom.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
@@ -121,8 +123,8 @@ public class PanelRechercheAdmin extends BorderPane {
 		colDepartement.setText("Departement");
 		colDepartement.setMinWidth(100);
 		colDepartement
-				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
-						"departement"));
+		.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
+				"departement"));
 		colDepartement.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
 		colDepartement.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
@@ -130,7 +132,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(CellEditEvent cee) {
 				setNouveauDepartement(nouveauDepartement = cee.getNewValue().toString());
 				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setDepartement(getNouveauDepartement());
-				
+
 			}
 		});
 
@@ -146,7 +148,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(CellEditEvent cee) {
 				setNouvellePromo(cee.getNewValue().toString());
 				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setPromo(getNouvellePromo());
-				
+
 			}
 		});
 
@@ -162,7 +164,7 @@ public class PanelRechercheAdmin extends BorderPane {
 			public void handle(CellEditEvent cee) {
 				setNouvelleAnne(cee.getNewValue().toString());
 				((Stagiaire)cee.getTableView().getItems().get(cee.getTablePosition().getRow())).setAnnee(getNouvelleAnne());
-				
+
 			}
 		});
 
@@ -181,22 +183,22 @@ public class PanelRechercheAdmin extends BorderPane {
 		final int indexPere = raf.readInt();
 
 		tableVue.setItems(listPourTableau);
-		
+
 		leStagiaire = tableVue.getSelectionModel().getSelectedItem();
 
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 
-				
+
 				String champNom = textNomStagiaire.getText();
 				String champPrenom = textPrenomStagiaire.getText();
 				String champDep = textDepartementStagiaire.getText();
 				String champPromo = textPromoStagiaire.getText();
 				String champAnnee = textAnneeStagiaire.getText();
-				
+
 				List<Stagiaire> listeStagiaireParNom = new ArrayList<Stagiaire>();
-				
+
 				try {
 					listeStagiaire = gestionStagiaire
 							.rechercherEnMulticritere(champNom, champPrenom,
@@ -224,50 +226,52 @@ public class PanelRechercheAdmin extends BorderPane {
 				listPourTableau.remove(stagiaire);
 			}
 		});
-		
 
-//		if(tableVue.getSelectionModel().getSelectedItem()!=null){
-//			leStagiaire = tableVue.getSelectionModel().getSelectedItem();
-//		}
-		
+		//LISTENER POUR OBSERVER LES CHANGEMENTS D'UN ITEM
+		tableVue.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Stagiaire>() {
+			@Override
+			public void changed(ObservableValue<? extends Stagiaire> arg0,
+					Stagiaire arg1, Stagiaire arg2) {
+				System.out.println(arg0 + "\n" + "stagiaire arg 1 : " + arg1 + "\n"+"stagiaire arg 2 : " + arg2);
+				leStagiaire =  new Stagiaire(arg2.getNom(), arg2.getPrenom(), arg2.getDepartement(), arg2.getPromo(), arg2.getAnnee());
+			}
+		});
+
+
 		btnMettreAJour.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				
-				System.out.println(leStagiaire);
-				
+
+				System.out.println("a mettre a jour : "+leStagiaire);
+
 				Stagiaire nouveauStagiaire = new Stagiaire(getNouveauNom(), getNouveauPrenom(), getNouveauDepartement(), getNouvellePromo(), getNouvelleAnne());
-				nouveauStagiaire.setChampsPere(-1);
-				nouveauStagiaire.setChampsFilsGauche(-1);
-				nouveauStagiaire.setChampsFilsDroit(-1);
-				nouveauStagiaire.setChampsFilsCache(-1);
-				System.out.println(getNouveauNom()+ getNouveauPrenom()+ getNouveauDepartement()+ getNouvellePromo()+ getNouvelleAnne());
-				System.out.println(leStagiaire);
-				System.out.println(nouveauStagiaire);
+				System.out.println("a mettre dans la MAJ : "+nouveauStagiaire);
+
+				if (getNouveauNom().equals("")) {
+					gestionStagiaire.miseAJour(raf, leStagiaire, nouveauStagiaire, 0,0,0,0);
+				}
+				else {
+					nouveauStagiaire = GestionStagiaire.remplaceChampsStagiaire(leStagiaire, nouveauStagiaire);
+					nouveauStagiaire.setChampsPere(-1);
+					nouveauStagiaire.setChampsFilsGauche(-1);
+					nouveauStagiaire.setChampsFilsDroit(-1);
+					nouveauStagiaire.setChampsFilsCache(-1);
+					gestionStagiaire.supprimerDansArbre(leStagiaire, 0, raf, 0, 0, 0);
+					gestionStagiaire.ajouter(nouveauStagiaire, cheminAnnuaireALire, arbreBin);
+				}
+				listPourTableau.remove(tableVue.getSelectionModel().getSelectedItem());
+				listPourTableau.add(tableVue.getSelectionModel().getSelectedIndex()+1, nouveauStagiaire);
 				
-//				if (getNouveauNom().equals("")) {
-//					gestionStagiaire.miseAJour(raf, leStagiaire, nouveauStagiaire, 0,0,0,0);
-//				}
-//				else {
-//					nouveauStagiaire = GestionStagiaire.remplaceChampsStagiaire(leStagiaire, nouveauStagiaire);
-//					nouveauStagiaire.setChampsPere(-1);
-//					nouveauStagiaire.setChampsFilsGauche(-1);
-//					nouveauStagiaire.setChampsFilsDroit(-1);
-//					nouveauStagiaire.setChampsFilsCache(-1);
-//					gestionStagiaire.supprimerDansArbre(leStagiaire, 0, raf, 0, 0, 0);
-//					gestionStagiaire.ajouter(nouveauStagiaire, cheminAnnuaireALire, arbreBin);
-//				}
-				
-				
-				listPourTableau.remove(leStagiaire);
-				listPourTableau.add(nouveauStagiaire);
 			}
 		});
+
 	}
-	
-	
-	
-	
+
+
+
+
+
+
 	public final String getNouveauNom() {
 		return nouveauNom;
 	}
