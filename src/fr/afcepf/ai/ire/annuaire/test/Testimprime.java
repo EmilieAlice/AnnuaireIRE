@@ -84,6 +84,7 @@ public class Testimprime extends Application {
 	        @Override
 	        public void handle(ActionEvent event) {
 	            
+	        	
 	            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
 				PrinterJob printerJob = PrinterJob.getPrinterJob();
 				PrintService[] services = PrinterJob.lookupPrintServices();
