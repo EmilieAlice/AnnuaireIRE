@@ -2,6 +2,8 @@ package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.modele.PanelRechercheUtil;
 import javafx.event.ActionEvent;
@@ -20,7 +22,7 @@ public class EcranAffichageStagiaire extends BorderPane{
 	
 	private BorderPane panelPrincipal = this;
 	private HBox panelTitre = new HBox();
-	private Label titre = new Label("Stagiaire");
+	private Label titre = new Label("Annuaire");
 	
 	private VBox menus = new VBox();
 	private Button btnGererAnnuaire = new Button("Choisir annuaire");
@@ -58,7 +60,12 @@ public class EcranAffichageStagiaire extends BorderPane{
 			public void handle(ActionEvent arg0) {
 				
 				try {
-					panelSuppr = new PanelRechercheUtil(arbreBin, arbreBin.getSauvegarde());
+					if(arbreBin.getSauvegarde() == null){
+						JOptionPane.showMessageDialog(null, "Veuillez choisir un annuaire pour l'afficher");
+					}
+					else {
+						panelSuppr = new PanelRechercheUtil(arbreBin, arbreBin.getSauvegarde());	
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

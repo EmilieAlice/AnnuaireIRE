@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.RandomAccessFile;
 
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -15,8 +17,8 @@ import javafx.stage.Stage;
 
 public class GestionAnnuaire extends BorderPane {
 
-	private String cheminDuFichierAChercher;
-	private String cheminDuFichierASauvegarder;
+	private String cheminDuFichierAChercher, cheminDuFichierASauvegarder,
+			nomDuFichierSelectionne, nomDuFichierSauv;
 
 	public GestionAnnuaire(final Stage stage) throws FileNotFoundException {
 
@@ -28,12 +30,17 @@ public class GestionAnnuaire extends BorderPane {
 		File fichierChercherSelectionne = fichierAChercher
 				.showOpenDialog(stage);
 		if (fichierChercherSelectionne != null) {
+			this.nomDuFichierSelectionne = fichierChercherSelectionne.getName();
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
 			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace(
 					"\\", "/");
 			System.out.println("je cherche : " + cheminDuFichierAChercher);
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Pas de fichier source selectionné");
 		}
 
+		
 		FileChooser fichierASauvegarder = new FileChooser();
 		fichierASauvegarder
 				.setTitle("Selectionnez un emplacement pour sauvegarder le fichier");
@@ -43,13 +50,19 @@ public class GestionAnnuaire extends BorderPane {
 				new FileChooser.ExtensionFilter("Text bin(*.bin)", "*.bin"));
 
 		File fichierSaveSelectionne = fichierASauvegarder.showSaveDialog(stage);
-		cheminDuFichierASauvegarder = fichierSaveSelectionne.getAbsolutePath();
-		if (!fichierSaveSelectionne.getName().contains(".")) {
-			cheminDuFichierASauvegarder = cheminDuFichierASauvegarder + ".bin";
+		if (fichierSaveSelectionne != null) {
+			cheminDuFichierASauvegarder = fichierSaveSelectionne
+					.getAbsolutePath();
+			if (!fichierSaveSelectionne.getName().contains(".")) {
+				cheminDuFichierASauvegarder = cheminDuFichierASauvegarder
+						+ ".bin";
+			}
+			this.nomDuFichierSauv = fichierSaveSelectionne.getName() + ".bin";
+			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder
+					.replace("\\", "/");
+		} else {
+			JOptionPane.showMessageDialog(null, "Pas de fichier annuaire créé");
 		}
-		this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder.replace(
-				"\\", "/");
-		System.out.println("je save : " + cheminDuFichierASauvegarder);
 
 	}
 
@@ -100,6 +113,22 @@ public class GestionAnnuaire extends BorderPane {
 			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder
 					.replace("\\", "/");
 		}
+	}
+
+	public String getNomDuFichierSelectionne() {
+		return nomDuFichierSelectionne;
+	}
+
+	public void setNomDuFichierSelectionne(String nomDuFichierSelectionne) {
+		this.nomDuFichierSelectionne = nomDuFichierSelectionne;
+	}
+
+	public String getNomDuFichierSauv() {
+		return nomDuFichierSauv;
+	}
+
+	public void setNomDuFichierSauv(String nomDuFichierSauv) {
+		this.nomDuFichierSauv = nomDuFichierSauv;
 	}
 
 }
