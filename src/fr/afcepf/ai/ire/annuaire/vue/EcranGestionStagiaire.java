@@ -19,10 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class EcranGestionStagiaire extends Application{
+public class EcranGestionStagiaire extends BorderPane{
 	
 	
-	private BorderPane panelPrincipal = new BorderPane();
+	private BorderPane panelPrincipal = this;
 	private HBox panelTitre = new HBox();
 	private Label titre = new Label("Stagiaire");
 	
@@ -37,8 +37,7 @@ public class EcranGestionStagiaire extends Application{
 	private BorderPane panelSuppr;
 	
 	
-	@Override
-	public void start(final Stage stage) throws Exception {
+	public EcranGestionStagiaire(final Stage stage) {
 		//Permet d'ecrire un message dans le panels l'ouverture de l'appli
 		panelPrincipal.setCenter(new Label("Veuillez selectionner un annuaire à afficher."));
 		
@@ -68,7 +67,6 @@ public class EcranGestionStagiaire extends Application{
 				panelAjout.setAlignment(Pos.CENTER);
 			}
 		});
-		btnAjout.setVisible(false);
 		
 		//BOUTON DE SUPPRESSION ET DE MISE A JOUR DES STAGIAIRES
 		btnAfficheSuppr.setPrefSize(150, 200);
@@ -101,9 +99,5 @@ public class EcranGestionStagiaire extends Application{
 		stage.setTitle("Gestion des Stagiaire");
 		stage.setScene(scene);
 		stage.show();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

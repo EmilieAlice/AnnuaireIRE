@@ -3,6 +3,7 @@ package fr.afcepf.ai.ire.annuaire.vue;
 import java.awt.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 
 import fr.afcepf.ai.ire.modele.Utilisateur;
@@ -32,21 +33,25 @@ public class FenetrePassword extends Stage{
 	private GridPane gridpane = new GridPane();
 	private Button btnValiderConnexion = new Button("Entrer");
 	
-	public FenetrePassword(Stage owner){
+	public FenetrePassword(final Stage stage){
 		super();
 		String absolutePathFichierLogin = this.getClass().getResource(fichierLogin).getPath();
 		
 		try {
 			FileReader fr = new FileReader(absolutePathFichierLogin);
 			BufferedReader br = new BufferedReader(fr);
-			String line = br.readLine();
-			String[] tabUtil = line.split(";");
-			admin.setIdentifiant(tabUtil[0]);
-			admin.setMotDePasse(tabUtil[1]);
-			line = br.readLine();
-			tabUtil = line.split(";");
+			
+			String ligneAdmin = br.readLine();
+			String ligneUtil = br.readLine();
+			
+			String[] tabAdmin = ligneAdmin.split(";");
+			admin.setIdentifiant(tabAdmin[0]);
+			admin.setMotDePasse(tabAdmin[1]);
+			
+			String[] tabUtil = ligneUtil.split(";");
 			util.setIdentifiant(tabUtil[0]);
 			util.setMotDePasse(tabUtil[1]);
+			
 			br.close();
 			fr.close();
 		} catch (Exception e) {
@@ -56,7 +61,7 @@ public class FenetrePassword extends Stage{
 		System.out.println(admin);
 		System.out.println(util);
 		
-		initOwner(owner);
+		initOwner(stage);
 		setTitle("Connexion");
 		Group root = new Group();
 		Scene scene = new Scene(root, 250, 150, Color.WHITE);
@@ -78,7 +83,7 @@ public class FenetrePassword extends Stage{
 				if (textId.equals(admin.getIdentifiant()) || textId.equals(util.getIdentifiant())) {
 					if(textId.equals(admin.getIdentifiant())){
 						if (password.equals(admin.getMotDePasse())) {
-							EcranGestionStagiaire ecranGestion = new EcranGestionStagiaire();
+							EcranGestionStagiaire ecranGestion = new EcranGestionStagiaire(stage);
 						}
 					}
 				}				

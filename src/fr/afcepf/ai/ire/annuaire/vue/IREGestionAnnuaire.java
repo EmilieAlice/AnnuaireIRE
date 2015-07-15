@@ -12,6 +12,11 @@ public class IREGestionAnnuaire extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		
+		TestConnexion connexion = new TestConnexion(stage);
+		
+		panelPrincipal.setCenter(connexion);
+		
+		
 		Scene scene = new Scene(panelPrincipal, 1000, 600);
 		stage.setTitle("IRE Gestion Annuaire");
 		stage.setScene(scene);

@@ -1,10 +1,12 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
-import javafx.application.Application;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import fr.afcepf.ai.ire.modele.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -24,22 +26,38 @@ import javafx.stage.Stage;
  * 
  * @web http://zoranpavlovic.blogspot.com/
  */
-public class TestConnexion extends Application {
+public class TestConnexion extends BorderPane {
+	private final String fichierLogin = "../ressource/log.bin";
+	private Utilisateur admin = new Utilisateur();
+	private Utilisateur util = new Utilisateur();
+	private String checkUser, checkPw;
+	
+	private Label lblUserName = new Label("Identifiant");
+	private Label lblPassword = new Label("Mot de passe");
+	private Button btnLogin = new Button("Entrer");
+	
+	private final TextField txtUserName = new TextField();
+	private final PasswordField pf = new PasswordField();
+	private final Label lblMessage = new Label();
 
-	String user = "JavaFX2";
-	String pw = "password";
-	String checkUser, checkPw;
+	public TestConnexion(final Stage stage) throws Exception {
+		String absolutePathFichierLogin = this.getClass().getResource(fichierLogin).getPath();
+		
+		FileReader fr = new FileReader(absolutePathFichierLogin);
+		BufferedReader br = new BufferedReader(fr);
+		
+		String ligneAdmin = br.readLine();
+		String ligneUtil = br.readLine();
+		
+		String[] tabAdmin = ligneAdmin.split(";");
+		admin.setIdentifiant(tabAdmin[0]);
+		admin.setMotDePasse(tabAdmin[1]);
+		
+		String[] tabUtil = ligneUtil.split(";");
+		util.setIdentifiant(tabUtil[0]);
+		util.setMotDePasse(tabUtil[1]);
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) {
-		primaryStage.setTitle("JavaFX 2 Login");
-
-		BorderPane bp = new BorderPane();
-		bp.setPadding(new Insets(10, 50, 50, 50));
+		this.setPadding(new Insets(10, 50, 50, 50));
 
 		// Adding HBox
 		HBox hb = new HBox();
@@ -52,12 +70,8 @@ public class TestConnexion extends Application {
 		gridPane.setVgap(5);
 
 		// Implementing Nodes for GridPane
-		Label lblUserName = new Label("Username");
-		final TextField txtUserName = new TextField();
-		Label lblPassword = new Label("Password");
-		final PasswordField pf = new PasswordField();
-		Button btnLogin = new Button("Login");
-		final Label lblMessage = new Label();
+		
+		
 
 		// Adding Nodes to GridPane layout
 		gridPane.add(lblUserName, 0, 0);
@@ -78,7 +92,7 @@ public class TestConnexion extends Application {
 		dropShadow.setOffsetY(5);
 
 		// Adding text and DropShadow effect to it
-		Text text = new Text("JavaFX 2 Login");
+		Text text = new Text("IRE Gestion Annuaire");
 		text.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
 		text.setEffect(dropShadow);
 
@@ -86,7 +100,7 @@ public class TestConnexion extends Application {
 		hb.getChildren().add(text);
 
 		// Add ID's to Nodes
-		bp.setId("bp");
+		this.setId("bp");
 		gridPane.setId("root");
 		btnLogin.setId("btnLogin");
 		text.setId("text");
@@ -96,30 +110,28 @@ public class TestConnexion extends Application {
 			public void handle(ActionEvent event) {
 				checkUser = txtUserName.getText().toString();
 				checkPw = pf.getText().toString();
-				if (checkUser.equals(user) && checkPw.equals(pw)) {
-					lblMessage.setText("Congratulations!");
+				if (checkUser.equals(admin.getIdentifiant()) && checkPw.equals(admin.getMotDePasse())) {
+					EcranGestionStagiaire ecranGestionStagiaire = new EcranGestionStagiaire(stage);
+//					lblMessage.setText("Bienvenue " + admin.getIdentifiant());
+//					lblMessage.setTextFill(Color.GREEN);
+					
+				} else if (checkUser.equals(util.getIdentifiant()) && checkPw.equals(util.getMotDePasse())) {
+					EcranAffichageStagiaire ecranAffichageStagiaire = new EcranAffichageStagiaire(stage);
+					lblMessage.setText("Bienvenue " + util.getIdentifiant());
 					lblMessage.setTextFill(Color.GREEN);
-				} else {
-					lblMessage.setText("Incorrect user or pw.");
+				} 
+				else {
+					lblMessage.setText("Identifiant ou mot de passe erroné");
 					lblMessage.setTextFill(Color.RED);
-				}
+				}		
 				txtUserName.setText("");
 				pf.setText("");
 			}
 		});
 
 		// Add HBox and GridPane layout to BorderPane Layout
-		bp.setTop(hb);
-		bp.setCenter(gridPane);
-
-		// Adding BorderPane to the scene and loading CSS
-		Scene scene = new Scene(bp);
-		primaryStage.setScene(scene);
-		primaryStage.titleProperty().bind(
-				scene.widthProperty().asString().concat(" : ")
-						.concat(scene.heightProperty().asString()));
-		// primaryStage.setResizable(false);
-		primaryStage.show();
+		this.setTop(hb);
+		this.setCenter(gridPane);
 
 	}
 
