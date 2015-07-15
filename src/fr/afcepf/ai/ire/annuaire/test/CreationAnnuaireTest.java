@@ -59,6 +59,7 @@ public class CreationAnnuaireTest {
 			}
 			else {
 				unStagiaire1 = GestionStagiaire.remplaceChampsStagiaire(unStagiaire0, unStagiaire1);
+				System.out.println(unStagiaire1);
 				 unStagiaire1.setChampsPere(-1);
 				 unStagiaire1.setChampsFilsGauche(-1);
 				 unStagiaire1.setChampsFilsDroit(-1);
