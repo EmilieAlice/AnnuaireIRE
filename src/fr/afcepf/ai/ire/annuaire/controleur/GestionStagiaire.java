@@ -514,46 +514,46 @@ public class GestionStagiaire implements IGestionStagiaire {
 
 	@Override
 	public List<Stagiaire> rechercherParNom(String nomStagiaireRecherche,
-			String chemainRaf, int numLigne, List<Stagiaire> listeAAfficher) throws Exception {
+			String chemainRaf, int indexPere, List<Stagiaire> listeAAfficher) throws Exception {
 		RandomAccessFile raf = new RandomAccessFile(chemainRaf, "r");
 		Stagiaire stagiairePere = CreationAjoutArbreBinaire.lireUnStagiaire(
-				raf, numLigne);
+				raf, indexPere);
 		String nomStagierePere = stagiairePere.getNom().toLowerCase().trim();
 		String nomStagiaireARechercher = nomStagiaireRecherche.toLowerCase()
 				.trim();
 		if (nomStagierePere.startsWith(nomStagiaireARechercher)) {
 			listeAAfficher.add(stagiairePere);
 			if (stagiairePere.getChampsFilCache() != -1) {
-				numLigne = stagiairePere.getChampsFilCache();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne, listeAAfficher);
+				indexPere = stagiairePere.getChampsFilCache();
+				rechercherParNom(nomStagiaireRecherche, chemainRaf, indexPere, listeAAfficher);
 			}
 			if (stagiairePere.getChampsFilsGauche() != -1) {
-				numLigne = stagiairePere.getChampsFilsGauche();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne, listeAAfficher);
+				indexPere = stagiairePere.getChampsFilsGauche();
+				rechercherParNom(nomStagiaireRecherche, chemainRaf, indexPere, listeAAfficher);
 			}
 			if (stagiairePere.getChampsFilsDroit() != -1) {
-				numLigne = stagiairePere.getChampsFilsDroit();
-				rechercherParNom(nomStagiaireRecherche, chemainRaf, numLigne, listeAAfficher);
+				indexPere = stagiairePere.getChampsFilsDroit();
+				rechercherParNom(nomStagiaireRecherche, chemainRaf, indexPere, listeAAfficher);
 			}
 		} else {
 			if (nomStagiaireARechercher.compareToIgnoreCase(nomStagierePere) < 0) {
 				if (stagiairePere.getChampsFilsGauche() != -1) {
-					numLigne = stagiairePere.getChampsFilsGauche();
+					indexPere = stagiairePere.getChampsFilsGauche();
 					rechercherParNom(nomStagiaireRecherche, chemainRaf,
-							numLigne, listeAAfficher);
+							indexPere, listeAAfficher);
 				}
 			} else if (nomStagiaireARechercher
 					.compareToIgnoreCase(nomStagierePere) > 0) {
 				if (stagiairePere.getChampsFilsDroit() != -1) {
-					numLigne = stagiairePere.getChampsFilsDroit();
+					indexPere = stagiairePere.getChampsFilsDroit();
 					rechercherParNom(nomStagiaireRecherche, chemainRaf,
-							numLigne, listeAAfficher);
+							indexPere, listeAAfficher);
 				}
 			} else {
 				if (stagiairePere.getChampsFilCache() != -1) {
-					numLigne = stagiairePere.getChampsFilCache();
+					indexPere = stagiairePere.getChampsFilCache();
 					rechercherParNom(nomStagiaireRecherche, chemainRaf,
-							numLigne, listeAAfficher);
+							indexPere, listeAAfficher);
 				}
 			}
 		}
@@ -642,9 +642,11 @@ public class GestionStagiaire implements IGestionStagiaire {
 			String departement, String promo, String annee,
 			List<Stagiaire> listeARecuperer, String chemainRaf, List<Stagiaire> listeAAfficher)
 					throws Exception {
-
+		RandomAccessFile raf = new RandomAccessFile(chemainRaf, "r");
+		raf.seek(0);
+		int indexPere = raf.readInt();
 		if (!nom.equals("")) {
-			List<Stagiaire> laListe = rechercherParNom(nom, chemainRaf, 0, listeAAfficher);
+			List<Stagiaire> laListe = rechercherParNom(nom, chemainRaf, indexPere, listeAAfficher);
 			if (!prenom.equals("")) {
 				List<Stagiaire> listePrenom = rechercherParPrenom(prenom, laListe);
 				laListe.clear();
