@@ -124,7 +124,7 @@ public class EcranAffichageStagiaire extends BorderPane {
 		menus.setAlignment(Pos.CENTER);
 		panelPrincipal.setTop(panelTop);
 		panelPrincipal.setStyle("-fx-background-color: #DCDCDC");
-		stage.setTitle("Gestion des Stagiaire");
+		stage.setTitle("Annuaire des Stagiaire");
 		stage.setScene(scene);
 		stage.show();
 	}
