@@ -6,18 +6,57 @@ import java.util.List;
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public interface IGestionStagiaire {
+	/**
+	 * Methode qui permet d'ajouter un stagiaire à l'annuaire
+	 * 
+	 * @param stagiaire
+	 * @param chemainDuRaf
+	 * @param caab
+	 */
 	void ajouter(Stagiaire stagiaire, String chemainDuRaf,
 			CreationAjoutArbreBinaire caab);
 
+	/**
+	 * 
+	 * Methode qui permet la suppression d'un stagiaire dans l'annuaire
+	 * 
+	 * @param unStagiaire
+	 * @param indexPere
+	 * @param fichierAStructurer
+	 * @param numeroDeLigneStagiaire
+	 * @param positionChamps
+	 * @param fils
+	 */
 	void supprimerDansArbre(Stagiaire unStagiaire, int indexPere,
 			RandomAccessFile fichierAStructurer, int numeroDeLigneStagiaire,
 			int positionChamps, int fils);
 
+	/**
+	 * Methode qui permet de mettre à jour un stagiaire dans l'annuaire
+	 * 
+	 * @param fichierAStructurer
+	 * @param unStagiaire
+	 * @param unStagiairePourModifier
+	 * @param indexPere
+	 * @param numeroDeLigneStagiaire
+	 * @param positionChamps
+	 * @param fils
+	 */
 	void miseAJour(RandomAccessFile fichierAStructurer,
 			Stagiaire unStagiaire, Stagiaire unStagiairePourModifier,
 			int indexPere, int numeroDeLigneStagiaire, int positionChamps,
 			int fils);
 
+	/**
+	 * Methode qui permet une recherche par nom d'un stagiaire
+	 * 
+	 * @param nom
+	 * @param chemainRaf
+	 * @param numLigne
+	 * @param listeAAfficher
+	 * @return
+	 * @throws Exception
+	 */
 	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne, List<Stagiaire> listeAAfficher)
 			throws Exception;
 

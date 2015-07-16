@@ -8,7 +8,6 @@ import java.util.List;
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public class GestionStagiaire implements IGestionStagiaire {
-//	private List<Stagiaire> listeAAfficher = new ArrayList<>();
 
 	@Override
 	public void ajouter(Stagiaire stagiaire, String chemainDuRaf,

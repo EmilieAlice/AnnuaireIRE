@@ -66,7 +66,7 @@ public class EcranAffichageStagiaire extends BorderPane {
 								choixAnnuaire.getCheminDuFichierASauvegarder());
 						message.setText("Vous avez selectionnez l'annuaire : "
 								+ choixAnnuaire.getNomDuFichierSelectionne()
-								+ "\nVous travaillez sur : "
+								+ "\nVous visionnez : "
 								+ choixAnnuaire.getNomDuFichierSauv());
 						message.setFont(Font.font("Verdana", 20));
 						panelPrincipal.setCenter(message);
