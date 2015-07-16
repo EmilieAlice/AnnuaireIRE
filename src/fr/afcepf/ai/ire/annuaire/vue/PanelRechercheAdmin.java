@@ -69,8 +69,6 @@ public class PanelRechercheAdmin extends BorderPane {
 			final String cheminAnnuaireALire) throws IOException {
 
 		tableVue = new TableView<>();
-
-		// REND LE TABLEAU EDITABLE
 		tableVue.setEditable(true);
 
 		this.setTop(panelTop);
@@ -97,12 +95,11 @@ public class PanelRechercheAdmin extends BorderPane {
 		colNom.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
 			@Override
-			public void handle(CellEditEvent cee) {
+			public void handle(@SuppressWarnings("rawtypes") CellEditEvent cee) {
 				setNouveauNom(cee.getNewValue().toString());
 				((Stagiaire) cee.getTableView().getItems()
 						.get(cee.getTablePosition().getRow()))
 						.setNom(getNouveauNom());
-
 			}
 		});
 
@@ -118,7 +115,8 @@ public class PanelRechercheAdmin extends BorderPane {
 				.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
 					@Override
-					public void handle(CellEditEvent cee) {
+					public void handle(
+							@SuppressWarnings("rawtypes") CellEditEvent cee) {
 						setNouveauPrenom(cee.getNewValue().toString());
 						((Stagiaire) cee.getTableView().getItems()
 								.get(cee.getTablePosition().getRow()))
@@ -138,13 +136,13 @@ public class PanelRechercheAdmin extends BorderPane {
 				.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
 					@Override
-					public void handle(CellEditEvent cee) {
+					public void handle(
+							@SuppressWarnings("rawtypes") CellEditEvent cee) {
 						setNouveauDepartement(nouveauDepartement = cee
 								.getNewValue().toString());
 						((Stagiaire) cee.getTableView().getItems()
 								.get(cee.getTablePosition().getRow()))
 								.setDepartement(getNouveauDepartement());
-
 					}
 				});
 
@@ -157,12 +155,11 @@ public class PanelRechercheAdmin extends BorderPane {
 		colPromo.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
 			@Override
-			public void handle(CellEditEvent cee) {
+			public void handle(@SuppressWarnings("rawtypes") CellEditEvent cee) {
 				setNouvellePromo(cee.getNewValue().toString());
 				((Stagiaire) cee.getTableView().getItems()
 						.get(cee.getTablePosition().getRow()))
 						.setPromo(getNouvellePromo());
-
 			}
 		});
 
@@ -175,12 +172,11 @@ public class PanelRechercheAdmin extends BorderPane {
 		colAnnee.setOnEditCommit(new EventHandler<CellEditEvent<Stagiaire, String>>() {
 
 			@Override
-			public void handle(CellEditEvent cee) {
+			public void handle(@SuppressWarnings("rawtypes") CellEditEvent cee) {
 				setNouvelleAnne(cee.getNewValue().toString());
 				((Stagiaire) cee.getTableView().getItems()
 						.get(cee.getTablePosition().getRow()))
 						.setAnnee(getNouvelleAnne());
-
 			}
 		});
 
@@ -188,14 +184,10 @@ public class PanelRechercheAdmin extends BorderPane {
 				colPromo, colAnnee);
 		raf.seek(0);
 		final int indexPere = raf.readInt();
-		System.out.println("Ligne Racine dans PanelRechercheAdmin : "
-				+ indexPere);
-
 		try {
 			listPourTableau = FXCollections.observableArrayList(arbreBin
 					.lireAnnuaire(indexPere, cheminAnnuaireALire));
 		} catch (Exception e) {
-			System.out.println("erreur de Lecture de la liste");
 			e.getMessage();
 		}
 
@@ -223,9 +215,6 @@ public class PanelRechercheAdmin extends BorderPane {
 							listeStagiaireParNom);
 					listPourTableau.clear();
 					listPourTableau.addAll(listeStagiaire);
-					for (Stagiaire stagiaire : listeStagiaire) {
-						System.out.println(stagiaire);
-					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -243,15 +232,12 @@ public class PanelRechercheAdmin extends BorderPane {
 			}
 		});
 
-		// LISTENER POUR OBSERVER LES CHANGEMENTS D'UN ITEM
 		tableVue.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener<Stagiaire>() {
 					@Override
 					public void changed(
 							ObservableValue<? extends Stagiaire> arg0,
 							Stagiaire arg1, Stagiaire arg2) {
-						System.out.println(arg0 + "\n" + "stagiaire arg 1 : "
-								+ arg1 + "\n" + "stagiaire arg 2 : " + arg2);
 						leStagiaire = new Stagiaire(arg2.getNom(), arg2
 								.getPrenom(), arg2.getDepartement(), arg2
 								.getPromo(), arg2.getAnnee());
@@ -262,13 +248,9 @@ public class PanelRechercheAdmin extends BorderPane {
 			@Override
 			public void handle(ActionEvent arg0) {
 
-				System.out.println("a mettre a jour : " + leStagiaire);
-
 				Stagiaire nouveauStagiaire = new Stagiaire(getNouveauNom(),
 						getNouveauPrenom(), getNouveauDepartement(),
 						getNouvellePromo(), getNouvelleAnne());
-				System.out
-						.println("a mettre dans la MAJ : " + nouveauStagiaire);
 
 				if (getNouveauNom().equals("")) {
 					gestionStagiaire.miseAJour(raf, leStagiaire,
@@ -299,7 +281,6 @@ public class PanelRechercheAdmin extends BorderPane {
 				}
 			}
 		});
-
 	}
 
 	public final String getNouveauNom() {

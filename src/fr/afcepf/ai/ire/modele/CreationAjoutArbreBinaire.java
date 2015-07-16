@@ -36,7 +36,6 @@ public class CreationAjoutArbreBinaire {
 
 	private String recuperation;
 	private String sauvegarde;
-//	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 	private RandomAccessFile fichierAStructurer;
 
 	public void init(String recuperation, String sauvegarde) throws Exception {
@@ -84,9 +83,8 @@ public class CreationAjoutArbreBinaire {
 			fr.close();
 			br.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("ne trouve pas le fichier");
+			e.getMessage();
 		} catch (Exception e) {
-			System.out.println("Erreur Exception dans Init");
 			e.getMessage();
 		}
 	}
@@ -170,9 +168,8 @@ public class CreationAjoutArbreBinaire {
 			fichierAStructurer.writeInt(unStagiaire.getChampsFilsDroit());
 			fichierAStructurer.writeInt(unStagiaire.getChampsFilCache());
 		} catch (Exception e) {
-			System.out.println("Pas d'ecriture sur le raf");
+			e.getMessage();
 		}
-		// setNbLigne(nbLigne + 1);
 	}
 
 	/**
@@ -217,7 +214,8 @@ public class CreationAjoutArbreBinaire {
 			int champsFC = fichierAStructurer.readInt();
 
 			unStagiaire.setNom(rubriqueNom.toUpperCase().trim());
-			unStagiaire.setPrenom(rubriquePrenom.substring(0, 1).toUpperCase() + rubriquePrenom.substring(1).trim());
+			unStagiaire.setPrenom(rubriquePrenom.substring(0, 1).toUpperCase()
+					+ rubriquePrenom.substring(1).trim());
 			unStagiaire.setDepartement(rubriqueDepartement.trim());
 			unStagiaire.setPromo(rubriquePromo.trim());
 			unStagiaire.setAnnee(rubriqueAnnee.trim());
@@ -226,27 +224,10 @@ public class CreationAjoutArbreBinaire {
 			unStagiaire.setChampsFilsDroit(champsFD);
 			unStagiaire.setChampsFilsCache(champsFC);
 		} catch (Exception e) {
-			System.out.println("Erreur dans procedure LireUnStagiaire");
 			e.printStackTrace();
 		}
 		return unStagiaire;
 	}
-
-	// public static String recupChampsDansUneLigne(
-	// RandomAccessFile fichierAStructurer, int numeroDeLigne,
-	// int champsDebut, int champsFin) {
-	// String champsRecupere = "";
-	// try {
-	// fichierAStructurer
-	// .seek(LONGUEURLIGNE * numeroDeLigne + champsDebut);
-	// for (int i = 0; i < (champsFin - champsDebut); i++) {
-	// champsRecupere += fichierAStructurer.readChar();
-	// }
-	// } catch (IOException e) {
-	// System.out.println("Erreur recupChampsDansUneLigne");
-	// }
-	// return champsRecupere;
-	// }
 
 	/**
 	 * Methode permettant de modifier le champs pere d'un stagiaire grace a son
@@ -263,10 +244,7 @@ public class CreationAjoutArbreBinaire {
 			fichierAStructurer.seek(LONGUEURLIGNE * numeroDeLigne
 					+ POSITIONANNEE + RACINE);
 			fichierAStructurer.writeInt(indexPere);
-			System.err.println("se met sur la ligne " + numeroDeLigne
-					+ " ajoute au champs pere : " + indexPere);
 		} catch (IOException e) {
-			System.err.println("Pere introuvable");
 			e.printStackTrace();
 		}
 	}
@@ -286,12 +264,7 @@ public class CreationAjoutArbreBinaire {
 					.seek(LONGUEURLIGNE * indexPere + champs + RACINE);
 			fichierAStructurer.writeInt(numeroDeLigne);
 
-			System.err.println("se met sur ligne " + indexPere
-					+ " et ecrit dans champs fils " + champs + " : "
-					+ numeroDeLigne);
-
 		} catch (IOException e) {
-			System.err.println("Fils introuvable");
 			e.printStackTrace();
 		}
 	}
@@ -372,7 +345,7 @@ public class CreationAjoutArbreBinaire {
 				}
 			}
 		} catch (Exception e) {
-			System.err.println("Recherche non effectué");
+			e.getMessage();
 		}
 
 	}

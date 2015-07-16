@@ -28,8 +28,9 @@ public class CreationAnnuaireTest {
 
 			Stagiaire unStagiaire0 = new Stagiaire("MArteau", "Rémy", "95",
 					"AI 81", "2011");
-			Stagiaire unStagiaire1 = new Stagiaire("SLIMANI", "Mohamed", "95",
-					"AI 78", "2010");
+			// Stagiaire unStagiaire1 = new Stagiaire("SLIMANI", "Mohamed",
+			// "95",
+			//	"AI 78", "2010");
 			// unStagiaire0.setChampsPere(-1);
 			// unStagiaire0.setChampsFilsGauche(-1);
 			// unStagiaire0.setChampsFilsDroit(-1);

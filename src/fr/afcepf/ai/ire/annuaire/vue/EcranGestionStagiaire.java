@@ -12,41 +12,38 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class EcranGestionStagiaire extends BorderPane {
 
 	private BorderPane panelPrincipal = this;
 	private Scene scene = new Scene(panelPrincipal, 1200, 650);
-	
-	private BorderPane panelTop = new BorderPane();
+
 	private GridPane panelAjout;
 	private BorderPane panelSuppr;
-	
+
 	private HBox menus = new HBox();
-	
+
 	private Button btnGererAnnuaire = new Button("Choisir annuaire");
 	private Button btnAjout = new Button("Ajouter un stagiaire");
 	private Button btnAfficheSuppr = new Button("Annuaire");
 	private Button btnDeconnexion = new Button("Deconnexion");
-	
+
 	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	private GestionAnnuaire choixAnnuaire;
-	
-	private Label message = new Label("Veuillez selectionner un annuaire à afficher");
-	
+
+	private Label message = new Label(
+			"Veuillez selectionner un annuaire à afficher");
+
 	public EcranGestionStagiaire(final Stage stage) {
 		menus.setPadding(new Insets(5));
 		message.setFont(Font.font("Verdana", 20));
 		panelPrincipal.setCenter(message);
-		
+
 		btnGererAnnuaire.setPrefSize(300, 40);
 		btnGererAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -105,8 +102,7 @@ public class EcranGestionStagiaire extends BorderPane {
 								.showMessageDialog(null,
 										"Veuillez choisir un annuaire pour l'afficher/le modifier");
 						message.setFont(Font.font("Verdana", 20));
-						panelPrincipal
-								.setCenter(message);
+						panelPrincipal.setCenter(message);
 					} else {
 						panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin
 								.getSauvegarde());
@@ -134,8 +130,8 @@ public class EcranGestionStagiaire extends BorderPane {
 		btnAjout.setFont(Font.font(null, 15));
 		btnAfficheSuppr.setFont(Font.font(null, 15));
 		btnDeconnexion.setFont(Font.font(null, 15));
-		menus.getChildren().addAll(btnGererAnnuaire, btnAjout, btnAfficheSuppr, btnDeconnexion);
-		
+		menus.getChildren().addAll(btnGererAnnuaire, btnAjout, btnAfficheSuppr,
+				btnDeconnexion);
 
 		menus.setAlignment(Pos.CENTER);
 		panelPrincipal.setTop(menus);

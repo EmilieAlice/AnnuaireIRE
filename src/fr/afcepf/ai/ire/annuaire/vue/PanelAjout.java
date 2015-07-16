@@ -1,7 +1,5 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
-import java.io.RandomAccessFile;
-
 import fr.afcepf.ai.ire.modele.CreationAjoutArbreBinaire;
 import fr.afcepf.ai.ire.modele.GestionStagiaire;
 import fr.afcepf.ai.ire.modele.IGestionStagiaire;
@@ -20,7 +18,6 @@ public class PanelAjout extends GridPane {
 	private Label labelDepartementStagiaire = new Label("Departement : ");
 	private Label labelPromoStagiaire = new Label("Promo : ");
 	private Label labelAnneeStagiaire = new Label("Annee : ");
-	
 
 	private TextField textNomStagiaire = new TextField();
 	private TextField textPrenomStagiaire = new TextField();
@@ -32,8 +29,9 @@ public class PanelAjout extends GridPane {
 
 	private Button btnAjouter = new Button("Ajouter");
 
-	public PanelAjout(final CreationAjoutArbreBinaire arbreBin, final String chemainDuRaf) {
-		
+	public PanelAjout(final CreationAjoutArbreBinaire arbreBin,
+			final String chemainDuRaf) {
+
 		this.add(labelNomStagiaire, 0, 0);
 		this.add(labelPrenomStagiaire, 0, 1);
 		this.add(labelDepartementStagiaire, 0, 2);
@@ -45,17 +43,18 @@ public class PanelAjout extends GridPane {
 		this.add(textPromoStagiaire, 1, 3);
 		this.add(textAnneeStagiaire, 1, 4);
 		this.add(btnAjouter, 1, 5);
-		
+
 		this.setHgap(50);
 		this.setVgap(50);
-		
+
 		btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
-				Stagiaire sta = new Stagiaire(textNomStagiaire.getText().toUpperCase(), 
-						textPrenomStagiaire.getText(), 
-						textDepartementStagiaire.getText(), textPromoStagiaire.getText(), textAnneeStagiaire.getText());
+				Stagiaire sta = new Stagiaire(textNomStagiaire.getText()
+						.toUpperCase(), textPrenomStagiaire.getText(),
+						textDepartementStagiaire.getText(), textPromoStagiaire
+								.getText(), textAnneeStagiaire.getText());
 				sta.setChampsPere(-1);
 				sta.setChampsFilsGauche(-1);
 				sta.setChampsFilsDroit(-1);

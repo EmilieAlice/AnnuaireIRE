@@ -11,12 +11,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class EcranAffichageStagiaire extends BorderPane {
@@ -28,24 +25,19 @@ public class EcranAffichageStagiaire extends BorderPane {
 
 	private HBox menus = new HBox();
 	private Button btnGererAnnuaire = new Button("Choisir annuaire");
-	private Button btnAfficheSuppr = new Button("Annuaire");
+	private Button btnAffiche = new Button("Annuaire");
 	private Button btnDeconnexion = new Button("Deconnexion");
 
 	private CreationAjoutArbreBinaire arbreBin = new CreationAjoutArbreBinaire();
 	private GestionAnnuaire choixAnnuaire;
-	private BorderPane panelSuppr;
-	private DropShadow dropShadow = new DropShadow();
+	private BorderPane panelAffiche;
 
-	
 	private Scene scene = new Scene(panelPrincipal, 1200, 650);
 
 	public EcranAffichageStagiaire(final Stage stage) {
-		// Permet d'ecrire un message dans le panels l'ouverture de l'appli
 		message.setFont(Font.font("Verdana", 20));
 		panelPrincipal.setCenter(message);
-		dropShadow.setOffsetX(5);
-		dropShadow.setOffsetY(5);
-		// BOUTON DU CHOIX ANNUAIRE
+
 		btnGererAnnuaire.setPrefSize(400, 45);
 		btnGererAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -75,12 +67,10 @@ public class EcranAffichageStagiaire extends BorderPane {
 			}
 		});
 
-		// BOUTON DE SUPPRESSION ET DE MISE A JOUR DES STAGIAIRES
-		btnAfficheSuppr.setPrefSize(400, 45);
-		btnAfficheSuppr.setOnAction(new EventHandler<ActionEvent>() {
+		btnAffiche.setPrefSize(400, 45);
+		btnAffiche.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-
 				try {
 					if (arbreBin.getSauvegarde() == null) {
 						JOptionPane.showMessageDialog(null,
@@ -88,9 +78,9 @@ public class EcranAffichageStagiaire extends BorderPane {
 						message.setFont(Font.font("Verdana", 20));
 						panelPrincipal.setCenter(message);
 					} else {
-						panelSuppr = new PanelRechercheAdmin(arbreBin, arbreBin
-								.getSauvegarde());
-						panelPrincipal.setCenter(panelSuppr);
+						panelAffiche = new PanelRechercheUtil(arbreBin,
+								arbreBin.getSauvegarde());
+						panelPrincipal.setCenter(panelAffiche);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -111,12 +101,12 @@ public class EcranAffichageStagiaire extends BorderPane {
 				}
 			}
 		});
-		
-		btnGererAnnuaire.setFont(Font.font(null, 15));
-		btnAfficheSuppr.setFont(Font.font(null, 15));
-		btnDeconnexion.setFont(Font.font(null, 15));
-		menus.getChildren().addAll(btnGererAnnuaire, btnAfficheSuppr, btnDeconnexion);
 
+		btnGererAnnuaire.setFont(Font.font(null, 15));
+		btnAffiche.setFont(Font.font(null, 15));
+		btnDeconnexion.setFont(Font.font(null, 15));
+		menus.getChildren()
+				.addAll(btnGererAnnuaire, btnAffiche, btnDeconnexion);
 
 		panelTop.setCenter(menus);
 		menus.setAlignment(Pos.CENTER);

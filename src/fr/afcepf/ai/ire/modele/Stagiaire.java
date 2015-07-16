@@ -12,8 +12,6 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	private int champsFilsDroit;
 	private int champsFilsCache;
 
-	// int critereDeTri = 0;
-
 	public Stagiaire() {
 	}
 
@@ -48,8 +46,6 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		return nb;
 	}
 
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

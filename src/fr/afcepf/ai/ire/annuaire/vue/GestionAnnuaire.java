@@ -2,16 +2,9 @@ package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.RandomAccessFile;
-
 import javax.swing.JOptionPane;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -34,13 +27,11 @@ public class GestionAnnuaire extends BorderPane {
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
 			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace(
 					"\\", "/");
-			System.out.println("je cherche : " + cheminDuFichierAChercher);
 		} else {
 			JOptionPane.showMessageDialog(null,
 					"Pas de fichier source selectionné");
 		}
 
-		
 		FileChooser fichierASauvegarder = new FileChooser();
 		fichierASauvegarder
 				.setTitle("Selectionnez un emplacement pour sauvegarder le fichier");
@@ -63,7 +54,6 @@ public class GestionAnnuaire extends BorderPane {
 		} else {
 			JOptionPane.showMessageDialog(null, "Pas de fichier annuaire créé");
 		}
-
 	}
 
 	public GestionAnnuaire() {
@@ -86,7 +76,6 @@ public class GestionAnnuaire extends BorderPane {
 			cheminDuFichierAChercher = fichierChercherSelectionne.toString();
 			this.cheminDuFichierAChercher = cheminDuFichierAChercher.replace(
 					"\\", "/");
-			System.out.println(cheminDuFichierAChercher);
 		}
 	}
 
@@ -109,7 +98,6 @@ public class GestionAnnuaire extends BorderPane {
 		if (!fichierSaveSelectionne.getName().contains(".")) {
 			cheminDuFichierASauvegarder = fichierSaveSelectionne
 					.getAbsolutePath().toString() + ".bin";
-			System.out.println(cheminDuFichierASauvegarder);
 			this.cheminDuFichierASauvegarder = cheminDuFichierASauvegarder
 					.replace("\\", "/");
 		}

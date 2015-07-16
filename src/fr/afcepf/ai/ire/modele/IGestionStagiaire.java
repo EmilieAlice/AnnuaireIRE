@@ -40,10 +40,9 @@ public interface IGestionStagiaire {
 	 * @param positionChamps
 	 * @param fils
 	 */
-	void miseAJour(RandomAccessFile fichierAStructurer,
-			Stagiaire unStagiaire, Stagiaire unStagiairePourModifier,
-			int indexPere, int numeroDeLigneStagiaire, int positionChamps,
-			int fils);
+	void miseAJour(RandomAccessFile fichierAStructurer, Stagiaire unStagiaire,
+			Stagiaire unStagiairePourModifier, int indexPere,
+			int numeroDeLigneStagiaire, int positionChamps, int fils);
 
 	/**
 	 * Methode qui permet une recherche par nom d'un stagiaire
@@ -55,8 +54,8 @@ public interface IGestionStagiaire {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Stagiaire> rechercherParNom(String nom, String chemainRaf, int numLigne, List<Stagiaire> listeAAfficher)
-			throws Exception;
+	List<Stagiaire> rechercherParNom(String nom, String chemainRaf,
+			int numLigne, List<Stagiaire> listeAAfficher) throws Exception;
 
 	List<Stagiaire> rechercherParPrenom(String prenom,
 			List<Stagiaire> listeARecuperer);
@@ -72,6 +71,6 @@ public interface IGestionStagiaire {
 
 	List<Stagiaire> rechercherEnMulticritere(String nom, String prenom,
 			String departement, String promo, String annee,
-			List<Stagiaire> listeARecuperer, String chemainRaf, List<Stagiaire> listeAAfficher)
-			throws Exception;
+			List<Stagiaire> listeARecuperer, String chemainRaf,
+			List<Stagiaire> listeAAfficher) throws Exception;
 }

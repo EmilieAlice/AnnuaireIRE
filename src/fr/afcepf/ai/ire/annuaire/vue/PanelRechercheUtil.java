@@ -1,6 +1,7 @@
 package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,6 @@ public class PanelRechercheUtil extends BorderPane {
 
 	private IGestionStagiaire gestionStagiaire = new GestionStagiaire();
 	private ObservableList<Stagiaire> listPourTableau;
-	
 
 	private List<Stagiaire> listeStagiaire = new ArrayList<>();
 
@@ -53,8 +53,6 @@ public class PanelRechercheUtil extends BorderPane {
 			final String cheminAnnuaireALire) throws IOException {
 
 		tableVue = new TableView<>();
-		
-		//REND LE TABLEAU EDITABLE
 		tableVue.setEditable(true);
 
 		this.setTop(panelTop);
@@ -71,7 +69,7 @@ public class PanelRechercheUtil extends BorderPane {
 		colNom.setMinWidth(200);
 		colNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"nom"));
-		colNom.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colNom.setCellFactory(TextFieldTableCell.<Stagiaire> forTableColumn());
 
 		TableColumn<Stagiaire, String> colPrenom = new TableColumn<>();
 		colPrenom.setText("Prenom");
@@ -79,7 +77,8 @@ public class PanelRechercheUtil extends BorderPane {
 		colPrenom
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"prenom"));
-		colPrenom.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colPrenom.setCellFactory(TextFieldTableCell
+				.<Stagiaire> forTableColumn());
 
 		TableColumn<Stagiaire, String> colDepartement = new TableColumn<>();
 		colDepartement.setText("Departement");
@@ -87,59 +86,61 @@ public class PanelRechercheUtil extends BorderPane {
 		colDepartement
 				.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 						"departement"));
-		colDepartement.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colDepartement.setCellFactory(TextFieldTableCell
+				.<Stagiaire> forTableColumn());
 
 		TableColumn<Stagiaire, String> colPromo = new TableColumn<>();
 		colPromo.setText("Promo");
 		colPromo.setMinWidth(75);
 		colPromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"promo"));
-		colPromo.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colPromo.setCellFactory(TextFieldTableCell.<Stagiaire> forTableColumn());
 
 		TableColumn<Stagiaire, String> colAnnee = new TableColumn<>();
 		colAnnee.setText("Annee");
 		colAnnee.setMinWidth(75);
 		colAnnee.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>(
 				"annee"));
-		colAnnee.setCellFactory(TextFieldTableCell.<Stagiaire>forTableColumn());
+		colAnnee.setCellFactory(TextFieldTableCell.<Stagiaire> forTableColumn());
 
 		tableVue.getColumns().addAll(colNom, colPrenom, colDepartement,
 				colPromo, colAnnee);
+
+		@SuppressWarnings("resource")
+		final RandomAccessFile raf = new RandomAccessFile(cheminAnnuaireALire,
+				"rwd");
+		raf.seek(0);
+		final int indexPere = raf.readInt();
 
 		try {
 			listPourTableau = FXCollections.observableArrayList(arbreBin
 					.lireAnnuaire(0, cheminAnnuaireALire));
 		} catch (Exception e) {
-			System.out.println("erreur de Lecture de la liste");
 			e.getMessage();
 		}
 
 		tableVue.setItems(listPourTableau);
-		
+
 		btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 
-				
 				String champNom = textNomStagiaire.getText();
 				String champPrenom = textPrenomStagiaire.getText();
 				String champDep = textDepartementStagiaire.getText();
 				String champPromo = textPromoStagiaire.getText();
 				String champAnnee = textAnneeStagiaire.getText();
-				
+
 				List<Stagiaire> listeStagiaireParNom = new ArrayList<Stagiaire>();
-				
+
 				try {
-					listeStagiaire = gestionStagiaire
-							.rechercherEnMulticritere(champNom, champPrenom,
-									champDep, champPromo, champAnnee,
-									arbreBin
-									.lireAnnuaire(0, cheminAnnuaireALire), cheminAnnuaireALire, listeStagiaireParNom);
+					listeStagiaire = gestionStagiaire.rechercherEnMulticritere(
+							champNom, champPrenom, champDep, champPromo,
+							champAnnee, arbreBin.lireAnnuaire(indexPere,
+									cheminAnnuaireALire), cheminAnnuaireALire,
+							listeStagiaireParNom);
 					listPourTableau.clear();
 					listPourTableau.addAll(listeStagiaire);
-					for(Stagiaire stagiaire : listeStagiaire){
-						System.out.println(stagiaire);
-					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
