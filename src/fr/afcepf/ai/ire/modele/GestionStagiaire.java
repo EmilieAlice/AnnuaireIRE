@@ -1,11 +1,9 @@
-package fr.afcepf.ai.ire.annuaire.controleur;
+package fr.afcepf.ai.ire.modele;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-
-import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public class GestionStagiaire implements IGestionStagiaire {
 

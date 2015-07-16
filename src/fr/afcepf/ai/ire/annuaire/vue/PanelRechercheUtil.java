@@ -1,9 +1,13 @@
-package fr.afcepf.ai.ire.modele;
+package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.afcepf.ai.ire.modele.CreationAjoutArbreBinaire;
+import fr.afcepf.ai.ire.modele.GestionStagiaire;
+import fr.afcepf.ai.ire.modele.IGestionStagiaire;
+import fr.afcepf.ai.ire.modele.Stagiaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,9 +21,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
-import fr.afcepf.ai.ire.annuaire.controleur.IGestionStagiaire;
 
 public class PanelRechercheUtil extends BorderPane {
 

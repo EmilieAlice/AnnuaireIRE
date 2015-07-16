@@ -1,9 +1,7 @@
-package fr.afcepf.ai.ire.annuaire.controleur;
+package fr.afcepf.ai.ire.modele;
 
 import java.io.RandomAccessFile;
 import java.util.List;
-
-import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public interface IGestionStagiaire {
 	/**

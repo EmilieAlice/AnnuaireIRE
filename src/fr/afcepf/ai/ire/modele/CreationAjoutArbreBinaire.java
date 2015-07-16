@@ -1,4 +1,4 @@
-package fr.afcepf.ai.ire.annuaire.controleur;
+package fr.afcepf.ai.ire.modele;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -10,8 +10,6 @@ import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public class CreationAjoutArbreBinaire {
 

@@ -1,10 +1,11 @@
-package fr.afcepf.ai.ire.modele;
+package fr.afcepf.ai.ire.annuaire.vue;
 
 import java.io.RandomAccessFile;
 
-import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
-import fr.afcepf.ai.ire.annuaire.controleur.IGestionStagiaire;
+import fr.afcepf.ai.ire.modele.CreationAjoutArbreBinaire;
+import fr.afcepf.ai.ire.modele.GestionStagiaire;
+import fr.afcepf.ai.ire.modele.IGestionStagiaire;
+import fr.afcepf.ai.ire.modele.Stagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

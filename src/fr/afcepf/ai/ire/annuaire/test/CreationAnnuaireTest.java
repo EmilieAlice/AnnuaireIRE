@@ -2,8 +2,8 @@ package fr.afcepf.ai.ire.annuaire.test;
 
 import java.io.RandomAccessFile;
 
-import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.annuaire.controleur.GestionStagiaire;
+import fr.afcepf.ai.ire.modele.CreationAjoutArbreBinaire;
+import fr.afcepf.ai.ire.modele.GestionStagiaire;
 import fr.afcepf.ai.ire.modele.Stagiaire;
 
 public class CreationAnnuaireTest {

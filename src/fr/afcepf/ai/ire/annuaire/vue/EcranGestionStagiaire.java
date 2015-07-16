@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import fr.afcepf.ai.ire.annuaire.controleur.CreationAjoutArbreBinaire;
-import fr.afcepf.ai.ire.modele.PanelAjout;
-import fr.afcepf.ai.ire.modele.PanelRechercheAdmin;
+import fr.afcepf.ai.ire.modele.CreationAjoutArbreBinaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
